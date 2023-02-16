@@ -1,0 +1,145 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/bd2255194d.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" text="text/css" href="{% static 'css/guide.css' %}">
+    <link rel = "icon" href = "{% static 'img/logo.jpg' %}" type = "image/x-icon">
+    <title>List</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <header>
+        <nav id="menu">
+            <ul class="blackbox">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li>
+                  <div class="box">
+                    <div class="container-2">
+                        <form action="{% url 'search' %}">
+                            <!-- {% csrf_token %} -->
+                            <span class="icon"><i class="fa fa-search"></i></span>
+                            <input type="search" name="name" id="search" placeholder="Search..." />
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                  </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <h1 class="select">Select your Guide</h1>
+    <table border="1" cellspacing="0" class="content-table" >
+        <div class="row table-responsive" style="position: relative; float: center; width: 100%; margin-top: 0; margin-left: 10px;">
+        <table id="tblData" class="table table-bordered table-striped table-hover" style="margin-top:10px; ">
+            <thead>
+                <tr>
+                    <th class="text-center">Sr. No.</th>
+                    <th class="text-center">Supervisor's Name</th>
+                    <th class="text-center">Specialization</th>
+                    <th class="text-center">Guideship Vacancy</th>
+                    <th class="text-center">Select</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                    {% for guide in guides %}
+                        {% if guide.serial_no|divisibleby:"2" %}
+                            <tr>
+                                <td align="" class="vac">
+                                    {{ guide.serial_no }}
+                                </td>
+                                <td align="center">
+                                    <img src="{{ guide.myImage.url }}" height="150px" width="150px"> <br>
+                                    {{ guide.name }}
+                                    <br>
+                                    {{ guide.designation }}
+                                    <br>
+                                    {{ guide.email }}
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>{{ guide.domain_1 }}</li>
+                                        <li>{{ guide.domain_2 }}</li>
+                                        <li>{{ guide.domain_3 }}</li>
+                                    </ul>
+                                </td>
+                                <td align="" class="vac">{{ guide.vacancy }}</td>
+                                <!-- {% if guide.vacancy < 1 %}
+                                    <td align="center">Guide Full</td>
+                                {% else %} -->
+                                <td align="center">
+                                    <a href="{% url 'guide-selected' guide.serial_no %}">
+                                        <button>Select</button>
+                                    </a>
+                                </td>
+                                <!-- {% endif %} -->
+                            </tr>
+                        {% else %}    
+                            <tr>
+                                <td align="" class="vac">
+                                    {{ guide.serial_no }}
+                                </td>
+                                <td align="center">
+                                    <img src="{{ guide.myImage.url }}" height="150px" width="150px"> 
+                                    <br>
+                                    {{ guide.name }}
+                                    <br>
+                                    {{ guide.designation }}
+                                    <br>
+                                    {{ guide.email }}
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>{{ guide.domain_1 }}</li>
+                                        <li>{{ guide.domain_2 }}</li>
+                                        <li>{{ guide.domain_3 }}</li>
+                                    </ul>
+                                </td>
+                                <td align="" class="vac">{{ guide.vacancy }}</td>
+                                <!-- {% if guide.vacancy < 1 %}
+                                    <td align="center">Guide Full</td>
+                                {% else %} -->
+                                <td align="center">
+                                <a href="{% url 'guide-selected' guide.serial_no %}">
+                                    <button>Select</button>
+                                </a>
+                            </td>
+                                <!-- {% endif %} -->
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </table> 
+
+    {% else %}
+
+    <h1>
+        YOU ARE NOT ALLOWED AS YOU ARE NOT REGISTERED/LOGGED IN!
+    </h1>
+
+    <p>Click here to </p><a href="{% url 'login' %}">LOGIN</a>
+
+    {% endif %}
+
+    
+    <footer class="footer">
+        <p>&copy; Copyright 2022; ACM Sathyabama Institute of Science and Technology, All rights reserved.</p>
+        <a href="https://www.instagram.com/acmsist/" class="footer_a" target="_blank"><i class="fa-brands fa-instagram" class="icon"></i></a>
+        <a href="https://www.linkedin.com/company/acm-sist-student-chapter/" target="_blank" ><i class="fa-brands fa-linkedin"></i></a>
+    </footer>
+    <script type = "text/javascript" >  
+        function preventBack() { window.history.forward(); }  
+        setTimeout("preventBack()", 0);  
+        window.onunload = function () { null };  
+    </script>
+</body>
+</html>

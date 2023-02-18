@@ -1,6 +1,4 @@
 
-
-from multiprocessing import context
 from random import randrange
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -758,6 +756,7 @@ def retitle(request):
 
             team.teamID = teamID
             user.username = teamID
+            team.reg_no_1 = reg_no_1
 
             team.project_name = project_name
 
@@ -817,8 +816,8 @@ def reset_password(request):
                 return redirect('reset-password')
 
             # Check for user existence
-            if User.objects.filter(username=teamID, email=email).exists():
-                user = User.objects.filter(username=teamID, email=email).get()
+            if User.objects.filter(username=teamID).exists():
+                user = User.objects.filter(username=teamID).get()
                 user.set_password(password)
                 user.save()
                 messages.success(request, 'Password Changed successfully!')

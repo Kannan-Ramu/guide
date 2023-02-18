@@ -31,13 +31,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-bn!gb+_&96p0e7j+0@in%!o5xxl23m$907%3sgyqlekw&85sgv'
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = [
-    'guide-project-env.eba-6tuucars.us-west-2.elasticbeanstalk.com',
+    'https://guide-project-env.eba-6tuucars.us-west-2.elasticbeanstalk.com',
     'https://guideselection.herokuapp.com/',
     'localhost', 
     '127.0.0.1', 
@@ -196,14 +193,8 @@ django_heroku.settings(locals())
 # Email Configuration
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'internship.cse@sathyabama.ac.in'
-# EMAIL_HOST_PASSWORD = 'gmxwsvmuqvbgvgfk'
 EMAIL_HOST_USER = 'meantechofficial2906@gmail.com'
 EMAIL_HOST_PASSWORD = 'ofewnyrqtqypfkaj'
-# EMAIL_HOST_USER = 'acm@sathyabama.ac.in'
-# EMAIL_HOST_PASSWORD = 'ylxreronvulenrga'
-# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
 # AWS S3 configs

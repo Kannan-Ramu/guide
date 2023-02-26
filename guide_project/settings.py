@@ -14,7 +14,7 @@ import cloudinary.api
 import cloudinary.uploader
 import cloudinary
 import os
-import django_heroku
+# import django_heroku
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -34,20 +34,21 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = [
-    'https://guide-project-env.eba-6tuucars.us-west-2.elasticbeanstalk.com',
+    'https://guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
+    'guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
     'https://guideselection.herokuapp.com/',
-    'localhost', 
-    '127.0.0.1', 
-    'https://www.cse-projectregistration.co.in/', 
-    '63.250.59.207', 
+    'localhost',
+    '127.0.0.1',
+    'https://www.cse-projectregistration.co.in/',
+    '63.250.59.207',
     '0.0.0.0:8000'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://guide-project-env.eba-6tuucars.us-west-2.elasticbeanstalk.com',
-    'https://www.cse-projectregistration.co.in', 
+    'https://guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
+    'https://www.cse-projectregistration.co.in',
     'http://127.0.0.1:8000/',
-    'http://127.0.0.1:8000/pride-cell', 
+    'http://127.0.0.1:8000/pride-cell',
     'https://guideselection.herokuapp.com/'
 ]
 
@@ -188,7 +189,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
 # Email Configuration
 EMAIL_HOST = 'smtp.gmail.com'

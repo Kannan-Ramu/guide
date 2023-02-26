@@ -5,9 +5,11 @@ from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
+
 def guide_directory_path(instance, filename):
     # Will be Uploaded to guide-images/<name>/<filename>
     return 'guide-images/{0}/{1}'.format(instance, filename)
+
 
 class Guide(models.Model):
     name = models.CharField(max_length=100)
@@ -25,6 +27,7 @@ class Guide(models.Model):
     def __str__(self):
         return self.name
 
+
 def user_directory_path(instance, filename):
     '''
     Instance is the value returned by __str__(self) which is teamID in this case
@@ -35,16 +38,17 @@ def user_directory_path(instance, filename):
     # Will be Uploaded to documents/<teamID>/<filename>
     return 'documents/{0}/{1}'.format(instance, filename)
 
+
 class Team(models.Model):
     teamID = models.CharField(max_length=100, default='CSE')
     project_name = models.CharField(max_length=100)
     project_domain = models.CharField(max_length=100)
     project_description = models.TextField()
     no_of_members = models.CharField(
-                        max_length=10, 
-                        choices=no_members_choices, 
-                        default='1'
-                    )
+        max_length=10,
+        choices=no_members_choices,
+        default='1'
+    )
 
     reg_no_1 = models.BigIntegerField()
     student_1_name = models.CharField(max_length=100)
@@ -57,6 +61,10 @@ class Team(models.Model):
     student_2_no = models.BigIntegerField(blank=True, null=True)
 
     document = models.FileField(upload_to=user_directory_path)
+    ppt = models.FileField(upload_to=user_directory_path,
+                           null=True, blank=True)
+    rs_paper = models.FileField(
+        upload_to=user_directory_path, null=True, blank=True)
 
     guide = models.CharField(
         max_length=100)

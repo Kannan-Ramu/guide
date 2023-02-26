@@ -12,10 +12,7 @@ from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
 
 # Create your views here.
 
-
 def home(request):
-    # if request.method == 'POST':
-    #     return render(request, 'Register/register.html')
     return render(request, 'Home/home.html')
 
 
@@ -238,14 +235,12 @@ def login(request):
             messages.error(request, "User does not exist!")
             return redirect('login')
         user = User.objects.filter(username=user_name).get()
-        print('USER IS: ', user)
         if user is not None:
-            if user.is_active == False:
-                messages.info(
-                    request, "You're registered and updated your team details")
-                return redirect('login')
             user = auth.authenticate(username=user_name, password=password)
-
+            if Team.objects.filter(teamID=user.username).exists():
+                auth.login(request, user)
+                team = Team.objects.filter(teamID=user.username).get()
+                return redirect('profile')
             if user is not None:
 
                 auth.login(request, user)
@@ -284,7 +279,6 @@ def login(request):
                     g_obj = team.guide
                     email_2 = Otp_Two.objects.filter(
                         temp_email=user.email).get()
-                    print('TYPE OF g_obj: ', type(g_obj))
                     if g_obj is None:
                         print('INSIDE NONE IF')
                         context = {
@@ -308,23 +302,24 @@ def login(request):
                         else:
                             return render(request, 'temp_team_1/temp_team_1.html', context)
 
-                # user = User.objects.filter(username=user_name).get()
-                if Team.objects.filter(teamID=user.username).exists():
-                    print('INSIDE LINE 312 IF: ')
-                    if User.objects.filter(username=user_name).exists():
-                        print('INSIDE LINE 314 IF: ')
-                        if user.is_active == False:
-                            print('INSIDE LINE 316 IF: ')
-                            auth.logout(request)
-                            messages.info(
-                                request, 'Your team is already registered. Please contact project co-ordinator!')
-                            return render(request, 'Login/login.html')
-                        else:
-                            return redirect('retitle')
+                # if Team.objects.filter(teamID=user.username).exists():
+                #     print('INSIDE LINE 312 IF: ')
+                #     if User.objects.filter(username=user_name).exists():
+                #         print('INSIDE LINE 314 IF: ')
+                #         if user.is_active == False:
+                #             print('INSIDE LINE 316 IF: ')
+                #             auth.logout(request)
+                #             messages.info(
+                #                 request, 'Your team is already registered. Please contact project co-ordinator!')
+                #             return render(request, 'Login/login.html')
+                #         else:
+                #             return redirect('retitle')
                 return render(request, 'no_of_stud/no_of_stud.html')
             else:
+                print('User is: ', user)
+                print('User is: ', type(user))
                 messages.error(request, 'Invalid Credentials')
-                return render(request, 'Login/login.html')
+                return redirect('login')
     else:
         return render(request, 'Login/login.html')
 
@@ -332,7 +327,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     messages.success(request, 'You are successfully logged Out and can login!')
-    return render(request, 'Login/login.html')
+    return redirect('login')
 
 
 def project_details_1(request):
@@ -694,9 +689,9 @@ def guide_selected(request, id):
             guide_inst.vacancy -= 1
             guide_inst.save()
             temp_team.delete()
-        auth.logout(request)
-        # return redirect('submitted')
-        return render(request, 'submitted.html')
+        # auth.logout(request)
+        return redirect('upload')
+        # return render(request, 'submitted.html')
     context = {
         # 'guide': guide_inst,
         'team': temp_team,
@@ -831,6 +826,85 @@ def reset_password(request):
             return redirect('reset-password')
 
     return render(request, 'resetpass/resetpass.html')
+
+
+def doc_upload(request):
+    user = request.user
+    if user.is_authenticated:
+        if request.method == 'POST':
+            team = Team.objects.filter(teamID=user.username).get()
+            if request.FILES:
+                ppt = request.FILES['ppt']
+                document = request.FILES['document']
+                rs_paper = request.FILES['rs_paper']
+
+                team.ppt = ppt
+                team.document = document
+                team.rs_paper = rs_paper
+
+                team.save()
+            auth.logout(request)
+            return redirect('submitted')
+    team = Team.objects.filter(teamID=user.username).get()
+    context = {
+        'team': team,
+    }
+    return render(request, 'upload_docs/docs.html', context)
+
+
+def profile(request):
+    user = request.user
+    if not user.is_authenticated:
+        messages.error(request, "You're not Logged In!")
+        return redirect('login')
+    team = Team.objects.filter(teamID=user.username).get()
+    if request.method == 'POST':
+        project_name = request.POST['project_name']
+        project_domain = request.POST['project_domain']
+        project_description = request.POST['project_description']
+        student_1_name = request.POST['student_1_name']
+        reg_no_1 = request.POST['reg_no_1']
+        student_1_email = request.POST['student_1_email']
+        student_1_no = request.POST['student_1_no']
+        student_1_no = request.POST['student_1_no']
+
+        if team.no_of_members == '2':
+            student_2_name = request.POST['student_2_name']
+            reg_no_2 = request.POST['reg_no_2']
+            student_2_email = request.POST['student_2_email']
+            student_2_no = request.POST['student_2_no']
+
+            team = Team.objects.update(
+                project_name=project_name,
+                project_domain=project_domain,
+                project_description=project_description,
+                student_1_name=student_1_name,
+                reg_no_1=reg_no_1,
+                student_1_email=student_1_email,
+                student_1_no=student_1_no,
+                student_2_name=student_2_name,
+                reg_no_2=reg_no_2,
+                student_2_email=student_2_email,
+                student_2_no=student_2_no,
+            )
+        else:
+            team = Team.objects.update(
+                project_name=project_name,
+                project_domain=project_domain,
+                project_description=project_description,
+                student_1_name=student_1_name,
+                reg_no_1=reg_no_1,
+                student_1_email=student_1_email,
+                student_1_no=student_1_no,
+            )
+
+        return redirect('upload')
+
+    context = {
+        'team': team
+    }
+
+    return render(request, 'dashboard/team_profile.html', context)
 
 
 def custom_page_not_found_view(request, exception):

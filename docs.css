@@ -1,0 +1,82 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url("https://www.sathyabama.ac.in/sites/default/files/inline-images/DJI_0105-New-Low.jpg");
+    background-size: cover;
+}
+
+.container {
+    max-width: 550px;
+    margin: 0 auto;
+    margin-top: 150px;
+    padding: 20px;
+    background-color: #d1c9c960;
+    box-shadow: 0 2px 5px rgba(31, 30, 30, 0.253);
+}
+
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type=file] {
+    margin-top: 5px;
+    padding: 5px;
+    width: 500px;
+    background-color:  #817c7c94;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: none;
+}
+
+input[type=file]:hover {
+    background-color: #f5f5f5;
+}
+
+input[type=submit] {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #831238;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    box-shadow: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+input[type=submit]:hover {
+    background-color: #831238;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+    input[type=file] {
+        margin-top: 10px;
+        padding: 10px;
+        max-width: 350px;
+    }
+
+    input[type=submit] {
+        margin-top: 10px;
+        padding: 10px;
+        font-size: 14px;
+    }
+}

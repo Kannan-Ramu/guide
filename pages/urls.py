@@ -50,5 +50,7 @@ urlpatterns = [
     path('temp-team-1/', views.temp_team_1, name='temp-team-1'),
     path('temp-team-2/', views.temp_team_2, name='temp-team-2'),
     path('retitle/', views.retitle, name='retitle'),
-    path('reset-password/', views.reset_password, name='reset-password')
+    path('reset-password/', views.reset_password, name='reset-password'),
+    path('upload/', views.doc_upload, name='upload'),
+    path('profile/', views.profile, name='profile')
 ]

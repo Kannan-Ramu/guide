@@ -302,18 +302,6 @@ def login(request):
                         else:
                             return render(request, 'temp_team_1/temp_team_1.html', context)
 
-                # if Team.objects.filter(teamID=user.username).exists():
-                #     print('INSIDE LINE 312 IF: ')
-                #     if User.objects.filter(username=user_name).exists():
-                #         print('INSIDE LINE 314 IF: ')
-                #         if user.is_active == False:
-                #             print('INSIDE LINE 316 IF: ')
-                #             auth.logout(request)
-                #             messages.info(
-                #                 request, 'Your team is already registered. Please contact project co-ordinator!')
-                #             return render(request, 'Login/login.html')
-                #         else:
-                #             return redirect('retitle')
                 return render(request, 'no_of_stud/no_of_stud.html')
             else:
                 print('User is: ', user)

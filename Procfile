@@ -1,2 +1,1 @@
-web: gunicorn guide_project.wsgi --log-file -
-
+web: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn guide_project.wsgi

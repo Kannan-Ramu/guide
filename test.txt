@@ -11,3 +11,6 @@ autostart=true
 autorestart=true
 startsecs=10
 stopasgroup=true
+
+
+web: gunicorn guide_project.wsgi --log-file -

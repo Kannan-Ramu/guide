@@ -41,7 +41,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'https://www.cse-projectregistration.co.in/',
     '63.250.59.207',
-    '0.0.0.0:8000'
+    '0.0.0.0:8000',
+    '*',
 ]
 
 CSRF_TRUSTED_ORIGINS = [

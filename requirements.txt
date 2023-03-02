@@ -37,7 +37,6 @@ pycodestyle==2.8.0
 pypiwin32==223
 python-dateutil==2.8.2
 python-dotenv==0.20.0
-pywin32==305
 PyYAML==5.4.1
 requests==2.26.0
 rsa==4.7.2

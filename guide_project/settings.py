@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'import_export',
     'storages',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 3rd party
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'guide_project.urls'
@@ -171,6 +174,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'guide_project/static')
 ]
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 # Default primary key field type

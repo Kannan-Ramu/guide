@@ -17,6 +17,7 @@ import os
 # import django_heroku
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -32,6 +33,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG')
+
+DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
 
 ALLOWED_HOSTS = [
     'https://guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
@@ -105,14 +108,8 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-"""DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}"""
-
-DATABASES = {
+# Development database
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'GUIDE-SELECTION',
@@ -121,6 +118,13 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
+}
+'''
+
+# Production DB
+
+DATABASES = {
+    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
 }
 
 # Password validation

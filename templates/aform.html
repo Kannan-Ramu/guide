@@ -19,16 +19,16 @@
             <div class="banner">
                 <h1 style="color: #fff !important;" >Faculty Account Registration</h1>
             </div>
-            <p class="bluebox" style=" padding-right: 15rem; text-align:center;">Please fill out the form with the requested information.Thank you!</p>
+            <p class="bluebox" style=" padding-right: 15rem; text-align:center;">Please use the same EMAIL ID as given in the excel provided to you. Thank you!</p>
             {% include 'partials/_alerts.html' %}
             <div class="staffs">
                 <div class="team" id="staff">
                     <fieldset class="staff-form">
                         <legend>Faculty Account Registration</legend>
                         <div class="item">
-                            <label for="name" style="color: black ;">Name (Dr./Mr./Ms.)<span>*</span></label>
+                            <label for="name" style="color: black ;">Name <span>*</span></label>
                             <div class="name-item">
-                                <input id="name" type="text" name="first_name" placeholder="First Name (Dr./Mr./Ms.)"
+                                <input id="name" type="text" name="first_name" placeholder="First Name"
                                     required />
                                 <input id="name" type="text" name="last_name" placeholder="Last Name" required />
                             </div>
@@ -42,7 +42,7 @@
                             <label for="email" style="color: black ;">
                                 Email<span>*</span>
                             </label>
-                            <input id="email" type="email" name="email" placeholder="Enter Your Email Id" required />
+                            <input id="email" type="email" name="email" placeholder="Email Id As given in excel" required />
                         </div>
                         <div class="item">
                             <label for="serialno" style="color: black ;">
@@ -55,7 +55,7 @@
                             <label for="designation" style="color: black ;">
                                 Confirm Password<span>*</span>
                             </label>
-                            <input id="designation" type="password" name="password1" placeholder="Enter Your Designation" required />
+                            <input id="designation" type="password" name="password1" placeholder="Confirm Password" required />
                         </div>
                         <div class="btn-block">
                             <button type="submit" onclick="myFunction()" class="btn-dark">Submit</button>

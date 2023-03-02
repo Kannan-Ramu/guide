@@ -14,7 +14,6 @@ import cloudinary.api
 import cloudinary.uploader
 import cloudinary
 import os
-# import django_heroku
 from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
@@ -191,10 +190,6 @@ cloudinary.config(
 
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
-# Activate Django-Heroku.
-# django_heroku.settings(locals())
 
 # Email Configuration
 EMAIL_HOST = 'smtp.gmail.com'

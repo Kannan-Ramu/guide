@@ -1,39 +1,80 @@
-from django.core.mail import send_mail
+
 from django.http import HttpResponse
-from guide_project.settings import EMAIL_HOST_USER
-from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, auth
+from django.contrib.auth import get_user_model
 from django.contrib import messages
 from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
 from django.contrib.auth.password_validation import MinimumLengthValidator, NumericPasswordValidator, validate_password
 from django.core.exceptions import ValidationError
+from .forms import GuideSignUpForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from .token import account_activation_token
 
 # Create your views here.
 
 
 def guides_register(request):
-    if request.method == 'POST':
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        email = request.POST['email']
-        password = request.POST['password']
-        password1 = request.POST['password1']
-        if password == password1:
-            if User.objects.filter(email=email).exists():
-                messages.error(
-                    request,
-                    'User already exists with this email!'
-                )
-                return redirect('guides-register')
-            user = User.objects.create_user(
-                username=email, email=email, password=password, first_name=first_name, last_name=last_name)
+    form = GuideSignUpForm()
+    if request.method == "POST":
+        form = GuideSignUpForm(request.POST)
+        print('FORM VALUE IS: ', form.data)
+        first_name = form.data.get('first_name')
+        last_name = form.data.get('last_name')
+        email = form.data.get('email')
+        password1 = form.data.get('password1')
+        password2 = form.data.get('password2')
+        if form.is_valid():
+            if password1 == password2:
+                print('INSIDE PASSWORD CHECK IF')
+                if User.objects.filter(email=email).exists():
+                    messages.error(
+                        request,
+                        'User already exists with this email!'
+                    )
+                    return redirect('guides-register')
+                user = form.save(commit=False)
+                user.is_active = False
+                user.save()
 
-            user.save()
-
-            return redirect('login')
-
+                current_site = get_current_site(request)
+                mail_subject = 'Account activation for project registration'
+                message = render_to_string('verify/acc_active_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+                print('LINE ABOVE REDIRECT(LOGIN)')
+                return redirect('login')
+        else:
+            messages.warning(request, 'Issue with the code')
+            print("INSIDE ELSE OF FORM.IS_VALID()")
+            for field in form:
+                print("Field Error:", field.name,  field.errors)
+            return redirect('guides-register')
     return render(request, 'aform.html')
+
+
+def activate(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return HttpResponse('<h1>Thank you! Your email is verified</h1>')
+    else:
+        return HttpResponse('<h1>Activation Link Invalid!</h1>')
+
+    pass
 
 
 def register(request):

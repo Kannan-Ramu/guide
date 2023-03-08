@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Development database
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'GUIDE-SELECTION',
@@ -122,13 +122,13 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
         'PORT': '5432',
     }
 }
-'''
+
 
 # Production DB
 
-DATABASES = {
-    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
-}
+# DATABASES = {
+#     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

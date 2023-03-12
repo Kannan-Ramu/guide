@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'import_export',
     'storages',
     'whitenoise.runserver_nostatic',
+    'verify_email',  # sending email verification
 ]
 
 MIDDLEWARE = [
@@ -200,12 +201,25 @@ IMAGE_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'meantechofficial2906@gmail.com'
-EMAIL_HOST_PASSWORD = 'ofewnyrqtqypfkaj'
+EMAIL_HOST_PASSWORD = 'lrsadwnssgkhxcmi'
 EMAIL_USE_TLS = True
 
-# AWS S3 configs
+LOGIN_URL = 'login'
 
+# Email Verify Config
+
+HTML_MESSAGE_TEMPLATE = "verify/acc_active_email.html"
+VERIFICATION_SUCCESS_TEMPLATE = "verify/success.html"
+VERIFICATION_FAILED_TEMPLATE = "verify/failed.html"
+REQUEST_NEW_EMAIL_TEMPLATE = "verify/req_new_email.html"
+LINK_EXPIRED_TEMPLATE = 'verify/link_expired.html'
+NEW_EMAIL_SENT_TEMPLATE = 'verify/acc_act_email_sent.html'
+MAX_RETRIES = 10
+EXPIRE_AFTER = "1h"
+SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
+
+
+# AWS S3 configs
 FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_STORAGE_BUCKET_NAME = 'django-guide-project'
 AWS_S3_REGION_NAME = 'ap-south-1'

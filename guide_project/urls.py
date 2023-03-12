@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('accounts/', include('accounts.urls')),
     # path('accounts/', include('django.contrib.auth.urls')),
+    path('verification/', include('verify_email.urls')),
 ]
 
 handler404 = 'pages.views.custom_page_not_found_view'

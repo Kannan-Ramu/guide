@@ -31,11 +31,19 @@ def guides_register(request):
                         'User already exists with this email!'
                     )
                     return redirect('guides-register')
-                user = form.save(commit=False)
-                user.username = email
-                inactive_user = send_verification_email(request, form)
 
-                return render(request, 'verify/acc_act_email_sent.html')
+                user = User.objects.create_user(
+                    username=email, email=email, first_name=request.POST['first_name'], last_name=request.POST['last_name'])
+                user.set_password(password1)
+                user.save()
+                # user = form.save(commit=False)
+                # user.username = email
+                # inactive_user = send_verification_email(request, form)
+
+                # return render(request, 'verify/acc_act_email_sent.html')
+
+                messages.success(request, 'Account created! You can login')
+                return redirect('login')
         else:
             messages.warning(request, 'Issue with the code')
             for field in form:

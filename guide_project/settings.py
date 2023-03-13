@@ -125,7 +125,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # }
 
 
-# Production DB
+# Production DB to be used for railway
 
 DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),

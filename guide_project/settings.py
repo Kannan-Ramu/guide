@@ -31,7 +31,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-bn!gb+_&96p0e7j+0@in%!o5xxl23m$907%3sgyqlekw&85sgv'
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = os.environ.get('DEBUG')
+# DEBUG = os.environ.get('DEBUG')
+DEBUG = False
 
 DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
 
@@ -73,7 +74,7 @@ INSTALLED_APPS = [
     'import_export',
     'storages',
     'whitenoise.runserver_nostatic',
-    'verify_email',  # sending email verification
+    # 'verify_email',  # sending email verification
 ]
 
 MIDDLEWARE = [
@@ -208,15 +209,15 @@ LOGIN_URL = 'login'
 
 # Email Verify Config
 
-HTML_MESSAGE_TEMPLATE = "verify/acc_active_email.html"
-VERIFICATION_SUCCESS_TEMPLATE = "verify/success.html"
-VERIFICATION_FAILED_TEMPLATE = "verify/failed.html"
-REQUEST_NEW_EMAIL_TEMPLATE = "verify/req_new_email.html"
-LINK_EXPIRED_TEMPLATE = 'verify/link_expired.html'
-NEW_EMAIL_SENT_TEMPLATE = 'verify/acc_act_email_sent.html'
-MAX_RETRIES = 10
-EXPIRE_AFTER = "1h"
-SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
+# HTML_MESSAGE_TEMPLATE = "verify/acc_active_email.html"
+# VERIFICATION_SUCCESS_TEMPLATE = "verify/success.html"
+# VERIFICATION_FAILED_TEMPLATE = "verify/failed.html"
+# REQUEST_NEW_EMAIL_TEMPLATE = "verify/req_new_email.html"
+# LINK_EXPIRED_TEMPLATE = 'verify/link_expired.html'
+# NEW_EMAIL_SENT_TEMPLATE = 'verify/acc_act_email_sent.html'
+# MAX_RETRIES = 10
+# EXPIRE_AFTER = "1h"
+# SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
 
 
 # AWS S3 configs

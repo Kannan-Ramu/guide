@@ -8,7 +8,7 @@ from pages.models import Guide, Team, Otp_Two, Temp_Team
 from django.contrib.auth.password_validation import MinimumLengthValidator, NumericPasswordValidator, validate_password
 from django.core.exceptions import ValidationError
 
-from verify_email.email_handler import send_verification_email
+# from verify_email.email_handler import send_verification_email
 from .forms import GuideSignUpForm
 
 UserModel = get_user_model()

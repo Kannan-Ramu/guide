@@ -327,12 +327,14 @@ def project_details_1(request):
     if Team.objects.filter(teamID=curr_user.username).exists():
         is_team = Team.objects.filter(teamID=curr_user.username).get()
         guide_inst = Guide.objects.filter(serial_no=is_team.guide)
+        guide_inst.vacancy += 1
+        guide_inst.save()
         is_team.delete()
         is_user = User.objects.filter(username=is_team.teamID)
         is_user.delete()
         messages.info(
             request, 'Your team is removed please to the process again!!')
-        return render(request, 'Login/login.html')
+        return render(request, 'Register/register.html')
 
     if request.method == 'POST':
 

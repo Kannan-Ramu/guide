@@ -32,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # DEBUG = os.environ.get('DEBUG')
-DEBUG = False
+DEBUG = True
 
 DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
 
@@ -74,7 +74,7 @@ INSTALLED_APPS = [
     'import_export',
     'storages',
     'whitenoise.runserver_nostatic',
-    # 'verify_email',  # sending email verification
+    'verify_email',  # sending email verification
 ]
 
 MIDDLEWARE = [
@@ -114,10 +114,20 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Development database
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'GUIDE-SELECTION',
+        'USER': 'techboizs',
+        'PASSWORD': 'AAd!tyAA$ravi',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'GUIDE-SELECTION',
+#         'NAME': 'GUIDE-TEST',
 #         'USER': 'techboizs',
 #         'PASSWORD': 'AAd!tyAA$ravi',
 #         'HOST': 'localhost',
@@ -128,9 +138,9 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 
 # Production DB to be used for railway
 
-DATABASES = {
-    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
-}
+# DATABASES = {
+#     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -196,7 +206,7 @@ cloudinary.config(
 )
 
 
-IMAGE_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Email Configuration
 EMAIL_HOST = 'smtp.gmail.com'

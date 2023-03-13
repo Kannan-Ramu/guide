@@ -71,7 +71,7 @@ class UserResource(resources.ModelResource):
 class NewUserAdmin(ImportExportModelAdmin, UserAdmin):
     list_display = ('username', 'first_name',
                     'last_name', 'email', 'is_active', 'is_staff')
-    ordering = ['username']
+    ordering = ['id']
     search_fields = ('username', 'email', 'first_name', 'last_name')
 
     resource_class = UserResource

@@ -8,8 +8,8 @@ from pages.models import Guide, Team, Otp_Two, Temp_Team
 from django.contrib.auth.password_validation import MinimumLengthValidator, NumericPasswordValidator, validate_password
 from django.core.exceptions import ValidationError
 
-# from verify_email.email_handler import send_verification_email
-from .forms import GuideSignUpForm
+from verify_email.email_handler import send_verification_email
+from .forms import GuideSignUpForm, StudentSignUpForm
 
 UserModel = get_user_model()
 
@@ -17,94 +17,76 @@ UserModel = get_user_model()
 
 
 def guides_register(request):
-    form = GuideSignUpForm()
+    # form = GuideSignUpForm()
     if request.method == "POST":
-        form = GuideSignUpForm(request.POST)
-        email = form.data.get('email')
-        password1 = form.data.get('password1')
-        password2 = form.data.get('password2')
-        if form.is_valid():
-            if password1 == password2:
-                if User.objects.filter(email=email).exists():
-                    messages.error(
-                        request,
-                        'User already exists with this email!'
-                    )
-                    return redirect('guides-register')
+        # form = GuideSignUpForm(request.POST)
+        email = request.POST['email']
+        # email = form.data.get('email')
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        # if form.is_valid():
+        if password1 == password2:
+            if User.objects.filter(email=email).exists():
+                messages.error(
+                    request,
+                    'User already exists with this email!'
+                )
+                return redirect('guides-register')
 
-                user = User.objects.create_user(
-                    username=email, email=email, first_name=request.POST['first_name'], last_name=request.POST['last_name'])
-                user.set_password(password1)
-                user.save()
-                # user = form.save(commit=False)
-                # user.username = email
-                # inactive_user = send_verification_email(request, form)
+            user = User.objects.create_user(
+                username=email, email=email, first_name=request.POST['first_name'], last_name=request.POST['last_name'])
+            user.set_password(password1)
+            user.save()
+            # user = form.save(commit=False)
+            # user.username = email
+            # inactive_user = send_verification_email(request, form)
 
-                # return render(request, 'verify/acc_act_email_sent.html')
+            # return render(request, 'verify/acc_act_email_sent.html')
 
-                messages.success(request, 'Account created! You can login')
-                return redirect('login')
-        else:
-            messages.warning(request, 'Issue with the code')
-            for field in form:
-                print("Field Error:", field.name,  field.errors)
-            return redirect('guides-register')
+            messages.success(request, 'Account created! You can login')
+            return redirect('login')
+        # else:
+        #     messages.warning(request, field.errors)
+        #     for field in form:
+        #         print("Field Error:", field.name,  field.errors)
+        #     return redirect('guides-register')
     return render(request, 'aform.html')
 
 
 def register(request):
     if request.method == 'POST':
+        form = StudentSignUpForm(request.POST)
         first_name = request.POST['first_name']
         last_name = request.POST['last_name']
         email = request.POST['email']
-        password = request.POST['password']
-        ConfirmPassword = request.POST['password1']
+        password = request.POST['password1']
+        ConfirmPassword = request.POST['password2']
         temp = email.split('@')
+        form = GuideSignUpForm(request.POST)
+        print('Form is: ', form.data)
         print('Password: ', password)
         if temp[1] == 'gmail.com' or temp[1] == 'yahoo.in' or temp[1] == 'hotmail.com':
 
             if password == ConfirmPassword:
+                print('INSIDE PASS CHECK')
                 special_characters = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
-
-                try:
-                    validate_password(password)
-                    print('Inside validate_password try')
-                except ValidationError as err:
-                    err = str(err)
-                    print(type(err))
-                    print(err)
-                    messages.error(request, (e for e in err))
+                if len(password) < 8:
+                    messages.error(
+                        request, 'Password length must be atleast 8 character.')
                     return redirect('register')
 
-                if (MinimumLengthValidator.validate) is not None:
-                    print('Raised error: ', MinimumLengthValidator.validate)
-                    messages.error(
-                        request, 'Password length must be atleast 8 character.'
-                    )
-                    return redirect('register')
-                elif (NumericPasswordValidator.validate) is None:
-                    print('INSIDE NUMERIC CHECK IF')
-                    messages.error(
-                        request, 'Password must not be entirely numeric.'
-                    )
-                    return redirect('register')
                 # Check for digits
-                elif not any(char.isdigit() for char in password):
+                if not any(char.isdigit() for char in password):
                     messages.error(
                         request, 'Password must contain at least 1 digit.')
                     return redirect('register')
-
-                # Check for alphabets
-                # if not any(char.isalpha() for char in password):
-                #     messages.error(
-                #         request, 'Password must contain at least 1 letter and must be alpha-numeric.')
-                #     return redirect('register')
 
                 # Check for spl chars
                 if not any(char in special_characters for char in password):
                     messages.error(
                         request, 'Password must contain at least 1 special character')
                     return redirect('register')
+
                 # Check for user existence
                 if User.objects.filter(email=email).exists():
                     messages.error(request, 'Email Taken')
@@ -115,16 +97,29 @@ def register(request):
                 elif Team.objects.filter(student_2_email=email).exists():
                     messages.error(request, 'Email Taken in another team')
                     return redirect('register')
+
+                # All are good!
+                elif form.is_valid():
+
+                    # user = User.objects.create_user(
+                    #     first_name=first_name, last_name=last_name, username=email, email=email, password=password
+                    # )
+
+                    # user.save()
+                    # auth.login(request, user)
+
+                    user = form.save(commit=False)
+                    user.username = email
+                    inactive_user = send_verification_email(
+                        request, form)
+
+                    return render(request, 'verify/acc_act_email_sent.html')
+
+                    # return redirect('verify')
                 else:
+                    for e in form.errors:
+                        print('Error is: ', e)
 
-                    user = User.objects.create_user(
-                        first_name=first_name, last_name=last_name, username=email, email=email, password=password
-                    )
-
-                    user.save()
-                    auth.login(request, user)
-
-                    return redirect('verify')
             else:
                 messages.error(request, 'Password not matching')
                 return render(request, 'Register/register.html')
@@ -156,9 +151,7 @@ def login(request):
                 team = Team.objects.filter(teamID=user.username).get()
                 return redirect('profile')
             if user is not None:
-
                 auth.login(request, user)
-
                 user = request.user
 
                 if Temp_Team.objects.filter(student_1_email=user.email).exists():

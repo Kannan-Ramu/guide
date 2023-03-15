@@ -1,140 +1,364 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>PROFILE</title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" >
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/confirmation_2.css' %}">
-        <link rel = "icon" href = "{% static 'img/logo.jpg' %}" type = "image/x-icon">
-    </head>
-    <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/bd2255194d.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" text="text/css" href="{% static 'css/team_profile.css' %}">
+    <title>TEAM PROFILE</title>
+</head>
+
+<body>
+    <header>
+            <nav id="menu">
+                <ul class="blackbox">
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                </ul>
+            </nav>
+    </header>
+    <br>
+    <header>
         <nav id="menu">
-            <ul>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-                <li><a href="{% url 'home' %}">Home</a></li>
+            <ul class="blackbox">
+                <h1 class="db">Profile</h1>
             </ul>
         </nav>
-        <div class="testbox">
-            <form action="{% url 'profile' %}" method="POST">
-              {% csrf_token %}
-              <div class="banner">
-                <h1>Profile Details</h1>
-              </div>
-        
-              <hr/>
-              <fieldset>
-                <legend>Project Information</legend>
-                <div class="project">
-                    <div class="item">
-                        <label for="name">Project Title</label>
-                        <input class="input-text" id="name" type="text" name="project_name" value="{{ team.project_name }}" />
-                    </div>
-                    <div class="item">
-                        <label for="domain">Project Domain (Eg: ML,AI,DL)</label>
-                        <input class="input-text" id="domain" type="text" name="project_domain" value="{{ team.project_domain }}" />
+    </header>
+    <div class="d-flex align-items">
+        <div class="row">
+            <div class="col-md-15 m-5">
+                <div class="card text-center sidebar">
+                    <div class="card-body">
+                        <img src="./Image/profile.png" alt="Profile Pic" class="round-circle" width="150">
+                        <div class="mt-3">
+                            <h3>{{ team.teamID }}</h3>
+                            <p>{{ team.guide }}</p>
+                            <p>{{ team.guide_email }}</p>
+                        </div>
                     </div>
                 </div>
-                <div class="item">
-                  <label for="description">Project Description</label>
-                  <textarea class="input-text" id="description" type="text" name="project_description" >{{ team.project_description }}</textarea>
-                </div>
-                <div class="item">
-                  <div class="name-item">
-                    <div>
-                      <label for="teammembers">Number Of Team Members</label>
-                      <input class="input-text" type="number" name="no_of_members" placeholder="No of Members" value="{{ team.no_of_members }}" disabled/>
-                    </div>
-                  </div>
-                </div>  
-                  <div class="item">
-                    <div class="name-item">
-                    </div>
-                  </div>
-              </fieldset>
-              </br>
-             <div class="team-member">
-                <div class="team" id="team-1">
-                    <fieldset class="team-form" >
-                        <legend>Team Member 1</legend>
-                        <div class="item">
-                        <label for="name">Name</label>
-                        <div class="name-item">
-                        <input id="name" type="text" name="student_1_name" placeholder="Full Name" value="{{ team.student_1_name }}" disabled/>
-                        <!-- <input id="name" type="text" name="last_name" placeholder="Last" value="Something" disabled/> -->
-                        </div>
-                        </div>
-                        <div class="item">
-                        <label for="regno">Register Number</label>
-                        <input id="regno" type="text" name="reg_no_1" placeholder="Register Number" value="{{ team.reg_no_1 }}" disabled/>
-                        </div>
-                        <div class="item">
-                        <label for="email">Email</label>
-                        <input id="email" type="email" name="student_1_email" placeholder="Email Id" value="{{ team.student_1_email }}" disabled/>
-                        </div>
-                        <div class="item">
-                        <label for="phno">Phone Number</label>
-                        <input id="phno" type="text" name="student_1_no" placeholder="Phone Number" value="{{ team.student_1_no }}"  />
-                        </div>
-                    </fieldset>
-                </div>
-                {% if team.no_of_members == '2' %}
-                  <div class="team" id="team-2">
-                      <fieldset class="team-form" >
-                          <legend>Team Member 2</legend>
-                          <div class="item">
-                          <label for="name">Name</label>
-                          <div class="name-item">
-                          <input id="name" type="text" name="student_2_name" placeholder="First" value="{{ team.student_2_name }}"  disabled/>
-                          <!-- <input id="name" type="text" name="last_name_2" placeholder="Last" value="Something" disabled /> -->
-                          </div>
-                          </div>
-                          <div class="item">
-                          <label for="regno">Register Number</label>
-                          <input id="regno" type="text" name="reg_no_2" placeholder="Register Number" value="{{ team.reg_no_2 }}" disabled/>
-                          </div>
-                          <div class="item">
-                          <label for="email">Email</label>
-                          <input id="email" type="email" name="student_2_email" placeholder="Email Id" value="{{ team.student_2_email }}" disabled/>
-                          </div>
-                          <div class="item">
-                          <label for="phno">Phone Number</label>
-                          <input id="phno" type="text" name="student_2_no" placeholder="Phone Number" value="{{ team.student_2_no }}"  />
-                          </div>
-                      </fieldset>
-                  </div>
-                {% endif %}
             </div>
-            <fieldset class="guide">
-              <legend>Guide Details</legend>
-              <div class="btn-block">
-                <div class="project">
-                  <div class="item-guide">
-                      <label for="name">Guide Name </label>
-                      <input class="input-text" id="name" type="text" name="guide_name" value="{{ team.guide }}" disabled/>
-                  </div>
-                  <div class="item-guide">
-                      <label for="email">Guide Email Id</label>
-                      <input class="input-text" id="email" type="email" name="guide_email" placeholder="Guide Email Id" value="{{ team.guide_email }}" disabled/>
-                  </div>
-              </div>  
-              </div>
-         
-          </fieldset>
-                    <fieldset>
-                    <div class="btn-block">
-                    <button onclick="myFunction()" type="submit">Next</button>
-                    </div>
-                </fieldset>
-            </form>
-            </div>
-            <script type = "text/javascript" >  
-              function preventBack() { window.history.forward(); }  
-              setTimeout("preventBack()", 0);  
-              window.onunload = function () { null };  
-          </script>
+        </div>
         
-    </body> 
-</html>
+        <div class="col-md-8 mt-5" id="ab">
+            <div class="card mb-3 content">
+                <!-- <h1 class="m-3 pt-3">About</h1> -->
+                <div class="card-body">
+                    <div class="d-flex align-items">
+                        <div class="col-md-2">
+                            <h5>Project Title</h5>
+                        </div>
+                        <div class="col-md-10 text-secondary">
+                            <input type="text" class="form-control editField" value="{{ team.project_name }}" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex align-items">
+                        <div class="col-md-2">
+                            <h5>Project Domain</h5>
+                        </div>
+                        <div class="col-md-10 text-secondary">
+                            <input type="text" class="form-control editField" value="{{ team.project_domain }}" readonly>
+                        </div>
+                    </div>
+                    <!-- <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5>Phone</h5>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <input type="text" class="form-control editField" value="Phone" readonly>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5>Mobile</h5>
+                        </div>
+                        <div class="col-md-9 text-secondary">
+                            <input type="text" class="form-control editField" value="Mobile" readonly>
+                        </div>
+                    </div> -->
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Project Description</h5>
+                        </div>
+                        <div class="col-md-30 text-secondary">
+                            <textarea type="text" class="form-control editField" rows="4" cols="1000" id="tx" readonly>
+                                {{ team.project_description }}
+                            </textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <a class="btn btn-danger editBtn">Edit Off</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="d-flex align-items">
+
+        <div class="row">
+            <div class="col-md-30" id="web">
+                <div class="card text-center sidebar">
+                    <div class="card-body">
+                        <h4>Student 1</h4>
+                        <br>
+                        <div class="d-flex align-items">
+                            <div class="col-md-2">
+                                <h5>Full Name</h5>
+                            </div>
+                            <div class="col-md-8 text-secondary">
+                                <!-- <input type="text" class="form-control editField" value="Full Name" readonly> -->
+                               {{ team.student_1_name }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex align-items">
+                            <div class="col-md-2">
+                                <h5>Email</h5>
+                            </div>
+                            <div class="col-md-8 text-secondary">
+                                <!-- <input type="text" class="form-control editField" value="Email" readonly> -->
+                                {{ team.student_1_email }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex align-items">
+                            <div class="col-md-2">
+                                <h5>Reg No</h5>
+                            </div>
+                            <div class="col-md-8 text-secondary">
+                                <!-- <input type="text" class="form-control editField" value="Registration Number" readonly> -->
+                                {{ team.reg_no_1 }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="d-flex align-items">
+                            <div class="col-md-2">
+                                <h5>Mobile</h5>
+                            </div>
+                            <div class="col-md-8 text-secondary">
+                                <!-- <input type="text" class="form-control editField" value="Mobile" readonly> -->
+                                {{ team.student_1_no }}
+                            </div>
+                        </div>
+                        <!-- <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Address</h5>
+                            </div>
+                            <div class="col-md-9 text-secondary">
+                                <input type="text" class="form-control editField" value="Address" readonly>
+                            </div>
+                        </div> -->
+                        <!-- <hr> -->
+                        <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STUDENT 2 DETAILS STARTS -->
+        {% if team.no_of_members == '2' %}
+            <div class="row">
+                <div class="col-md-15" id="web1">
+                    <div class="card text-center sidebar">
+                        <div class="card-body">
+                            <h4>Student 2</h4>
+                            <br>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Full Name</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Full Name" readonly> -->
+                                    {{ team.student_2_name }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Email</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Email" readonly> -->
+                                    {{ team.student_2_email }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Reg No</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Registration Number" readonly> -->
+                                    {{ team.reg_no_2 }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Mobile</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Mobile" readonly> -->
+                                    {{ team.student_2_no }}
+                                </div>
+                            </div>
+                            <!-- <hr>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h5>Address</h5>
+                                </div>
+                                <div class="col-md-9 text-secondary">
+                                    <input type="text" class="form-control editField" value="Address" readonly>
+                                </div>
+                            </div> -->
+                            <!-- <hr> -->
+                            <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-md-15" id="web1">
+                    <div class="card text-center sidebar">
+                        <div class="card-body">
+                            <h4>Student 2</h4>
+                            <br>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Full Name</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Full Name" readonly> -->
+                                    N/A
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Email</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Email" readonly> -->
+                                    N/A
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Reg No</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Registration Number" readonly> -->
+                                    N/A
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Mobile</h5>
+                                </div>
+                                <div class="col-md-8 text-secondary">
+                                    <!-- <input type="text" class="form-control editField" value="Mobile" readonly> -->
+                                    N/A
+                                </div>
+                            </div>
+                            <!-- <hr>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h5>Address</h5>
+                                </div>
+                                <div class="col-md-9 text-secondary">
+                                    <input type="text" class="form-control editField" value="Address" readonly>
+                                </div>
+                            </div> -->
+                            <!-- <hr> -->
+                            <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %}
+
+        <!-- <div class="row">
+            <div class="col-md-15" id="web2">
+                <div class="card text-center sidebar">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Phone</h5>
+                            </div>
+                            <div class="col-md-9 text-secondary">
+                                (239)816-9029
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Mobile</h5>
+                            </div>
+                            <div class="col-md-9 text-secondary">
+                                (320)380-4539
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Address</h5>
+                            </div>
+                            <div class="col-md-9 text-secondary">
+                                Bay Area, San Francisco, CA
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+    <br>
+    <br>
+
+        <!-- <div class="card mb-2 content">
+            <h1 class="m-3">Recent Projects</h1>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-mb-3">
+                        <h5>Project Name</h5>
+                    </div>
+                    <div clas="col-mb-9 text-secondary">
+                        Project Description
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <script src="https://www.tutorialspoint.com/jquery/jquery-3.6.0.js"></script>
+        <!-- <script>
+            $(document).ready(function () {
+             $('.editBtn').click(function () {
+                 if ($('.editField').is('[readonly]')) { //checks if it is already on readonly mode
+                     $('.editField').prop('readonly', false);//turns the readonly off
+                     $('.editBtn').html('Edit On'); //Changes the text of the button
+                     $('.editBtn').css("background", "green"); //changes the background of the button
+                     $('.editBtn').css("border", "green"); //changes the border of the button
+                 } else { //else we do other things
+                     $('.editField').prop('readonly', true);
+                     $('.editBtn').html('Edit Off');
+                     $('.editBtn').css("background", "red");
+                 }
+             });
+         
+         });
+         </script> -->
+</body>
+</html>

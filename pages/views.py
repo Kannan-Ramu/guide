@@ -321,9 +321,6 @@ def logout(request):
 def project_details_1(request):
     guides = Guide.objects.order_by('serial_no')
     curr_user = request.user
-    if Temp_Team.objects.filter(student_1_email=curr_user.email).exists():
-        obj = Temp_Team.objects.filter(student_1_email=curr_user.email).get()
-        obj.delete()
     if Team.objects.filter(teamID=curr_user.username).exists():
         is_team = Team.objects.filter(teamID=curr_user.username).get()
         guide_inst = Guide.objects.filter(serial_no=is_team.guide)
@@ -356,14 +353,26 @@ def project_details_1(request):
         user = User.objects.get(username=curr_user.username)
         print("TYPE OF user.id: ", type(user.id))
 
+        if Temp_Team.objects.filter(student_1_email=curr_user.email).exists():
+            obj = Temp_Team.objects.filter(
+                student_1_email=curr_user.email).get()
+            obj.delete()
+
         if Temp_Team.objects.filter(reg_no_1=reg_no_1).exists():
             messages.error(
                 request, 'The Register Number already exists in another team.')
             return redirect('project-details-1')
 
-        temp_team = Temp_Team.objects.create(project_name=project_name, project_domain=project_domain, project_description=project_description,
-                                             no_of_members='1', reg_no_1=reg_no_1, student_1_name=student_1_name, student_1_email=student_1_email, student_1_no=student_1_no)
-
+        temp_team = Temp_Team.objects.create(
+            project_name=project_name,
+            project_domain=project_domain,
+            project_description=project_description,
+            no_of_members='1', reg_no_1=reg_no_1,
+            student_1_name=student_1_name,
+            student_1_email=student_1_email,
+            student_1_no=student_1_no
+        )
+        print('temp_team: ', temp_team.project_name)
         temp_team.save()
 
         context = {
@@ -384,11 +393,6 @@ def project_details_2(request):
     guides = Guide.objects.order_by('serial_no')
     student_2_email = Otp_Two.objects.filter(temp_email=curr_user.email).get()
 
-    if Temp_Team.objects.filter(student_1_email=curr_user.email).exists():
-        if Temp_Team.objects.filter(student_2_email=student_2_email.user_email).exists():
-            obj = Temp_Team.objects.filter(
-                student_1_email=curr_user.email).get()
-            obj.delete()
     if Team.objects.filter(teamID=curr_user.username).exists():
         is_team = Team.objects.filter(teamID=curr_user.username).get()
         is_team.delete()
@@ -449,6 +453,12 @@ def project_details_2(request):
             messages.error(
                 request, '2nd Phone Number already exists in another team.')
             return redirect('project-details-2')
+
+        if Temp_Team.objects.filter(student_1_email=curr_user.email).exists():
+            if Temp_Team.objects.filter(student_1_email=user.email).exists():
+                obj = Temp_Team.objects.filter(
+                    student_1_email=curr_user.email).get()
+                obj.delete()
 
         temp_team = Temp_Team.objects.create(project_name=project_name, project_domain=project_domain, project_description=project_description, no_of_members='2', reg_no_1=reg_no_1,
                                              student_1_name=student_1_name, student_1_email=student_1_email, student_1_no=student_1_no, reg_no_2=reg_no_2,  student_2_name=student_2_name, student_2_email=student_2_email.user_email, student_2_no=student_2_no)
@@ -683,7 +693,7 @@ def guide_selected(request, id):
         return redirect('upload')
         # return render(request, 'submitted.html')
     context = {
-        # 'guide': guide_inst,
+        'guide': guide_inst,
         'team': temp_team,
         'id': id,
         'user': user,
@@ -852,29 +862,16 @@ def profile(request):
         project_name = request.POST['project_name']
         project_domain = request.POST['project_domain']
         project_description = request.POST['project_description']
-        student_1_name = request.POST['student_1_name']
-        reg_no_1 = request.POST['reg_no_1']
-        student_1_email = request.POST['student_1_email']
-        student_1_no = request.POST['student_1_no']
         student_1_no = request.POST['student_1_no']
 
         if team.no_of_members == '2':
-            student_2_name = request.POST['student_2_name']
-            reg_no_2 = request.POST['reg_no_2']
-            student_2_email = request.POST['student_2_email']
             student_2_no = request.POST['student_2_no']
 
             team = Team.objects.update(
                 project_name=project_name,
                 project_domain=project_domain,
                 project_description=project_description,
-                student_1_name=student_1_name,
-                reg_no_1=reg_no_1,
-                student_1_email=student_1_email,
                 student_1_no=student_1_no,
-                student_2_name=student_2_name,
-                reg_no_2=reg_no_2,
-                student_2_email=student_2_email,
                 student_2_no=student_2_no,
             )
         else:
@@ -882,9 +879,6 @@ def profile(request):
                 project_name=project_name,
                 project_domain=project_domain,
                 project_description=project_description,
-                student_1_name=student_1_name,
-                reg_no_1=reg_no_1,
-                student_1_email=student_1_email,
                 student_1_no=student_1_no,
             )
 

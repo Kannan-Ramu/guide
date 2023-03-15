@@ -2,6 +2,8 @@
 from .choices import no_members_choices
 from django.db import models
 from cloudinary.models import CloudinaryField
+from storages.backends.s3boto3 import S3Boto3Storage
+from .custom_storage import DocStorage
 
 # Create your models here.
 
@@ -60,11 +62,12 @@ class Team(models.Model):
     student_2_email = models.CharField(max_length=100, blank=True, null=True)
     student_2_no = models.BigIntegerField(blank=True, null=True)
 
-    document = models.FileField(upload_to=user_directory_path)
-    ppt = models.FileField(upload_to=user_directory_path,
+    document = models.FileField(storage=DocStorage,
+                                upload_to=user_directory_path, null=True, blank=True)
+    ppt = models.FileField(storage=DocStorage, upload_to=user_directory_path,
                            null=True, blank=True)
-    rs_paper = models.FileField(
-        upload_to=user_directory_path, null=True, blank=True)
+    rs_paper = models.FileField(storage=DocStorage,
+                                upload_to=user_directory_path, null=True, blank=True)
 
     guide = models.CharField(
         max_length=100)

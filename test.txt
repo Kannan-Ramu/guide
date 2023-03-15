@@ -14,3 +14,16 @@ stopasgroup=true
 
 
 web: gunicorn guide_project.wsgi --log-file -
+
+after selecting no of members go to project-details-1 or project-details-2
+
+then guide.html page which displays the guide list
+
+guide selected and goto guide-selected/<id>
+
+then go to confirmation page depending on the team members
+
+
+project-details-1/2 creates Temp_Team obj
+
+confirmation.html (for 1 and 2) creates Team obj

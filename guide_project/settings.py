@@ -124,23 +124,23 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 #         'PORT': '5432',
 #     }
 # }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'GUIDE-TEST',
-#         'USER': 'techboizs',
-#         'PASSWORD': 'AAd!tyAA$ravi',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'GUIDE-TEST',
+        'USER': 'techboizs',
+        'PASSWORD': 'AAd!tyAA$ravi',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
 # Production DB to be used for railway
 
-DATABASES = {
-    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
-}
+# DATABASES = {
+#     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -206,7 +206,7 @@ cloudinary.config(
 )
 
 
-FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Email Configuration
 EMAIL_HOST = 'smtp.gmail.com'
@@ -231,6 +231,6 @@ LOGIN_URL = 'login'
 
 
 # AWS S3 configs
-FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_STORAGE_BUCKET_NAME = 'django-guide-project'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS_STORAGE_BUCKET_NAME = 'django-guide-project'
 AWS_S3_REGION_NAME = 'ap-south-1'

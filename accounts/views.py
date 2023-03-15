@@ -146,11 +146,13 @@ def login(request):
                 guide = Guide.objects.filter(email=user_name).get()
                 auth.login(request, user)
                 return render(request, 'dashboard/guide_profile.html')
-            if Team.objects.filter(teamID=user.username).exists():
-                auth.login(request, user)
-                team = Team.objects.filter(teamID=user.username).get()
-                return redirect('profile')
             if user is not None:
+                if Team.objects.filter(teamID=user.username).exists():
+                    print('INSIDE profile page if')
+                    auth.login(request, user)
+                    team = Team.objects.filter(teamID=user.username).get()
+                    print('team is: ', team.teamID)
+                    return redirect('profile')
                 auth.login(request, user)
                 user = request.user
 
@@ -158,15 +160,27 @@ def login(request):
                     team = Temp_Team.objects.filter(
                         student_1_email=user.email).get()
 
-                    if Guide.objects.filter(serial_no=team.guide).exists():
+                    if Guide.objects.filter(email=team.guide_email).exists():
                         guide_inst = Guide.objects.filter(
-                            serial_no=team.guide).get()
+                            email=team.guide_email).get()
                         context = {
                             'team': team,
                             'user': user,
                             'guide': guide_inst,
                             'id': guide_inst.serial_no
                         }
+                        if team.no_of_members == '2':
+                            print('CONFIRM 2')
+                            return render(
+                                request,
+                                'confirmation_2/confirmation.html', context
+                            )
+                        else:
+                            print('CONFIRM 1')
+                            return render(
+                                request,
+                                'confirmation_1/confirmation.html', context
+                            )
                     else:
                         team.delete()
                         return render(request, 'no_of_stud/no_of_stud.html')

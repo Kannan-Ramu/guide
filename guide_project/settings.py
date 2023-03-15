@@ -114,33 +114,33 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Development database
+'''DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'GUIDE-SELECTION',
+        'USER': 'techboizs',
+        'PASSWORD': 'AAd!tyAA$ravi',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}'''
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'GUIDE-SELECTION',
+#         'NAME': 'GUIDE-TEST',
 #         'USER': 'techboizs',
 #         'PASSWORD': 'AAd!tyAA$ravi',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'GUIDE-TEST',
-        'USER': 'techboizs',
-        'PASSWORD': 'AAd!tyAA$ravi',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
 
 
 # Production DB to be used for railway
 
-# DATABASES = {
-#     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
-# }
+DATABASES = {
+    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -219,15 +219,15 @@ LOGIN_URL = 'login'
 
 # Email Verify Config
 
-# HTML_MESSAGE_TEMPLATE = "verify/acc_active_email.html"
-# VERIFICATION_SUCCESS_TEMPLATE = "verify/success.html"
-# VERIFICATION_FAILED_TEMPLATE = "verify/failed.html"
-# REQUEST_NEW_EMAIL_TEMPLATE = "verify/req_new_email.html"
-# LINK_EXPIRED_TEMPLATE = 'verify/link_expired.html'
-# NEW_EMAIL_SENT_TEMPLATE = 'verify/acc_act_email_sent.html'
-# MAX_RETRIES = 10
-# EXPIRE_AFTER = "1h"
-# SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
+HTML_MESSAGE_TEMPLATE = "verify/acc_active_email.html"
+VERIFICATION_SUCCESS_TEMPLATE = "verify/success.html"
+VERIFICATION_FAILED_TEMPLATE = "verify/failed.html"
+REQUEST_NEW_EMAIL_TEMPLATE = "verify/req_new_email.html"
+LINK_EXPIRED_TEMPLATE = 'verify/link_expired.html'
+NEW_EMAIL_SENT_TEMPLATE = 'verify/acc_act_email_sent.html'
+MAX_RETRIES = 10
+EXPIRE_AFTER = "1h"
+SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
 
 
 # AWS S3 configs

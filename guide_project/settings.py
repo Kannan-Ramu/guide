@@ -31,8 +31,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-bn!gb+_&96p0e7j+0@in%!o5xxl23m$907%3sgyqlekw&85sgv'
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# DEBUG = os.environ.get('DEBUG')
-DEBUG = False
+DEBUG = os.environ.get('DEBUG')
+# DEBUG = False
 
 DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
 
@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Development database
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'GUIDE-SELECTION',
@@ -124,7 +124,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}'''
+}
 '''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -139,9 +139,9 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 
 # Production DB to be used for railway
 
-DATABASES = {
+'''DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
-}
+}'''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

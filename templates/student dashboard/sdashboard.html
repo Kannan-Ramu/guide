@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/sdashboard.css' %}">
+</head>
+<body>
+    <header>
+    <div class="section1">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <a href="#">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <!--<div class="profile-menu">
+            <div class="profile-details">
+                <img src="#" alt="profile_picture">
+                    <div class="name">Anamika Roy</div>
+            </div>
+        </div>-->
+    </div>
+    </header>    
+    <div class="wrapper">
+      <div class="section">
+        <div class="sidebar">
+           <div class="profile">
+              <img src="#" alt="profile_picture">
+              <h3>{{ team.teamID }}</h3>
+              <h6>{{ team.student_1_name }} & {{ team.student_2_name }}</h6>
+            </div>
+            <ul>
+                <li>
+                    <a href="{% url 'home' %}" class="active">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="item">Home</span>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-desktop"></i></span>
+                        <span class="item">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-user-shield"></i></span>
+                        <span class="item">Profile</span>
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-user-friends"></i></span>
+                        <span class="item">Guide Selection</span>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                        <span class="item">Document Upload</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-database"></i></span>
+                        <span class="item">Comments</span>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <span class="item"> Latest Events</span>
+                    </a>
+                </li> -->
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'logout' %}">
+                            <span id="blue" class="icon">
+                                <i class="fas fa-cog"></i>
+                            </span>
+                            <span class="item">Logout</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'login' %}">
+                            <span id="blue" class="icon">
+                                <i class="fas fa-cog"></i>
+                            </span>
+                            <span class="item">Login</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="box">
+            <div class="left-container">
+                <div class="one">
+                        <div class="profile-status"> 
+                            <h2 class="titular">PROFILE STATUS</h2>
+                            <!-- Red and green later -->
+                            <a class="subscribe button" href="#21">APPROVED</a>
+                        </div>
+                </div>
+                <div class="four">
+                    <div class="calendar-day block"> 
+                        <div class="arrow-btn-container">
+                            <a class="arrow-btn left" href="#200"><span class="icon fontawesome-angle-left"></span></a>
+                            <h2 class="titular">WEDNESDAY</h2>
+                            <a class="arrow-btn right" href="#201"><span class="icon fontawesome-angle-right"></span></a>
+                        </div>
+                            <p class="the-day">26</p>
+                            <a class="add-event button1" href="#27">ADD EVENT</a>
+                    </div>
+                </div>
+            </div>
+            <div class="center-container">
+                <div class="two" href="#">
+                    <div class="profile block"> 
+                        <a class="add-button" href="#28"><span class="icon entypo-plus scnd-font-color"></span></a>
+                        <div class="profile-picture ">
+                            <img width="150px" alt="profile pic" src="" >
+                        </div>
+                        <h1 class="user-name">CSE-003</CSE-003></h1>
+                        <h1 class="user-name">Jagadeesh & Mohnish Devaraj</h1>
+                        <div class="profile-description">
+                            <p class="project-title">Project Management and Maintenance </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="five">
+                    <div class="profile-status"> 
+                        <h2 class="titular">GUIDE SUGGESTIONS</h2>
+                        <a class="subscribe button" href="#21">READ COMMENTS</a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="three">
+                    <div class="account block"> 
+                        <h2 class="titular">GUIDE & PROJECT STATUS</h2>
+                        {% if team.is_approved %}
+                            <a class="sign-in button bg-green" href="#22">
+                                GUIDE APPROVAL
+                            </a>
+                        {% else %}
+                            <a class="sign-in button bg-green" href="#22">
+                                GUIDE APPROVAL
+                            </a>
+                        {% endif %}
+                        <a class="sign-in button" href="#22">RESEARCH PAPER</a>
+                        <a class="sign-in button" href="#22">DOCUMENTATION</a>
+                        <a class="sign-in button" href="#22">PPT </a>
+                    </div>
+                </div>
+                <div class="six">
+                    <div class="profile-status"> 
+                        <h2 class="titular">UPDATES AND LATEST NEWS</h2>
+                        <a class="subscribe button" href="#21">CHECK FOR UPDATES</a>
+                    </div>
+                </div>
+            </div>
+        </div>      
+        </div>
+    </div>  
+
+  <script>
+     var hamburger = document.querySelector(".hamburger");
+    hamburger.addEventListener("click", function(){
+        document.querySelector("body").classList.toggle("active");
+    })
+  </script>
+</body>
+</html>

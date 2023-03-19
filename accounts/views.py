@@ -150,7 +150,7 @@ def login(request):
             if Guide.objects.filter(email=user_name).exists():
                 guide = Guide.objects.filter(email=user_name).get()
                 auth.login(request, user)
-                return redirect('guide-dashboard')
+                return redirect('guide-profile')
             if user is not None:
                 if Team.objects.filter(teamID=user.username).exists():
                     print('INSIDE profile page if')

@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     # custom apps
     'pages',
     'dashboard',
+    'comments',
     # 3rd party apps
     'cloudinary',
     'cloudinary_storage',
@@ -139,9 +140,16 @@ DATABASES = {
 
 # Production DB to be used for railway
 
-'''DATABASES = {
+DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
-}'''
+}
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgresql://hbp:AAd!tyAA$ravi@localhost:5432/Portfolio',
+#         conn_max_age=600
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

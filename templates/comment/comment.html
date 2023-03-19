@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./comment.css">
+    <link rel="stylesheet" href="{% static 'css/comment.css' %}">
 </head>
 <body>
     <header>
@@ -23,14 +24,19 @@
       <div class="section">
         <div class="sidebar">
            <div class="profile">
-              <img src="#" alt="profile_picture">
-              <h3>CSE-003</h3>
-              <h6>JAGADEESH N & MOHNISH DEVARAJ</h6>
+              <img src="{{ guide.myImage.url }}" alt="profile_picture">
+              <h3>{{ team.teamID }}</h3>
+              <h6>
+                {{ team.student_1_name }} 
+                {% if team.no_of_members == '2' %} 
+                    & {{ team.student_2_name }} 
+                {% endif %}
+            </h6>
             </div>
             <ul>
                 <!-- Side bar details -->
                 <li>
-                    <a href="#" class="active">
+                    <a href="{% url 'home' %}" class="active">
                         <span class="icon"><i class="fas fa-home"></i></span>
                         <span class="item">Home</span>
                     </a>
@@ -73,49 +79,43 @@
             <!-- Comment class not to be visible to students -->
             <div class="comment"> 
                 <!-- To send backend -->
-                <form action="#" method="POST">
-                    <textarea 
-                        name="body" placeholder="Enter your comments" class="comment1"></textarea>
+                <form action="{% url 'comments' team.teamID %}" method="POST">
+                    {% csrf_token %}
+                    {% if is_guide %}
+                        <textarea 
+                        name="body" placeholder=" Enter your comments" class="comment1" ></textarea>
+                        <button type="submit" class="btn">Post</button>
+                    {% else %}
+                        <textarea 
+                        name="body" placeholder="Enter your comments" class="comment1" disabled></textarea>
+                        <button type="submit" class="btn" disabled>Post</button>
+                    {% endif %}
                 
-                    <button type="submit" class="btn">Post</button>
                 </form>
             </div>
             <!-- Remove from this -->
-            <div class="comment-box">
-                <div class="header">
-                <div class="user-info">
-                    <!-- Staff img -->
-                    <img src="#" alt="Profile photo" class="profile-photo"/>
-                    <h3 class="user-name">Albert J Mayan</h3>
-                </div>
-                </div>
-                <div class="content">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit mollitia et officiis, omnis a eveniet harum quidem esse nulla nobis laboriosam minus quod enim natus deleniti reiciendis similique impedit amet. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit mollitia et officiis, omnis a eveniet harum quidem esse nulla nobis laboriosam minus quod enim natus deleniti reiciendis similique impedit amet.
-                    </p>
-                </div>
-                <p class="time"> 15/03/2023 10:23 AM </p>
-                <footer></footer>
-            </div>
+        
             <!-- Remove till here -->
             
             <!-- For loop start -->
-            <div class="comment-box">
-                <div class="header">
-                    <div class="user-info">
-                        <!-- Staff Image -->
-                        <img src="#" alt="Profile photo" class="profile-photo"/>
-                        <h3 class="user-name">Albert J Mayan</h3>
+            {% for comment in comments %}
+                <div class="comment-box">
+                    <div class="header">
+                        <div class="user-info">
+                            <!-- Staff Image -->
+                            <img src="{{ guide.myImage.url }}" alt="Profile photo" class="profile-photo"/>
+                            <h3 class="user-name">{{ comment.guide }}</h3>
+                        </div>
                     </div>
+                    <div class="content">
+                        <p>
+                            {{ comment.body }}
+                        </p>
+                    </div>
+                    <p class="time"> {{ comment.published_date }} </p>
+                    <footer></footer>
                 </div>
-                <div class="content">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit mollitia et officiis, omnis a eveniet harum quidem esse nulla nobis laboriosam minus quod enim natus deleniti reiciendis similique impedit amet. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit mollitia et officiis, omnis a eveniet harum quidem esse nulla nobis laboriosam minus quod enim natus deleniti reiciendis similique impedit amet.
-                    </p>
-                </div>
-                <p class="time"> 15/03/2023 10:23 AM </p>
-                <footer></footer>
-            </div>
+            {% endfor %}
             <!-- For loop end -->
         </div>
         </div>

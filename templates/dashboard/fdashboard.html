@@ -49,17 +49,17 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{% url 'team-profile' team.teamID %}">
                         <span class="icon"><i class="fas fa-user-shield"></i></span>
                         <span class="item">Profile</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon"><i class="fas fa-user-friends"></i></span>
                         <span class="item">Guide Selection</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="#">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
@@ -93,7 +93,12 @@
                             <h2 class="titular">PROFILE STATUS</h2>
                             <h2 class="titular"> APPROVE PROFILE</h2>
                             <label class="toggler-wrapper style-23">
-                                <input type="checkbox" >
+                                {% if team.profile_approved %}
+                                    <input type="checkbox" class="check" id="approved-profile" checked> 
+                                {% else %}
+                                    <input  type="checkbox" id="approved-profile" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                                {% endif %}
                                 <div class="toggler-slider">
                                   <div class="toggler-knob"></div>
                                 </div>
@@ -114,6 +119,32 @@
                             <p class="the-day">26</p>
                             <a class="add-event button1" href="#27">ADD EVENT</a>
                     </div> -->
+                    <div class="account block"> 
+                        <h2 class="titular1 pt-2">VIEW UPLOADED DOCUMENTS</h2>
+                        {% if team.rs_paper %}
+                            <a class="sign-in button" href="{{ team.rs_paper.url }}" download>
+                                RESEARCH PAPER
+                            </a>
+                        {% else %}
+                            <a class="sign-in button">
+                                RESEARCH PAPER NOT UPLOADED
+                            </a>
+                        {% endif %}
+                        {% if team.document %}
+                            <a class="sign-in button" href="{{ team.document.url }}"download>
+                                DOCUMENTATION
+                            </a>
+                        {% else %}
+                            <a class="sign-in button">
+                                DOCUMENT NOT UPLOADED
+                            </a>
+                        {% endif %}
+                        {% if team.ppt %}
+                            <a class="sign-in button" href="{{ team.ppt.url }}"download>PPT </a>
+                        {% else %}
+                            <a class="sign-in button" >PPT NOT UPLOADED</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div class="center-container">
@@ -135,7 +166,7 @@
                     <div class="profile-status"> 
                         <h2 class="titular">GUIDE SUGGESTIONS</h2>
                         <!-- Redirect to comment page -->
-                        <a class="subscribe button" href="#21">READ COMMENTS</a>
+                        <a class="subscribe button" href="{% url 'comments' team.teamID %}">READ COMMENTS</a>
                     </div>
                 </div>
             </div>
@@ -144,7 +175,6 @@
                     <div class="account block"> 
                         <h2 class="titular">GUIDE & PROJECT STATUS</h2>
                         <p class="names">GUIDE APPROVAL</p>
-                        <a href="{% url 'guide-approval' team.teamID %}">
                             <label class="toggler-wrapper style-23">
                                 <!-- T or F -->
                                 {% if team.guide_approved %}
@@ -157,33 +187,38 @@
                                 <div class="toggler-knob"></div>
                                 </div>
                             </label>
-                        </a>
-                        <!-- <div style="display:inline-block">
-                            <label>Currently working here?</label>
-                            <a href="{% url 'guide-approval' team.teamID %}">
-                              <label class="switch">
-                                <input type="checkbox">
-                                <span class="slider round"></span>
-                              </label>
-                            </a>
-                        </div> -->
                         <p class="names">RESEARCH PAPER</p>
                         <label class="toggler-wrapper style-23">
-                            <input type="checkbox" >
+                            {% if team.rs_paper_approved %}
+                                <input type="checkbox" class="check" id="approved-rs" checked> 
+                            {% else %}
+                                <input  type="checkbox" id="approved-rs" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                            {% endif %}
                             <div class="toggler-slider">
                               <div class="toggler-knob"></div>
                             </div>
                         </label>
                         <p class="names">DOCUMENTATION</p>
                         <label class="toggler-wrapper style-23">
-                            <input type="checkbox" >
+                            {% if team.docs_approved %}
+                                <input type="checkbox" class="check" id="approved-doc" checked> 
+                            {% else %}
+                                <input  type="checkbox" id="approved-doc" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                            {% endif %}
                             <div class="toggler-slider">
                               <div class="toggler-knob"></div>
                             </div>
                         </label>
                         <p class="names">PPT </p>
                         <label class="toggler-wrapper style-23">
-                            <input type="checkbox" >
+                            {% if team.ppt_approved %}
+                                <input type="checkbox" class="check" id="approved-ppt" checked> 
+                            {% else %}
+                                <input  type="checkbox" id="approved-ppt" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                            {% endif %}
                             <div class="toggler-slider">
                               <div class="toggler-knob"></div>
                             </div>
@@ -191,24 +226,29 @@
                     </div>
                 </div>
                 <div class="six">
-                    <div class="profile-status"> 
-                    <h2 class="titular">UPDATES AND LATEST NEWS</h2>
-                    <a class="subscribe button" href="#21">CHECK FOR UPDATES</a>
-                </div></div>
+                    <!-- <div class="profile-status"> 
+                        <h2 class="titular">
+                            UPDATES AND LATEST NEWS
+                        </h2>
+                        <a class="subscribe button" href="#21">
+                            CHECK FOR UPDATES
+                        </a>
+                    </div> -->
+                </div>
             </div>
         </div>      
         </div>
     </div>  
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script> <!-- Import Jquery Here-->
   <script>
-     var hamburger = document.querySelector(".hamburger");
+    var hamburger = document.querySelector(".hamburger");
     hamburger.addEventListener("click", function(){
         document.querySelector("body").classList.toggle("active");
     })
 
     $(document).ready(function() {
         $('#approved-checkbox').change(function() {
-            let guide_url = "{% url 'guide-approval' id=team.teamID %}"
+            let guide_url = "{% url 'guide-approve' id=team.teamID %}"
             if (this.checked)
             {
                 console.log("Guide URL: ",guide_url)
@@ -232,18 +272,109 @@
         });
     }); 
     $(document).ready(function() {
-        $('#re-approved-checkbox').change(function() {
-            let guide_url = "{% url 'guide-approval' id=team.teamID %}"
-            console.log("Guide URL in unchecked box: ",guide_url)
-            $.post(guide_url, {
-                // id: '{{team.teamID}}',
-                guide_approved: !this.checked, 
-                csrfmiddlewaretoken: '{{ csrf_token }}' 
-            });
+        $('#approved-rs').change(function() {
+            let guide_url = "{% url 'rs-paper-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    rs_paper_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    rs_paper_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    $(document).ready(function() {
+        $('#approved-doc').change(function() {
+            let guide_url = "{% url 'docs-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    docs_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    docs_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    $(document).ready(function() {
+        $('#approved-ppt').change(function() {
+            let guide_url = "{% url 'ppt-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    ppt_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    ppt_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    
+    $(document).ready(function() {
+        $('#approved-profile').change(function() {
+            let guide_url = "{% url 'profile-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    profile_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    profile_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
         });
     }); 
 
 
   </script>
+  <script src="{% static 'js/fdashboard.js' %}"></script>
 </body>
 </html>

@@ -1,7 +1,6 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
 from pages.models import Guide, Team
 from django.contrib import messages
 from django.contrib import auth
@@ -45,7 +44,8 @@ def guide_profile(request):
         guide = Guide.objects.filter(email=user.email).get()
         if Team.objects.filter(guide_email=user.email).exists():
             print('INSIDE TEAM IF')
-            teams = Team.objects.filter(guide_email=user.email)
+            teams = Team.objects.filter(
+                guide_email=user.email).order_by('teamID')
             context = {
                 'guide': guide,
                 'teams': teams,
@@ -72,33 +72,88 @@ def team_dashboard(request):
     if not request.user.is_authenticated:
         messages.error(request, "You're not Logged In!")
         return redirect('login')
-    return HttpResponse('<h1>Team Dashboard</h1>')
+    team = Team.objects.filter(teamID=request.user.username).get()
+    context = {
+        'team': team
+    }
+    return render(request, 'dashboard/sdashboard.html', context)
 
+# For profile.html
+
+
+def team_profile(request, id):
+    if request.user.is_authenticated:
+        team = Team.objects.filter(teamID=id).get()
+        context = {
+            'team': team
+        }
+        return render(request, 'dashboard/profile.html', context)
+    else:
+        messages.error(request, "You're not logged In!")
+        return redirect('login')
 
 # All Status approval of the teams by guide
 
-def profile_status(request):
+
+def profile_approve(request, id):
+    if request.method == 'POST':
+        team = Team.objects.get(teamID=id)
+        if request.POST['profile_approved'] == 'false':
+            team.profile_approved = False
+        else:
+            team.profile_approved = True
+        team.save()
+        messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
+        return HttpResponse('Sucess')
     pass
 
 
-def guide_approval(request, id):
+def guide_approve(request, id):
     if request.method == 'POST':
-        print('INSIDE GUIDE APPROVAL()')
         team = Team.objects.get(teamID=id)
         if request.POST['guide_approved'] == 'false':
             team.guide_approved = False
         else:
             team.guide_approved = True
         team.save()
-        print('Team status: ', team.guide_approved)
         messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
         return HttpResponse('Sucess')
         # return redirect(reverse_lazy('dashboard/fdashboard.html'))
 
 
-def rs_paper_approve(request):
+def rs_paper_approve(request, id):
+    if request.method == 'POST':
+        team = Team.objects.get(teamID=id)
+        if request.POST['rs_paper_approved'] == 'false':
+            team.rs_paper_approved = False
+        else:
+            team.rs_paper_approved = True
+        team.save()
+        messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
+        return HttpResponse('Sucess')
     pass
 
 
-def docs_approve(request):
+def docs_approve(request, id):
+    if request.method == 'POST':
+        team = Team.objects.get(teamID=id)
+        if request.POST['docs_approved'] == 'false':
+            team.docs_approved = False
+        else:
+            team.docs_approved = True
+        team.save()
+        messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
+        return HttpResponse('Sucess')
+    pass
+
+
+def ppt_approve(request, id):
+    if request.method == 'POST':
+        team = Team.objects.get(teamID=id)
+        if request.POST['ppt_approved'] == 'false':
+            team.ppt_approved = False
+        else:
+            team.ppt_approved = True
+        team.save()
+        return HttpResponse('Sucess')
     pass

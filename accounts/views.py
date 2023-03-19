@@ -157,7 +157,7 @@ def login(request):
                     auth.login(request, user)
                     team = Team.objects.filter(teamID=user.username).get()
                     print('team is: ', team.teamID)
-                    return redirect('team-profile')
+                    return redirect('team-dashboard')
                 auth.login(request, user)
                 user = request.user
 

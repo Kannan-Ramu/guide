@@ -13,6 +13,11 @@ body{
     background: #f5f6fa;
 }
 
+.titular1{
+    margin-bottom: 40px;
+    margin-top: 10px;
+    font-size: 20px;
+}
 .wrapper .sidebar{
     background: #ffff;
     position: fixed;
@@ -181,11 +186,11 @@ h6{
     
   }
   .sign-in.button {
-    background: #e64c65;
+    background: #11a8ab;
     margin: 10px auto;
 }
     .sign-in.button:hover {
-        background: #cc324b;
+        background: #11a8ab;
     }
     .subscribe.button {
         background: #11a8ab;
@@ -458,7 +463,7 @@ a{
             transform: translateY(2px);
         }
     .sign-in.button{
-        background: #e64c65;
+        background: #11a8ab;
         font-size: 12px;
     }
     .account.block{
@@ -637,7 +642,7 @@ a{
   width: 70px;
   height: 40px;
   cursor: pointer;
-  position: relative;
+  position:relative;
     margin: 10px auto;
 
 }

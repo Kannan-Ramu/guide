@@ -32,7 +32,7 @@
            <div class="profile">
               <img src="#" alt="profile_picture">
               <h3>{{ team.teamID }}</h3>
-              <h6>{{ team.student_1_name }} & {{ team.student_2_name }}</h6>
+              <h6>{{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h6>
             </div>
             <ul>
                 <li>
@@ -41,18 +41,20 @@
                         <span class="item">Home</span>
                     </a>
                 </li>
-                <!-- <li>
+                <!-- Should be visible only to guide -->
+                <li>
                     <a href="#">
                         <span class="icon"><i class="fas fa-desktop"></i></span>
                         <span class="item">Dashboard</span>
                     </a>
                 </li>
+                <!-- Should be visible to all -->
                 <li>
-                    <a href="#">
+                    <a href="{% url 'team-profile' team.teamID %}">
                         <span class="icon"><i class="fas fa-user-shield"></i></span>
                         <span class="item">Profile</span>
                     </a>
-                </li> -->
+                </li>
                 <!-- <li>
                     <a href="#">
                         <span class="icon"><i class="fas fa-user-friends"></i></span>
@@ -60,13 +62,13 @@
                     </a>
                 </li> -->
                 <li>
-                    <a href="#">
+                    <a href="{% url 'upload' %}">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span class="item">Document Upload</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{% url 'comments' team.teamID %}">
                         <span class="icon"><i class="fas fa-database"></i></span>
                         <span class="item">Comments</span>
                     </a>
@@ -104,11 +106,15 @@
                         <div class="profile-status"> 
                             <h2 class="titular">PROFILE STATUS</h2>
                             <!-- Red and green later -->
-                            <a class="subscribe button" href="#21">APPROVED</a>
+                            {% if team.profile_approved %}
+                                <a class="subscribe button">APPROVED CHECK</a>
+                            {% else %}
+                                <a class="bg-red button">NOT APPROVED</a>
+                            {% endif %}
                         </div>
                 </div>
                 <div class="four">
-                    <div class="calendar-day block"> 
+                    <!-- <div class="calendar-day block"> 
                         <div class="arrow-btn-container">
                             <a class="arrow-btn left" href="#200"><span class="icon fontawesome-angle-left"></span></a>
                             <h2 class="titular">WEDNESDAY</h2>
@@ -116,7 +122,7 @@
                         </div>
                             <p class="the-day">26</p>
                             <a class="add-event button1" href="#27">ADD EVENT</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="center-container">
@@ -126,8 +132,8 @@
                         <div class="profile-picture ">
                             <img width="150px" alt="profile pic" src="" >
                         </div>
-                        <h1 class="user-name">CSE-003</CSE-003></h1>
-                        <h1 class="user-name">Jagadeesh & Mohnish Devaraj</h1>
+                        <h1 class="user-name">{{ team.teamID }}</CSE-003></h1>
+                        <h1 class="user-name">{{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
                         <div class="profile-description">
                             <p class="project-title">Project Management and Maintenance </p>
                         </div>
@@ -136,7 +142,7 @@
                 <div class="five">
                     <div class="profile-status"> 
                         <h2 class="titular">GUIDE SUGGESTIONS</h2>
-                        <a class="subscribe button" href="#21">READ COMMENTS</a>
+                        <a class="subscribe button" href="{% url 'comments' team.teamID %}">READ COMMENTS</a>
                     </div>
                 </div>
             </div>
@@ -144,25 +150,37 @@
                 <div class="three">
                     <div class="account block"> 
                         <h2 class="titular">GUIDE & PROJECT STATUS</h2>
-                        {% if team.is_approved %}
-                            <a class="sign-in button bg-green" href="#22">
+                        {% if team.guide_approved %}
+                            <a class="sign-in subscribe button">
                                 GUIDE APPROVAL
                             </a>
                         {% else %}
-                            <a class="sign-in button bg-green" href="#22">
+                            <a class="sign-in button bg-red" >
                                 GUIDE APPROVAL
                             </a>
                         {% endif %}
-                        <a class="sign-in button" href="#22">RESEARCH PAPER</a>
-                        <a class="sign-in button" href="#22">DOCUMENTATION</a>
-                        <a class="sign-in button" href="#22">PPT </a>
+                        {% if team.rs_paper_approved %}
+                            <a class="sign-in subscribe button" >RESEARCH PAPER</a>
+                        {% else %}
+                            <a class="sign-in button bg-red" >RESEARCH PAPER</a>
+                        {% endif %}
+                        {% if team.docs_approved %}
+                            <a class="sign-in subscribe button" >DOCUMENTATION</a>
+                        {% else %}
+                            <a class="sign-in button bg-red" >DOCUMENTATION</a>
+                        {% endif %}
+                        {% if team.ppt_approved %}
+                            <a class="sign-in subscribe button" >PPT</a>
+                        {% else %}
+                            <a class="sign-in button bg-red" >PPT</a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="six">
-                    <div class="profile-status"> 
+                    <!-- <div class="profile-status"> 
                         <h2 class="titular">UPDATES AND LATEST NEWS</h2>
                         <a class="subscribe button" href="#21">CHECK FOR UPDATES</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>      

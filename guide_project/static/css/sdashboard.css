@@ -180,17 +180,22 @@ h6{
     background-color:#6b6b6d1c ;
     
   }
-  .sign-in.button {
+.sign-in.button {
     background: #e64c65;
     margin: 10px auto;
 }
-    .sign-in.button:hover {
-        background: #cc324b;
-    }
-    .subscribe.button {
-        background: #11a8ab;
-        margin-top: 10px;
-    }
+/* .sign-in.button:hover {
+    background: #cc324b;
+} */
+.subscribe.button {
+    background: #11a8ab;
+    margin-top: 10px;
+}
+
+.bg-red {
+    background: #e64c65;
+    margin-top: 10px;
+}
 
 body.active .wrapper .section .one {
     margin-left: 0;
@@ -469,9 +474,9 @@ a{
         background: #11a8ab;
         margin-top: 10px;
     }
-        .subscribe.button:hover {
+        /* .subscribe.button:hover {
             background: #0F9295;
-        }
+        } */
 }    
 @media(min-width:769px) and (max-width:1068px){
     .html{

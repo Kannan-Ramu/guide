@@ -147,8 +147,12 @@
                         <a href="{% url 'guide-approval' team.teamID %}">
                             <label class="toggler-wrapper style-23">
                                 <!-- T or F -->
-                                <input type="checkbox" class="check" id="approved-checkbox" > 
-                                <input type="checkbox" class="not-checked" id="approved-checkbox" > 
+                                {% if team.guide_approved %}
+                                    <input type="checkbox" class="check" id="approved-checkbox" checked> 
+                                {% else %}
+                                    <input  type="checkbox" id="approved-checkbox" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                                {% endif %}
                                 <div class="toggler-slider">
                                 <div class="toggler-knob"></div>
                                 </div>
@@ -205,10 +209,35 @@
     $(document).ready(function() {
         $('#approved-checkbox').change(function() {
             let guide_url = "{% url 'guide-approval' id=team.teamID %}"
-            console.log("Guide URL: ",guide_url)
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    guide_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    guide_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    $(document).ready(function() {
+        $('#re-approved-checkbox').change(function() {
+            let guide_url = "{% url 'guide-approval' id=team.teamID %}"
+            console.log("Guide URL in unchecked box: ",guide_url)
             $.post(guide_url, {
                 // id: '{{team.teamID}}',
-                guide_approved: this.checked, 
+                guide_approved: !this.checked, 
                 csrfmiddlewaretoken: '{{ csrf_token }}' 
             });
         });

@@ -85,7 +85,10 @@ def guide_approval(request, id):
     if request.method == 'POST':
         print('INSIDE GUIDE APPROVAL()')
         team = Team.objects.get(teamID=id)
-        team.guide_approved = True
+        if request.POST['guide_approved'] == 'false':
+            team.guide_approved = False
+        else:
+            team.guide_approved = True
         team.save()
         print('Team status: ', team.guide_approved)
         messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")

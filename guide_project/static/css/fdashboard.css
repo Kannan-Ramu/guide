@@ -646,6 +646,9 @@ a{
   display: none;
 }
 
+.toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+  background-color: #44cc66;
+}
 .toggler-wrapper .check:checked+.toggler-slider {
   background-color: #44cc66;
 }

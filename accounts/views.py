@@ -48,8 +48,8 @@ def guides_register(request):
                 return redirect('login')
         else:
             messages.error(
-                request, "Your details is not registered as guide! Kindly register yourself now!")
-            return redirect('guides')
+                request, "Your details is not registered as guide! Kindly register meet PRIDE CELL incharge!")
+            return redirect('login')
         # else:
         #     messages.warning(request, field.errors)
         #     for field in form:

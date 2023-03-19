@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Development database
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'GUIDE-SELECTION',
@@ -124,7 +124,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}
+}'''
 '''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -139,9 +139,9 @@ DATABASES = {
 
 # Production DB to be used for railway
 
-'''DATABASES = {
+DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
-}'''
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

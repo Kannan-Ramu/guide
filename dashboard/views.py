@@ -19,7 +19,7 @@ def guide_dashboard(request, teamID):
         team = Team.objects.filter(teamID=teamID)
         guide = Guide.objects.filter(email=user.email).get()
 
-        print('Team is: ', team.teamID)
+        # print('Team is: ', team.teamID)
 
         context = {
             'team': team,

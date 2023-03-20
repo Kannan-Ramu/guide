@@ -69,6 +69,12 @@ class Team(models.Model):
     rs_paper = models.FileField(storage=DocStorage,
                                 upload_to=user_directory_path, null=True, blank=True)
 
+    profile_approved = models.BooleanField(default=False)
+    guide_approved = models.BooleanField(default=False)
+    rs_paper_approved = models.BooleanField(default=False)
+    docs_approved = models.BooleanField(default=False)
+    ppt_approved = models.BooleanField(default=False)
+
     guide = models.CharField(
         max_length=100)
 

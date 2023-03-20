@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('accounts/', include('accounts.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('comments/', include('comments.urls')),
     path('verification/', include('verify_email.urls')),
 ]
 

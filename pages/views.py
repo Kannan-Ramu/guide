@@ -57,7 +57,7 @@ def guides(request):
         return render(request, 'adminregister/submitted.html')
     else:
 
-        return render(request, 'aform.html')
+        return render(request, 'adminregister/aform.html')
 
 
 def submitted(request):

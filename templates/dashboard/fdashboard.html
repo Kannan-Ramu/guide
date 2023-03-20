@@ -1,0 +1,369 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/fdashboard.css' %}">
+</head>
+<body>
+    <header>
+    <div class="section1">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <a href="#">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <!--<div class="profile-menu">
+            <div class="profile-details">
+                <img src="#" alt="profile_picture">
+                    <div class="name">Anamika Roy</div>
+            </div>
+        </div>-->
+    </div>
+    </header>    
+    <div class="wrapper">
+      <div class="section">
+        <div class="sidebar">
+           <div class="profile">
+              <img src="#" alt="profile_picture">
+              <h3>{{ team.teamID }}</h3>
+              <h6>{{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h6>
+            </div>
+            <ul>
+                <!-- Side bar link to be changed -->
+                <li>
+                    <a href="{% url 'home' %}" class="active">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="item">Home</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'team-profile' team.teamID %}">
+                        <span class="icon"><i class="fas fa-user-shield"></i></span>
+                        <span class="item">Profile</span>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-user-friends"></i></span>
+                        <span class="item">Guide Selection</span>
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-database"></i></span>
+                        <span class="item">Review</span>
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <span class="item"> Latest Events</span>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <span id="blue" class="icon"><i class="fas fa-cog"></i></span>
+                        <span class="item" href="#">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="box">
+            <div class="left-container">
+                <div class="one">
+                        <div class="profile-status"> 
+                            <h2 class="titular">PROFILE STATUS</h2>
+                            <h2 class="titular"> APPROVE PROFILE</h2>
+                            <label class="toggler-wrapper style-23">
+                                {% if team.profile_approved %}
+                                    <input type="checkbox" class="check" id="approved-profile" checked> 
+                                {% else %}
+                                    <input  type="checkbox" id="approved-profile" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                                {% endif %}
+                                <div class="toggler-slider">
+                                  <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+                        </div>
+                </div>
+                <div class="four">
+                    <!-- <div class="calendar-day block"> 
+                        <div class="arrow-btn-container">
+                            <a class="arrow-btn left" href="#200">
+                                <span class="icon fontawesome-angle-left"></span>
+                            </a>
+                            <h2 class="titular">WEDNESDAY</h2>
+                            <a class="arrow-btn right" href="#201">
+                                <span class="icon fontawesome-angle-right"></span>
+                            </a>
+                        </div>
+                            <p class="the-day">26</p>
+                            <a class="add-event button1" href="#27">ADD EVENT</a>
+                    </div> -->
+                    <div class="account block"> 
+                        <h2 class="titular1 pt-2">VIEW UPLOADED DOCUMENTS</h2>
+                        {% if team.rs_paper %}
+                            <a class="sign-in button" href="{{ team.rs_paper.url }}" download>
+                                RESEARCH PAPER
+                            </a>
+                        {% else %}
+                            <a class="sign-in button">
+                                RESEARCH PAPER NOT UPLOADED
+                            </a>
+                        {% endif %}
+                        {% if team.document %}
+                            <a class="sign-in button" href="{{ team.document.url }}"download>
+                                DOCUMENTATION
+                            </a>
+                        {% else %}
+                            <a class="sign-in button">
+                                DOCUMENT NOT UPLOADED
+                            </a>
+                        {% endif %}
+                        {% if team.ppt %}
+                            <a class="sign-in button" href="{{ team.ppt.url }}"download>PPT </a>
+                        {% else %}
+                            <a class="sign-in button" >PPT NOT UPLOADED</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="center-container">
+                <div class="two" href="#">
+                    <div class="profile block"> 
+                        <a class="add-button" href="#28"><span class="icon entypo-plus scnd-font-color"></span></a>
+                        <div class="profile-picture ">
+                            <!-- Put default pic -->
+                            <img width="150px" alt="profile pic" src="" >
+                        </div>
+                        <h1 class="user-name">{{ team.teamID }}</h1>
+                        <h1 class="user-name">{% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
+                        <div class="profile-description">
+                            <p class="project-title">Project Management and Maintenance </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="five">
+                    <div class="profile-status"> 
+                        <h2 class="titular">GUIDE SUGGESTIONS</h2>
+                        <!-- Redirect to comment page -->
+                        <a class="subscribe button" href="{% url 'comments' team.teamID %}">READ COMMENTS</a>
+                    </div>
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="three">
+                    <div class="account block"> 
+                        <h2 class="titular">GUIDE & PROJECT STATUS</h2>
+                        <p class="names">GUIDE APPROVAL</p>
+                            <label class="toggler-wrapper style-23">
+                                <!-- T or F -->
+                                {% if team.guide_approved %}
+                                    <input type="checkbox" class="check" id="approved-checkbox" checked> 
+                                {% else %}
+                                    <input  type="checkbox" id="approved-checkbox" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                                {% endif %}
+                                <div class="toggler-slider">
+                                <div class="toggler-knob"></div>
+                                </div>
+                            </label>
+                        <p class="names">RESEARCH PAPER</p>
+                        <label class="toggler-wrapper style-23">
+                            {% if team.rs_paper_approved %}
+                                <input type="checkbox" class="check" id="approved-rs" checked> 
+                            {% else %}
+                                <input  type="checkbox" id="approved-rs" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                            {% endif %}
+                            <div class="toggler-slider">
+                              <div class="toggler-knob"></div>
+                            </div>
+                        </label>
+                        <p class="names">DOCUMENTATION</p>
+                        <label class="toggler-wrapper style-23">
+                            {% if team.docs_approved %}
+                                <input type="checkbox" class="check" id="approved-doc" checked> 
+                            {% else %}
+                                <input  type="checkbox" id="approved-doc" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                            {% endif %}
+                            <div class="toggler-slider">
+                              <div class="toggler-knob"></div>
+                            </div>
+                        </label>
+                        <p class="names">PPT </p>
+                        <label class="toggler-wrapper style-23">
+                            {% if team.ppt_approved %}
+                                <input type="checkbox" class="check" id="approved-ppt" checked> 
+                            {% else %}
+                                <input  type="checkbox" id="approved-ppt" > 
+                                    <!-- <input  type="checkbox" id="re-approved-checkbox" >  -->
+                            {% endif %}
+                            <div class="toggler-slider">
+                              <div class="toggler-knob"></div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="six">
+                    <!-- <div class="profile-status"> 
+                        <h2 class="titular">
+                            UPDATES AND LATEST NEWS
+                        </h2>
+                        <a class="subscribe button" href="#21">
+                            CHECK FOR UPDATES
+                        </a>
+                    </div> -->
+                </div>
+            </div>
+        </div>      
+        </div>
+    </div>  
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script> <!-- Import Jquery Here-->
+  <script>
+    var hamburger = document.querySelector(".hamburger");
+    hamburger.addEventListener("click", function(){
+        document.querySelector("body").classList.toggle("active");
+    })
+
+    $(document).ready(function() {
+        $('#approved-checkbox').change(function() {
+            let guide_url = "{% url 'guide-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    guide_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    guide_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    $(document).ready(function() {
+        $('#approved-rs').change(function() {
+            let guide_url = "{% url 'rs-paper-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    rs_paper_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    rs_paper_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    $(document).ready(function() {
+        $('#approved-doc').change(function() {
+            let guide_url = "{% url 'docs-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    docs_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    docs_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    $(document).ready(function() {
+        $('#approved-ppt').change(function() {
+            let guide_url = "{% url 'ppt-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    ppt_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    ppt_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    
+    $(document).ready(function() {
+        $('#approved-profile').change(function() {
+            let guide_url = "{% url 'profile-approve' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside If")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    profile_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",guide_url)
+                console.log("Inside else ")
+                $.post(guide_url, {
+                    // id: '{{team.teamID}}',
+                    profile_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+
+
+  </script>
+  <script src="{% static 'js/fdashboard.js' %}"></script>
+</body>
+</html>

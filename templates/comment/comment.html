@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/comment.css' %}">
+</head>
+<body>
+    <header>
+    <div class="section1">
+        <div class="top_navbar">
+            <div class="hamburger">
+                <a href="#">
+                    <i class="fas fa-bars"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    </header>    
+    <div class="wrapper">
+      <div class="section">
+        <div class="sidebar">
+           <div class="profile">
+              <img src="{{ guide.myImage.url }}" alt="profile_picture">
+              <h3>{{ team.teamID }}</h3>
+              <h6>
+                {{ team.student_1_name }} 
+                {% if team.no_of_members == '2' %} 
+                    & {{ team.student_2_name }} 
+                {% endif %}
+            </h6>
+            </div>
+            <ul>
+                <!-- Side bar details -->
+                <li>
+                    <a href="{% url 'home' %}" class="active">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="item">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-desktop"></i></span>
+                        <span class="item">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-user-shield"></i></span>
+                        <span class="item">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-database"></i></span>
+                        <span class="item">Review</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <span class="item"> Latest Events</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span id="blue" class="icon"><i class="fas fa-cog"></i></span>
+                        <span class="item">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Main content -->
+        <!-- Comment Box -->
+        <div class="box">
+            <!-- Comment class not to be visible to students -->
+            <div class="comment"> 
+                <!-- To send backend -->
+                <form action="{% url 'comments' team.teamID %}" method="POST">
+                    {% csrf_token %}
+                    {% if is_guide %}
+                        <textarea 
+                        name="body" placeholder=" Enter your comments" class="comment1" ></textarea>
+                        <button type="submit" class="btn">Post</button>
+                    {% else %}
+                        <textarea 
+                        name="body" placeholder="Enter your comments" class="comment1" disabled></textarea>
+                        <button type="submit" class="btn" disabled>Post</button>
+                    {% endif %}
+                
+                </form>
+            </div>
+            <!-- Remove from this -->
+        
+            <!-- Remove till here -->
+            
+            <!-- For loop start -->
+            {% for comment in comments %}
+                <div class="comment-box">
+                    <div class="header">
+                        <div class="user-info">
+                            <!-- Staff Image -->
+                            <img src="{{ guide.myImage.url }}" alt="Profile photo" class="profile-photo"/>
+                            <h3 class="user-name">{{ comment.guide }}</h3>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <p>
+                            {{ comment.body }}
+                        </p>
+                    </div>
+                    <p class="time"> {{ comment.published_date }} </p>
+                    <footer></footer>
+                </div>
+            {% endfor %}
+            <!-- For loop end -->
+        </div>
+        </div>
+    </div>  
+
+  <script>
+     var hamburger = document.querySelector(".hamburger");
+    hamburger.addEventListener("click", function(){
+        document.querySelector("body").classList.toggle("active");
+    })
+  </script>
+</body>
+</html>

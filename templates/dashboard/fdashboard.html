@@ -49,12 +49,12 @@
                         <span class="item">Profile</span>
                     </a>
                 </li>
-                <!-- <li>
-                    <a href="#">
+                <li>
+                    <a href="{% url 'guide-profile' %}">
                         <span class="icon"><i class="fas fa-user-friends"></i></span>
-                        <span class="item">Guide Selection</span>
+                        <span class="item">Dashboard</span>
                     </a>
-                </li> -->
+                </li>
                 <!-- <li>
                     <a href="#">
                         <span class="icon"><i class="fas fa-database"></i></span>
@@ -145,9 +145,11 @@
                             <img width="150px" alt="profile pic" src="" >
                         </div>
                         <h1 class="user-name">{{ team.teamID }}</h1>
-                        <h1 class="user-name">{% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
+                        <h1 class="user-name"> {{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
                         <div class="profile-description">
-                            <p class="project-title">Project Management and Maintenance </p>
+                            <p class="project-title">
+                                {{ team.project_name }}
+                            </p>
                         </div>
                     </div>
                 </div>

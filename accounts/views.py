@@ -144,12 +144,12 @@ def login(request):
         if not User.objects.filter(username=user_name).exists():
             messages.error(request, "User does not exist!")
             return redirect('login')
-        user = User.objects.filter(username=user_name).get()
+        # user = User.objects.filter(username=user_name).get()
+        user = auth.authenticate(username=user_name, password=password)
         if user is not None:
-            user = auth.authenticate(username=user_name, password=password)
             print('User is: ', user)
             if Guide.objects.filter(email=user_name).exists():
-                guide = Guide.objects.filter(email=user_name).get()
+                # guide = Guide.objects.filter(email=user_name).get()
                 auth.login(request, user)
                 return redirect('guide-profile')
             if user is not None:
@@ -245,6 +245,9 @@ def login(request):
             else:
                 messages.error(request, 'Invalid Credentials')
                 return redirect('login')
+        else:
+            messages.error(request, 'Invalid Credentials')
+            return redirect('login')
     else:
         return render(request, 'Login/login.html')
 

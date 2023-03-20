@@ -41,19 +41,19 @@
                         <span class="item">Home</span>
                     </a>
                 </li>
-                <li>
-                    <a href="#">
+                <!-- <li>
+                    <a href="{}">
                         <span class="icon"><i class="fas fa-desktop"></i></span>
                         <span class="item">Dashboard</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
-                    <a href="#">
+                    <a href="{% url 'team-profile' team.teamID %}">
                         <span class="icon"><i class="fas fa-user-shield"></i></span>
                         <span class="item">Profile</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#">
                         <span class="icon"><i class="fas fa-database"></i></span>
                         <span class="item">Review</span>
@@ -64,9 +64,9 @@
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span class="item"> Latest Events</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
-                    <a href="#">
+                    <a href="{% url 'logout' %}">
                         <span id="blue" class="icon"><i class="fas fa-cog"></i></span>
                         <span class="item">Logout</span>
                     </a>

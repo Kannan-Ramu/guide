@@ -813,6 +813,7 @@ def reset_password(request):
             # Check for user existence
             if User.objects.filter(username=teamID).exists():
                 user = User.objects.filter(username=teamID).get()
+                user.email = email
                 user.set_password(password)
                 user.save()
                 messages.success(request, 'Password Changed successfully!')

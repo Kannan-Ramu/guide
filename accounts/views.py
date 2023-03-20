@@ -147,6 +147,7 @@ def login(request):
         user = User.objects.filter(username=user_name).get()
         if user is not None:
             user = auth.authenticate(username=user_name, password=password)
+            print('User is: ', user)
             if Guide.objects.filter(email=user_name).exists():
                 guide = Guide.objects.filter(email=user_name).get()
                 auth.login(request, user)

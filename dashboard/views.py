@@ -16,7 +16,7 @@ def guide_dashboard(request, teamID):
         return redirect('login')
     user = request.user
     if Guide.objects.filter(email=user.email).exists():
-        team = Team.objects.filter(teamID=teamID).get()
+        team = Team.objects.filter(teamID=teamID)
         guide = Guide.objects.filter(email=user.email).get()
 
         print('Team is: ', team.teamID)

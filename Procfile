@@ -1,1 +1,1 @@
-web: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn guide_project.wsgi -w 2 -b :8000 --timeout 120
+web: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn guide_project.wsgi

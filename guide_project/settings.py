@@ -34,7 +34,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 # DEBUG = False
 
-DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
+# DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
+DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-132.railway.app:6989/railway"
 
 ALLOWED_HOSTS = [
     'https://guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
@@ -116,7 +117,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Development database
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'GUIDE-SELECTION',
@@ -125,7 +126,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}'''
+}
 '''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -234,5 +235,6 @@ SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
 
 # AWS S3 configs
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_STORAGE_BUCKET_NAME = 'django-guide-project'
+# AWS_STORAGE_BUCKET_NAME = 'django-guide-project'
+AWS_STORAGE_BUCKET_NAME = 'django-guide-project-new'
 AWS_S3_REGION_NAME = 'ap-south-1'

@@ -72,9 +72,14 @@ def team_dashboard(request):
     if not request.user.is_authenticated:
         messages.error(request, "You're not Logged In!")
         return redirect('login')
+    if Guide.objects.filter(email=request.user.email).exists():
+        is_guide = True
+    else:
+        is_guide = False
     team = Team.objects.filter(teamID=request.user.username).get()
     context = {
-        'team': team
+        'team': team,
+        'is_guide': is_guide
     }
     return render(request, 'dashboard/sdashboard.html', context)
 
@@ -82,15 +87,89 @@ def team_dashboard(request):
 
 
 def team_profile(request, id):
-    if request.user.is_authenticated:
+    user = request.user
+    if user.is_authenticated:
         team = Team.objects.filter(teamID=id).get()
+        if Guide.objects.filter(email=user.email).exists():
+            is_guide = True
+        else:
+            is_guide = False
+
         context = {
-            'team': team
+            'team': team,
+            'is_guide': is_guide
         }
         return render(request, 'dashboard/profile.html', context)
     else:
         messages.error(request, "You're not logged In!")
         return redirect('login')
+
+
+def update_project(request, id):
+    team = Team.objects.filter(teamID=id).get()
+    if request.method == 'POST':
+        # print('TYPE OF request values: ', type(request.POST['project_name']))
+        print('VALUE OF request values: ', request.POST['project_name'])
+
+        if request.POST.get('project_name'):
+            print('inside project if')
+            team.project_name = request.POST['project_name']
+        if request.POST['project_domain']:
+            team.project_domain = request.POST['project_domain']
+        if request.POST['project_description']:
+            team.project_description = request.POST['project_description']
+        # if request.POST['student_1_name']:
+
+        #     team.student_1_name = request.POST['student_1_name']
+        # if request.POST['student_1_email']:
+        #     team.student_1_email = request.POST['student_1_email']
+        # if request.POST['reg_no_1']:
+        #     team.reg_no_1 = request.POST['reg_no_1']
+        # if request.POST['student_1_no']:
+        #     team.student_1_no = request.POST['student_1_no']
+        # # for two member team
+        # if team.no_of_members == '2':
+        #     if request.POST['student_2_name']:
+        #         team.student_2_name = request.POST['student_2_name']
+        #     if request.POST['student_2_email']:
+        #         team.student_2_email = request.POST['student_2_email']
+        #     if request.POST['reg_no_2']:
+        #         team.reg_no_2 = request.POST['reg_no_2']
+        #     if request.POST['student_2_no']:
+        #         team.student_2_no = request.POST['student_2_no']
+        team.save()
+        return redirect('team-profile', team.teamID)
+
+
+def update_profile_1(request, id):
+    team = Team.objects.filter(teamID=id).get()
+    if request.method == 'POST':
+        if request.POST['student_1_name']:
+            team.student_1_name = request.POST['student_1_name']
+        if request.POST['student_1_email']:
+            team.student_1_email = request.POST['student_1_email']
+        if request.POST['reg_no_1']:
+            team.reg_no_1 = request.POST['reg_no_1']
+        if request.POST['student_1_no']:
+            team.student_1_no = request.POST['student_1_no']
+
+        team.save()
+        return redirect('team-profile', team.teamID)
+
+
+def update_profile_2(request, id):
+    team = Team.objects.filter(teamID=id).get()
+    if request.method == 'POST':
+        if request.POST['student_2_name']:
+            team.student_2_name = request.POST['student_2_name']
+        if request.POST['student_2_email']:
+            team.student_2_email = request.POST['student_2_email']
+        if request.POST['reg_no_2']:
+            team.reg_no_2 = request.POST['reg_no_2']
+        if request.POST['student_2_no']:
+            team.student_2_no = request.POST['student_2_no']
+        team.save()
+        return redirect('team-profile', team.teamID)
 
 # All Status approval of the teams by guide
 
@@ -103,7 +182,6 @@ def profile_approve(request, id):
         else:
             team.profile_approved = True
         team.save()
-        messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
         return HttpResponse('Sucess')
     pass
 
@@ -116,7 +194,6 @@ def guide_approve(request, id):
         else:
             team.guide_approved = True
         team.save()
-        messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
         return HttpResponse('Sucess')
         # return redirect(reverse_lazy('dashboard/fdashboard.html'))
 
@@ -129,7 +206,6 @@ def rs_paper_approve(request, id):
         else:
             team.rs_paper_approved = True
         team.save()
-        messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
         return HttpResponse('Sucess')
     pass
 
@@ -142,7 +218,7 @@ def docs_approve(request, id):
         else:
             team.docs_approved = True
         team.save()
-        messages.warning(request, "TeamID: " + team.teamID + "doesnot exist!")
+
         return HttpResponse('Sucess')
     pass
 

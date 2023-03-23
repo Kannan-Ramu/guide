@@ -1,4 +1,5 @@
 
+import os
 from random import randrange
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -8,9 +9,11 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
-
+from .custom_storage import DocStorage
+# from django.backends.custom_storages import DocStorage
 
 # Create your views here.
+
 
 def home(request):
     return render(request, 'Home/home.html')
@@ -833,24 +836,61 @@ def doc_upload(request):
     user = request.user
     if user.is_authenticated:
         if request.method == 'POST':
+            file_directory_within_bucket = 'documents/{username}'.format(
+                username=request.user)
+
+            doc_storage = DocStorage()
             team = Team.objects.filter(teamID=user.username).get()
             if request.FILES:
                 ppt = request.FILES['ppt']
                 document = request.FILES['document']
                 rs_paper = request.FILES['rs_paper']
+                guide_form = request.FILES['guide_form']
 
-                team.ppt = ppt
-                team.document = document
-                team.rs_paper = rs_paper
+                # synthesize a full file path; note that we included the filename
+                file_path_within_bucket = os.path.join(
+                    file_directory_within_bucket,
+                    ppt.name
+                )
+
+                if doc_storage.exists(file_directory_within_bucket):
+                    doc_storage.delete(file_directory_within_bucket)
+
+                if doc_storage.exists(file_path_within_bucket):
+                    doc_storage.delete(ppt.name)
+                if doc_storage.exists(file_path_within_bucket):
+                    doc_storage.delete(document.name)
+                if doc_storage.exists(file_path_within_bucket):
+                    doc_storage.delete(rs_paper.name)
+                if doc_storage.exists(file_path_within_bucket):
+                    doc_storage.delete(guide_form.name)
+
+                # doc_storage.save(file_path_within_bucket, ppt)
+                # file_url =
+
+                team.ppt = doc_storage.save(file_path_within_bucket, ppt)
+                team.document = doc_storage.save(
+                    file_path_within_bucket, document)
+                team.rs_paper = doc_storage.save(
+                    file_path_within_bucket, rs_paper)
+                team.guide_form = doc_storage.save(
+                    file_path_within_bucket, guide_form)
+                # team.ppt = ppt
+                # team.document = document
+                # team.rs_paper = rs_paper
+                # team.guide_form = guide_form
 
                 team.save()
-            auth.logout(request)
+            # auth.logout(request)
             return redirect('submitted')
-    team = Team.objects.filter(teamID=user.username).get()
-    context = {
-        'team': team,
-    }
-    return render(request, 'upload_docs/docs.html', context)
+        team = Team.objects.filter(teamID=user.username).get()
+        context = {
+            'team': team,
+        }
+        return render(request, 'upload_docs/docs.html', context)
+    else:
+        messages.error(request, "You're not logged in!")
+        return redirect('login')
 
 
 def profile(request):

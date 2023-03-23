@@ -15,12 +15,12 @@
     <header>
             <nav id="menu">
                 <ul class="blackbox">
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'logout' %}">Logout</a></li>
-                    {% else %}
-                        <li><a href="{% url 'register' %}">Register</a></li>
-                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% if not is_guide %}
+                        <li>
+                            <a href="{% url 'team-dashboard' %}">Dashboard</a>
+                        </li>
                     {% endif %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
                     <li><a href="{% url 'home' %}">Home</a></li>
                 </ul>
             </nav>
@@ -29,7 +29,7 @@
     <header>
         <nav id="menu">
             <ul class="blackbox">
-                <h1 class="db">Profile</h1>
+                <h1 class="db">TEAM PROFILE</h1>
             </ul>
         </nav>
     </header>
@@ -38,7 +38,7 @@
             <div class="col-md-15 m-5">
                 <div class="card text-center sidebar">
                     <div class="card-body">
-                        <img src="" alt="My Image" class="round-circle" width="150">
+                        <img src="{% static 'img/profile.png' %}" alt="Profile img" class="round-circle" width="150">
                         <div class="mt-3">
                             <h3>{{ team.teamID }}</h3>
                             <p>{{ team.guide }}</p>
@@ -52,56 +52,72 @@
         <div class="col-md-8 mt-5" id="ab">
             <div class="card mb-3 content">
                 <!-- <h1 class="m-3 pt-3">About</h1> -->
-                <div class="card-body">
-                    <div class="d-flex align-items">
-                        <div class="col-md-2">
-                            <h5>Project Title</h5>
+                <form action="{% url 'update-project' id=team.teamID %}" method="POST">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div class="d-flex align-items">
+                            <div class="col-md-2">
+                                <h5>Project Title</h5>
+                            </div>
+                            <div class="col-md-10 text-secondary">
+                                <input type="text" name="project_name" class="form-control editField" value="{{ team.project_name }}" readonly>
+                            </div>
                         </div>
-                        <div class="col-md-10 text-secondary">
-                            <input type="text" class="form-control editField" value="{{ team.project_name }}" readonly>
+                        <hr>
+                        <div class="d-flex align-items">
+                            <div class="col-md-2">
+                                <h5>Project Domain</h5>
+                            </div>
+                            <div class="col-md-10 text-secondary">
+                                <input type="text" name="project_domain" class="form-control editField" 
+                                    value="{% if team.project_domain %} 
+                                                {{ team.project_domain }} 
+                                            {% else %}
+                                                PLEASE UPDATE YOUR PROJECT DOMAIN!
+                                            {% endif %}"
+                                    readonly>
+                            </div>
                         </div>
+                        <!-- <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Phone</h5>
+                            </div>
+                            <div class="col-md-9 text-secondary">
+                                <input type="text" class="form-control editField" value="Phone" readonly>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Mobile</h5>
+                            </div>
+                            <div class="col-md-9 text-secondary">
+                                <input type="text" class="form-control editField" value="Mobile" readonly>
+                            </div>
+                        </div> -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Project Description</h5>
+                            </div>
+                            <div class="col-md-30 text-secondary">
+                                <textarea type="text" class="form-control editField" 
+                                name="project_description" rows="4" cols="1000" id="tx" readonly>
+                                    {% if team.project_description %} 
+                                        {{ team.project_description }} 
+                                    {% else %}
+                                        PLEASE UPDATE YOUR PROJECT DESCRIPTION!
+                                    {% endif %}
+                                </textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <a class="btn btn-danger editBtn" id="edit" onclick="enable()">Edit Off</a>
+                        <!-- <a class="btn btn-success submit" id="save" disabled>Submit</a> -->
+                        <input class="btn btn-success" type="submit" id="save" value="Submit" disabled/>
                     </div>
-                    <hr>
-                    <div class="d-flex align-items">
-                        <div class="col-md-2">
-                            <h5>Project Domain</h5>
-                        </div>
-                        <div class="col-md-10 text-secondary">
-                            <input type="text" class="form-control editField" value="{{ team.project_domain }}" readonly>
-                        </div>
-                    </div>
-                    <!-- <hr>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h5>Phone</h5>
-                        </div>
-                        <div class="col-md-9 text-secondary">
-                            <input type="text" class="form-control editField" value="Phone" readonly>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <h5>Mobile</h5>
-                        </div>
-                        <div class="col-md-9 text-secondary">
-                            <input type="text" class="form-control editField" value="Mobile" readonly>
-                        </div>
-                    </div> -->
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Project Description</h5>
-                        </div>
-                        <div class="col-md-30 text-secondary">
-                            <textarea type="text" class="form-control editField" value="Project Description" rows="4" cols="1000" id="tx" readonly>
-                                {{ team.project_description }}
-                            </textarea>
-                        </div>
-                    </div>
-                    <hr>
-                    <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -112,76 +128,16 @@
             <div class="col-md-30" id="web">
                 <div class="card text-center sidebar">
                     <div class="card-body">
-                        <h4>Student 1</h4>
-                        <br>
-                        <div class="d-flex align-items">
-                            <div class="col-md-2">
-                                <h5>Full Name</h5>
-                            </div>
-                            <div class="col-md-8 text-secondary">
-                                <!-- <input type="text" class="form-control editField" value="Full Name" readonly> -->
-                                {{ team.student_1_name }}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex align-items">
-                            <div class="col-md-2">
-                                <h5>Email</h5>
-                            </div>
-                            <div class="col-md-8 text-secondary">
-                                <!-- <input type="text" class="form-control editField" value="Email" readonly> -->
-                                {{ team.student_1_email }}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex align-items">
-                            <div class="col-md-2">
-                                <h5>Reg No</h5>
-                            </div>
-                            <div class="col-md-8 text-secondary">
-                                <!-- <input type="text" class="form-control editField" value="Registration Number" readonly> -->
-                                {{ team.reg_no_1 }}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="d-flex align-items">
-                            <div class="col-md-2">
-                                <h5>Mobile</h5>
-                            </div>
-                            <div class="col-md-8 text-secondary">
-                                <!-- <input type="text" class="form-control editField" value="Mobile" readonly> -->
-                                {{ team.student_1_no }}
-                            </div>
-                        </div>
-                        <!-- <hr>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <h5>Address</h5>
-                            </div>
-                            <div class="col-md-9 text-secondary">
-                                <input type="text" class="form-control editField" value="Address" readonly>
-                            </div>
-                        </div> -->
-                        <!-- <hr> -->
-                        <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% if team.no_of_members == '2' %}
-            <div class="row">
-                <div class="col-md-15" id="web1">
-                    <div class="card text-center sidebar">
-                        <div class="card-body">
-                            <h4>Student 2</h4>
+                        <form action="{% url 'update-profile-1' id=team.teamID %}" method="POST">
+                            {% csrf_token %}
+                            <h4>Student 1</h4>
                             <br>
                             <div class="d-flex align-items">
                                 <div class="col-md-2">
                                     <h5>Full Name</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Full Name" readonly> -->
-                                    {{ team.student_2_name }}
+                                    <input type="text" name="student_1_name" class="form-control editField" value="{{ team.student_1_name }}" readonly>
                                 </div>
                             </div>
                             <hr>
@@ -190,8 +146,7 @@
                                     <h5>Email</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Email" readonly> -->
-                                    {{ team.student_1_email }}
+                                    <input type="text" name="student_1_email" class="form-control editField" value="{{ team.student_1_email }}" readonly>
                                 </div>
                             </div>
                             <hr>
@@ -200,8 +155,7 @@
                                     <h5>Reg No</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Registration Number" readonly> -->
-                                    {{ team.reg_no_2 }}
+                                    <input type="text" name="reg_no_1" class="form-control editField" value="{{ team.reg_no_1 }}" readonly>
                                 </div>
                             </div>
                             <hr>
@@ -210,8 +164,7 @@
                                     <h5>Mobile</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Mobile" readonly> -->
-                                    {{ team.student_2_no }}
+                                    <input type="text" name="student_1_no" class="form-control editField" value="{{ team.student_1_no }}" readonly>
                                 </div>
                             </div>
                             <!-- <hr>
@@ -225,6 +178,79 @@
                             </div> -->
                             <!-- <hr> -->
                             <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
+                            <hr>
+                            <div class="d1">
+                                <a class="btn btn-danger editBtnd1" id="edit" onclick="enable()">Edit Off</a>
+                            <!-- <a class="btn btn-success submit" id="save" disabled>Submit</a> -->
+                                <input class="btn btn-success" type="submit" id="save1" value="Submit" disabled/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if team.no_of_members == '2' %}
+            <div class="row">
+                <div class="col-md-15" id="web1">
+                    <div class="card text-center sidebar">
+                        <div class="card-body">
+                            <form action="{% url 'update-profile-2' id=team.teamID %}" method="POST">
+                                <h4>Student 2</h4>
+                                <br>
+                                <div class="d-flex align-items">
+                                    <div class="col-md-2">
+                                        <h5>Full Name</h5>
+                                    </div>
+                                    <div class="col-md-8 text-secondary">
+                                        <input type="text" name="student_2_name" class="form-control editField" value="{{ team.student_2_name }}" readonly>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="d-flex align-items">
+                                    <div class="col-md-2">
+                                        <h5>Email</h5>
+                                    </div>
+                                    <div class="col-md-8 text-secondary">
+                                        <input type="text" name="student_2_email" class="form-control editField" value="{{ team.student_2_email }}" readonly>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="d-flex align-items">
+                                    <div class="col-md-2">
+                                        <h5>Reg No</h5>
+                                    </div>
+                                    <div class="col-md-8 text-secondary">
+                                        <input type="text" name="reg_no_2" class="form-control editField" value="{{ team.student_1_name }}" readonly>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="d-flex align-items">
+                                    <div class="col-md-2">
+                                        <h5>Mobile</h5>
+                                    </div>
+                                    <div class="col-md-8 text-secondary">
+                                        <input type="text" name="student_2_no" class="form-control editField" value="{{ team.student_1_name }}" readonly>
+                                    </div>
+                                </div>
+                                <!-- <hr>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h5>Address</h5>
+                                    </div>
+                                    <div class="col-md-9 text-secondary">
+                                        <input type="text" class="form-control editField" value="Address" readonly>
+                                    </div>
+                                </div> -->
+                                <!-- <hr> -->
+                                <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
+                                <hr>
+                                <div class="d2">
+                                    <a class="btn btn-danger editBtnd2" id="edit" onclick="enable()">Edit Off</a>
+                                <!-- <a class="btn btn-success submit" id="save" disabled>Submit</a> -->
+                                    <input class="btn btn-success" type="submit" id="save2" value="Submit" disabled/>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -241,8 +267,7 @@
                                     <h5>Full Name</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Full Name" readonly> -->
-                                    N/A
+                                    <input type="text" class="form-control editField" value="N/A" readonly>
                                 </div>
                             </div>
                             <hr>
@@ -251,8 +276,7 @@
                                     <h5>Email</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Email" readonly> -->
-                                    N/A
+                                    <input type="text" class="form-control editField" value="N/A" readonly>
                                 </div>
                             </div>
                             <hr>
@@ -261,8 +285,7 @@
                                     <h5>Reg No</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Registration Number" readonly> -->
-                                    N/A
+                                    <input type="text" class="form-control editField" value="N/A" readonly>
                                 </div>
                             </div>
                             <hr>
@@ -271,8 +294,7 @@
                                     <h5>Mobile</h5>
                                 </div>
                                 <div class="col-md-8 text-secondary">
-                                    <!-- <input type="text" class="form-control editField" value="Mobile" readonly> -->
-                                    N/A
+                                    <input type="text" class="form-control editField" value="N/A" readonly>
                                 </div>
                             </div>
                             <!-- <hr>
@@ -286,6 +308,12 @@
                             </div> -->
                             <!-- <hr> -->
                             <!-- <a class="btn btn-danger editBtn">Edit Off</a> -->
+                            <hr>
+                            <!-- <div class="d2">
+                                <a class="btn btn-danger editBtnd2" id="edit" onclick="enable()">Edit Off</a>
+                            
+                                <input class="btn btn-success" type="button" id="save2" value="Submit" disabled/>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -353,14 +381,49 @@
                      $('.editBtn').html('Edit On'); //Changes the text of the button
                      $('.editBtn').css("background", "green"); //changes the background of the button
                      $('.editBtn').css("border", "green"); //changes the border of the button
+                     document.getElementById("save").disabled = false;
                  } else { //else we do other things
                      $('.editField').prop('readonly', true);
                      $('.editBtn').html('Edit Off');
                      $('.editBtn').css("background", "red");
+                     document.getElementById("save").disabled = true;
                  }
              });
-         
          });
+
+         $(document).ready(function () {
+            $('.editBtnd1').click(function () {
+                if ($('.editField').is('[readonly]')) { //checks if it is already on readonly mode
+                    $('.editField').prop('readonly', false);//turns the readonly off
+                    $('.editBtnd1').html('Edit On'); //Changes the text of the button
+                    $('.editBtnd1').css("background", "green"); //changes the background of the button
+                    $('.editBtnd1').css("border", "green"); //changes the border of the button
+                    document.getElementById("save1").disabled = false;
+                } else { //else we do other things
+                    $('.editField').prop('readonly', true);
+                    $('.editBtnd1').html('Edit Off');
+                    $('.editBtnd1').css("background", "red");
+                    document.getElementById("save1").disabled = true;
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('.editBtnd2').click(function () {
+                if ($('.editField').is('[readonly]')) { //checks if it is already on readonly mode
+                    $('.editField').prop('readonly', false);//turns the readonly off
+                    $('.editBtnd2').html('Edit On'); //Changes the text of the button
+                    $('.editBtnd2').css("background", "green"); //changes the background of the button
+                    $('.editBtnd2').css("border", "green"); //changes the border of the button
+                    document.getElementById("save2").disabled = false;
+                } else { //else we do other things
+                    $('.editField').prop('readonly', true);
+                    $('.editBtnd2').html('Edit Off');
+                    $('.editBtnd2').css("background", "red");
+                    document.getElementById("save2").disabled = true;
+                }
+            });
+        });
          </script>
 </body>
 </html>

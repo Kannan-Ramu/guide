@@ -45,7 +45,6 @@ li a:hover {
 }
 
 body {
-
     background-color: lightgray;
     margin: 0px;
     padding: 0;
@@ -92,7 +91,18 @@ body {
 .db {
     color: white;
     text-align: center;
-    
+}
+
+/* #save {
+    visibility: hidden;
+} */
+
+.d1 {
+    float: left;
+}
+
+.d2 {
+    float: left;
 }
 
 

@@ -41,13 +41,6 @@
                         <span class="item">Home</span>
                     </a>
                 </li>
-                <!-- Should be visible only to guide -->
-                <li>
-                    <a href="#">
-                        <span class="icon"><i class="fas fa-desktop"></i></span>
-                        <span class="item">Dashboard</span>
-                    </a>
-                </li>
                 <!-- Should be visible to all -->
                 <li>
                     <a href="{% url 'team-profile' team.teamID %}">
@@ -61,12 +54,14 @@
                         <span class="item">Guide Selection</span>
                     </a>
                 </li> -->
-                <li>
-                    <a href="{% url 'upload' %}">
-                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                        <span class="item">Document Upload</span>
-                    </a>
-                </li>
+                {% if not is_guide %}
+                    <li>
+                        <a href="{% url 'upload' %}">
+                            <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                            <span class="item">Document Upload</span>
+                        </a>
+                    </li>
+                {% endif %}
                 <li>
                     <a href="{% url 'comments' team.teamID %}">
                         <span class="icon"><i class="fas fa-database"></i></span>
@@ -132,7 +127,7 @@
                         <div class="profile-picture ">
                             <img width="150px" alt="profile pic" src="" >
                         </div>
-                        <h1 class="user-name">{{ team.teamID }}</CSE-003></h1>
+                        <h1 class="user-name">{{ team.teamID }}</h1>
                         <h1 class="user-name">{{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
                         <div class="profile-description">
                             <p class="project-title">Project Management and Maintenance </p>
@@ -177,10 +172,12 @@
                     </div>
                 </div>
                 <div class="six">
-                    <!-- <div class="profile-status"> 
-                        <h2 class="titular">UPDATES AND LATEST NEWS</h2>
-                        <a class="subscribe button" href="#21">CHECK FOR UPDATES</a>
-                    </div> -->
+                    <div class="profile-status"> 
+                        <h2 class="titular">GUIDE DETAILS</h2>
+                        <!-- <a class="subscribe button" href="#21">CHECK FOR UPDATES</a> -->
+                        <h1 class="user-name">{{ team.guide }}</h1>
+                        <h1 class="user-name">{{ team.guide_email }}</h1>
+                    </div>
                 </div>
             </div>
         </div>      

@@ -8,6 +8,11 @@ def comments(request, id):
     print('Inside comments()')
     user = request.user
     team = Team.objects.filter(teamID=id).get()
+    if Guide.objects.filter(email=user.email).exists():
+        is_guide = True
+    else:
+        is_guide = False
+
     guide = Guide.objects.filter(email=team.guide_email).get()
     comments = Comment.objects.filter(teamID=id).order_by('-published_date')
     if request.method == 'POST':
@@ -24,7 +29,7 @@ def comments(request, id):
         'team': team,
         'guide': guide,
         'comments': comments,
-        'is_guide': True
+        'is_guide': is_guide
     }
 
     return render(request, 'comment/comment.html', context)

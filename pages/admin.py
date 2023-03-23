@@ -31,8 +31,8 @@ class TeamResource(resources.ModelResource):
     class Meta:
         model = Team
 
-        fields = ('id', 'teamID', 'project_name', 'project_description', 'no_of_members', 'reg_no_1',
-                  'student_1_name', 'student_1_no', 'reg_no_2', 'student_2_name', 'student_2_no', 'reg_no_3', 'student_3_name', 'student_3_no', 'guide', 'guide_email')
+        fields = ('id', 'teamID', 'project_name', 'no_of_members', 'reg_no_1',
+                  'student_1_name', 'student_1_email', 'student_1_no', 'reg_no_2', 'student_2_name', 'student_2_email', 'student_2_no', 'guide', 'guide_email')
 
 
 class TeamAdmin(ImportExportModelAdmin):
@@ -65,7 +65,7 @@ class UserResource(resources.ModelResource):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name',
-                  'last_name', 'email', 'password', 'is_active', 'is_staff')
+                  'email', 'password', 'is_active', 'is_staff')
 
 
 class NewUserAdmin(ImportExportModelAdmin, UserAdmin):

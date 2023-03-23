@@ -42,10 +42,10 @@ def user_directory_path(instance, filename):
 
 
 class Team(models.Model):
-    teamID = models.CharField(max_length=100, default='CSE')
-    project_name = models.CharField(max_length=100)
-    project_domain = models.CharField(max_length=100)
-    project_description = models.TextField()
+    teamID = models.CharField(max_length=10)
+    project_name = models.CharField(max_length=500)
+    project_domain = models.CharField(max_length=100, null=True)
+    project_description = models.TextField(null=True)
     no_of_members = models.CharField(
         max_length=10,
         choices=no_members_choices,
@@ -68,6 +68,9 @@ class Team(models.Model):
                            null=True, blank=True)
     rs_paper = models.FileField(storage=DocStorage,
                                 upload_to=user_directory_path, null=True, blank=True)
+
+    guide_form = models.FileField(storage=DocStorage,
+                                  upload_to=user_directory_path, null=True, blank=True)
 
     profile_approved = models.BooleanField(default=False)
     guide_approved = models.BooleanField(default=False)

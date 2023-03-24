@@ -74,7 +74,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     'cloudinary',
     'cloudinary_storage',
-    'import_export',
+    # 'import_export',
     'storages',
     'whitenoise.runserver_nostatic',
     'verify_email',  # sending email verification

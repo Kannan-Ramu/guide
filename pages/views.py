@@ -853,32 +853,32 @@ def doc_upload(request):
                     ppt.name
                 )
 
-                if doc_storage.exists(file_directory_within_bucket):
-                    doc_storage.delete(file_directory_within_bucket)
+                # if doc_storage.exists(file_directory_within_bucket):
+                #     doc_storage.delete(file_directory_within_bucket)
 
-                if doc_storage.exists(file_path_within_bucket):
-                    doc_storage.delete(ppt.name)
-                if doc_storage.exists(file_path_within_bucket):
-                    doc_storage.delete(document.name)
-                if doc_storage.exists(file_path_within_bucket):
-                    doc_storage.delete(rs_paper.name)
-                if doc_storage.exists(file_path_within_bucket):
-                    doc_storage.delete(guide_form.name)
+                # if doc_storage.exists(file_path_within_bucket):
+                #     doc_storage.delete(ppt.name)
+                # if doc_storage.exists(file_path_within_bucket):
+                #     doc_storage.delete(document.name)
+                # if doc_storage.exists(file_path_within_bucket):
+                #     doc_storage.delete(rs_paper.name)
+                # if doc_storage.exists(file_path_within_bucket):
+                #     doc_storage.delete(guide_form.name)
 
                 # doc_storage.save(file_path_within_bucket, ppt)
                 # file_url =
 
-                team.ppt = doc_storage.save(file_path_within_bucket, ppt)
-                team.document = doc_storage.save(
-                    file_path_within_bucket, document)
-                team.rs_paper = doc_storage.save(
-                    file_path_within_bucket, rs_paper)
-                team.guide_form = doc_storage.save(
-                    file_path_within_bucket, guide_form)
-                # team.ppt = ppt
-                # team.document = document
-                # team.rs_paper = rs_paper
-                # team.guide_form = guide_form
+                # team.ppt = doc_storage.save(file_path_within_bucket, ppt)
+                # team.document = doc_storage.save(
+                #     file_path_within_bucket, document)
+                # team.rs_paper = doc_storage.save(
+                #     file_path_within_bucket, rs_paper)
+                # team.guide_form = doc_storage.save(
+                #     file_path_within_bucket, guide_form)
+                team.ppt = ppt
+                team.document = document
+                team.rs_paper = rs_paper
+                team.guide_form = guide_form
 
                 team.save()
             # auth.logout(request)

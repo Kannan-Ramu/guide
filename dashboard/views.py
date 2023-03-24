@@ -15,7 +15,7 @@ def guide_dashboard(request, teamID):
         messages.error(request, "You're not Logged In!")
         return redirect('login')
     user = request.user
-    print('Team is: ', team.teamID)
+    # print('Team is: ', team.teamID)
     if Guide.objects.filter(email=user.email).exists():
         team = Team.objects.filter(teamID=teamID).get()
         guide = Guide.objects.filter(email=user.email).get()

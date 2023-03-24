@@ -1,4 +1,5 @@
 
+from django.template import RequestContext
 import os
 from random import randrange
 from django.core.mail import send_mail
@@ -933,7 +934,7 @@ def profile(request):
 
 
 def custom_page_not_found_view(request, exception):
-    return render(request, "errors/404.html", {})
+    return render(request, "errors/404.html", context={'exception': exception})
 
 
 def my_custom_error_view(request):
@@ -941,11 +942,8 @@ def my_custom_error_view(request):
 
 
 def my_custom_permission_denied_view(request, exception):
-    context = {
-        'exception': exception
-    }
-    return render(request, 'errors/403.html', context)
+    return render(request, 'errors/403.html', context={'exception': exception})
 
 
 def my_custom_bad_request_view(request, exception):
-    return render(request, 'errors/400.html')
+    return render(request, 'errors/400.html', context={'exception': exception})

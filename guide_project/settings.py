@@ -57,7 +57,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000/pride-cell',
     'https://guideselection.herokuapp.com/',
     'https://guide-backend-production.up.railway.app',
-    'https://cse-projectregistration.co.in/',
+    'https://cse-projectregistration.co.in',
 ]
 
 # Application definition

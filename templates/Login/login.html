@@ -42,11 +42,11 @@
                      <div class="btn-layer"></div>
                      <input type="submit" value="Login">
                   </div>
-                  <div class="signup-link">
-                     Not a user? <a href="{% url 'guides-register' %}">Staff SignUp</a>
-                  </div>
-                  <div class="signup-link">
-                     Not a user? <a href="{% url 'register' %}">Student SignUp</a>
+                  <!-- <div class="signup-link">
+                     Not a user? <a href="{% url 'register' %}">Signup now</a>
+                  </div> -->
+                  <div class="pass-link">
+                     <strong> Sign Up here -></strong> <strong> <a href="{% url 'guides-register' %}">Staff Sign UP</a></strong>
                   </div>
                </form>
                <form action="{% url 'register' %}" method="POST" class="signup">

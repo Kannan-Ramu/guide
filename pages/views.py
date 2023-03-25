@@ -848,22 +848,59 @@ def doc_upload(request):
                 rs_paper = request.FILES['rs_paper']
                 guide_form = request.FILES['guide_form']
 
+                print('ppt size is: ', ppt.size)
+
+                # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
+
+                if ppt.size > 9437184:
+                    messages.error(request, "PPT size must be less than 9 MB")
+                    return redirect('upload')
+
+                if document.size > 9437184:
+                    messages.error(
+                        request, "Document size must be less than 9 MB")
+                    return redirect('upload')
+
+                # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
+
+                if rs_paper.size > 1048576:
+                    messages.error(
+                        request, "Research Paper size must be less than 500kb")
+                    return redirect('upload')
+
+                if guide_form.size > 1048576:
+                    messages.error(
+                        request, "Guide Form size must be less than 500kb")
+                    return redirect('upload')
+
                 # synthesize a full file path; note that we included the filename
-                file_path_within_bucket = os.path.join(
+                ppt_path_within_bucket = os.path.join(
                     file_directory_within_bucket,
                     ppt.name
                 )
+                document_path_within_bucket = os.path.join(
+                    file_directory_within_bucket,
+                    document.name
+                )
+                rs_paper_path_within_bucket = os.path.join(
+                    file_directory_within_bucket,
+                    rs_paper.name
+                )
+                guide_form_path_within_bucket = os.path.join(
+                    file_directory_within_bucket,
+                    guide_form.name
+                )
 
-                # if doc_storage.exists(file_directory_within_bucket):
-                #     doc_storage.delete(file_directory_within_bucket)
+                if doc_storage.exists(file_directory_within_bucket):
+                    doc_storage.delete(file_directory_within_bucket)
 
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(ppt_path_within_bucket):
                 #     doc_storage.delete(ppt.name)
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(document_path_within_bucket):
                 #     doc_storage.delete(document.name)
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(rs_paper_path_within_bucket):
                 #     doc_storage.delete(rs_paper.name)
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(guide_form_path_within_bucket):
                 #     doc_storage.delete(guide_form.name)
 
                 # doc_storage.save(file_path_within_bucket, ppt)
@@ -882,7 +919,7 @@ def doc_upload(request):
                 team.guide_form = guide_form
 
                 team.save()
-            # auth.logout(request)
+            auth.logout(request)
             return redirect('submitted')
         team = Team.objects.filter(teamID=user.username).get()
         context = {

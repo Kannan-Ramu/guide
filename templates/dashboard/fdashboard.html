@@ -133,6 +133,11 @@
                         {% else %}
                             <a class="sign-in button" >PPT NOT UPLOADED</a>
                         {% endif %}
+                        {% if team.guide_form %}
+                            <a class="sign-in button" href="{{ team.guide_form.url }}" download>GUIDE FORM </a>
+                        {% else %}
+                            <a class="sign-in button" >GUIDE FORM NOT UPLOADED</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

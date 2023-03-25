@@ -43,7 +43,10 @@
                      <input type="submit" value="Login">
                   </div>
                   <div class="signup-link">
-                     Not a user? <a href="{% url 'register' %}">Signup now</a>
+                     Not a user? <a href="{% url 'guides-register' %}">Staff SignUp</a>
+                  </div>
+                  <div class="signup-link">
+                     Not a user? <a href="{% url 'register' %}">Student SignUp</a>
                   </div>
                </form>
                <form action="{% url 'register' %}" method="POST" class="signup">
@@ -66,6 +69,7 @@
                   
                   <div class="field btn">
                      <div class="btn-layer"></div>
+                     <input type="submit" value="Signup">
                      <input type="submit" value="Signup">
                   </div>
                </form>

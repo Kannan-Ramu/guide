@@ -26,39 +26,41 @@
                <div class="slider-tab"></div>
             </div>
             <div class="form-inner">
-               <form action="#" class="login">
+               <form action="{% url 'login' %}" method="POST" class="login">
+                  {% csrf_token %}
                   <div class="field">
-                     <input type="text" placeholder="Email Address/Team-id" required>
+                     <input type="text" name="email" placeholder="Email Address/Team-id" required>
                   </div>
                   <div class="field">
-                     <input type="password" placeholder="Password" required>
+                     <input type="password" name="password" placeholder="Password" required>
                   </div>
                   <div class="pass-link">
-                     <a href="#">Forgot password?</a>
+                     <a href="{% url 'reset-password' %}">Forgot password?</a>
                   </div>
                   <div class="field btn">
                      <div class="btn-layer"></div>
                      <input type="submit" value="Login">
                   </div>
                   <div class="signup-link">
-                     Not a user? <a href="">Signup now</a>
+                     Not a user? <a href="{% url 'register' %}">Signup now</a>
                   </div>
                </form>
-               <form action="#" class="signup">
+               <form action="{% url 'register' %}" method="POST" class="signup">
+                  {% csrf_token %}
                 <div class="field">
-                    <input type="text" placeholder="First Name" required>
+                    <input type="text" name="first_name" placeholder="First Name" required>
                  </div>
                  <div class="field">
-                    <input type="text" placeholder="Last Name" required>
+                    <input type="text" name="last_name" placeholder="Last Name" required>
                  </div>
                   <div class="field">
-                     <input type="text" placeholder="Email Address" required>
+                     <input type="text" name="email" placeholder="Email Address" required>
                   </div>
                   <div class="field">
-                     <input type="password" placeholder="Password" required>
+                     <input type="password" name="password1" placeholder="Password" required>
                   </div>
                   <div class="field">
-                     <input type="password" placeholder="Confirm password" required>
+                     <input type="password" name="password2" placeholder="Confirm password" required>
                   </div>
                   
                   <div class="field btn">

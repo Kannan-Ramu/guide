@@ -89,6 +89,7 @@ body {
     overflow-x: hidden; 
     background-blend-mode: darken;
     background: cover;
+    background-image: url("https://www.sathyabama.ac.in/sites/default/files/inline-images/DJI_0105-New-Low.jpg");
 }
 /*@media screen and (max-width: 600px) {
     body {

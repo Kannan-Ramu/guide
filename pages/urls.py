@@ -43,5 +43,6 @@ urlpatterns = [
     path('retitle/', views.retitle, name='retitle'),
     path('reset-password/', views.reset_password, name='reset-password'),
     path('upload/', views.doc_upload, name='upload'),
-    path('profile/', views.profile, name='profile')
+    path('profile/', views.profile, name='profile'),
+    path('export/', views.export_to_excel, name='export')
 ]

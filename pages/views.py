@@ -1,4 +1,6 @@
 
+from .models import Team
+from openpyxl import Workbook
 from django.template import RequestContext
 import os
 from random import randrange
@@ -984,3 +986,40 @@ def my_custom_permission_denied_view(request, exception):
 
 def my_custom_bad_request_view(request, exception):
     return render(request, 'errors/400.html', context={'exception': exception})
+
+
+# conditional export
+
+
+def export_to_excel(request):
+    # apply filters as necessary
+    queryset = Team.objects.filter(guide_approved=True).order_by('teamID')
+
+    # Create a new workbook and add a worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Add column headings to the worksheet
+    fields = Team._meta.get_fields()
+    col = 1
+    for field in fields:
+        ws.cell(row=1, column=col, value=field.name.capitalize())
+        col += 1
+
+    # Add data to the worksheet
+    row = 2
+    for obj in queryset:
+        col = 1
+        for field in fields:
+            value = getattr(obj, field.name)
+            ws.cell(row=row, column=col, value=str(value))
+            col += 1
+        row += 1
+
+    # Create an HTTP response with the Excel file as the content
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=mydata.xlsx'
+    wb.save(response)
+
+    return response

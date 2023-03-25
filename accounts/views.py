@@ -148,6 +148,8 @@ def login(request):
         user = auth.authenticate(username=user_name, password=password)
         if user is not None:
             print('User is: ', user)
+            if user.is_staff == True:
+                return redirect('export')
             if Guide.objects.filter(email=user_name).exists():
                 # guide = Guide.objects.filter(email=user_name).get()
                 auth.login(request, user)

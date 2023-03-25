@@ -48,8 +48,8 @@ def guides_register(request):
                 return redirect('login')
         else:
             messages.error(
-                request, "Kindly contact coordinators for further details!")
-            return redirect('login')
+                request, "Kindly fill the form and inform the coordinators!")
+            return redirect('guides')
         # else:
         #     messages.warning(request, field.errors)
         #     for field in form:

@@ -60,7 +60,7 @@ def guides(request):
                           domain_3=domain_3, email=email, myImage=myImage, vacancy=vacancy)
 
             guide.save()
-        return render(request, 'adminregister/submitted.html')
+        return redirect('guides-register')
     else:
 
         return render(request, 'adminregister/aform.html')

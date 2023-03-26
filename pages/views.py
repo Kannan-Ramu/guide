@@ -823,9 +823,12 @@ def reset_password(request):
             #     return redirect('login')
 
             # Check for user existence
-            if Guide.objects.filter(emp_id=teamID).exists():
+            temp, id = teamID.split('-')
+            # temp = int(teamID)
+            print('id is: ', id)
+            if Guide.objects.filter(emp_id=id).exists():
                 if User.objects.filter(username=email).exists():
-                    user = User.objects.filter(username=teamID).get()
+                    user = User.objects.filter(username=email).get()
                     user.email = email
                     user.set_password(password)
                     user.save()

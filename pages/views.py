@@ -816,8 +816,22 @@ def reset_password(request):
                     request, 'Password must contain at least 1 special character')
                 return redirect('reset-password')
 
+            # if Guide.objects.filter(emp_id=teamID).exists():
+            #     if User.objects.filter(username=email).exists():
+            #         pass
+            # else:
+            #     return redirect('login')
+
             # Check for user existence
-            if User.objects.filter(username=teamID).exists():
+            if Guide.objects.filter(emp_id=teamID).exists():
+                if User.objects.filter(username=email).exists():
+                    user = User.objects.filter(username=teamID).get()
+                    user.email = email
+                    user.set_password(password)
+                    user.save()
+                    messages.success(request, 'Password Changed successfully!')
+                    return redirect('login')
+            elif User.objects.filter(username=teamID).exists():
                 user = User.objects.filter(username=teamID).get()
                 user.email = email
                 user.set_password(password)
@@ -826,7 +840,7 @@ def reset_password(request):
                 return redirect('login')
             else:
                 messages.error(
-                    request, 'Given Email-id/team ID does not exist. Try Again!')
+                    request, 'Given Email-id/team ID/Emp-id does not exist.  Try Again!')
                 return redirect('reset-password')
         else:
             messages.error(request, 'Password not matching!')
@@ -915,7 +929,6 @@ def doc_upload(request):
                 #     file_path_within_bucket, rs_paper)
                 # team.guide_form = doc_storage.save(
                 #     file_path_within_bucket, guide_form)
-                
 
                 team.save()
             auth.logout(request)

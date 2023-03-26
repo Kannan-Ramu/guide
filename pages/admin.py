@@ -40,7 +40,7 @@ class TeamAdmin(ImportExportModelAdmin):
                     'student_1_name', 'student_1_no', 'reg_no_2', 'student_2_name', 'student_2_no', 'guide', 'guide_email', 'profile_approved', 'guide_approved', 'rs_paper_approved', 'docs_approved', 'ppt_approved')
     ordering = ('teamID',)
     search_fields = ('teamID', 'reg_no_1', 'reg_no_2',
-                     'project_name', 'project_domain', 'student_1_name', 'student_2_name', 'guide')
+                     'project_name', 'project_domain', 'student_1_name', 'student_2_name', 'guide', 'guide_email')
     resource_class = TeamResource
 
 

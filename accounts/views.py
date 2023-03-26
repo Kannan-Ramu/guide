@@ -193,44 +193,6 @@ def login(request):
                         team.delete()
                         return render(request, 'no_of_stud/no_of_stud.html')
 
-                    # guide_inst = Guide.objects.filter(
-                    #     serial_no=team.guide.serial_no).get()
-                    context = {
-                        'team': team,
-                        'user': user,
-                        # 'guide': guide_inst,
-                        # 'id': guide_inst.serial_no
-                    }
-
-                    if team.no_of_members == '2':
-                        return render(request, 'temp_team_2/temp_team_2.html', context)
-
-                    g_obj = team.guide
-                    email_2 = Otp_Two.objects.filter(
-                        temp_email=user.email).get()
-                    if g_obj is None:
-                        print('INSIDE NONE IF')
-                        context = {
-                            'email': email_2
-                        }
-
-                        if team.no_of_members == '2':
-                            return render(request, '2_project_form/2_project_form.html', context)
-                        else:
-                            return render(request, '1_project_form`/1_project_form.html')
-                    else:
-                        context = {
-                            'team': team,
-                            'user': user,
-                            # 'guide': guide_inst,
-                            # 'id': guide_inst.serial_no
-                        }
-
-                        if team.no_of_members == '2':
-                            return render(request, 'temp_team_2/temp_team_2.html', context)
-                        else:
-                            return render(request, 'temp_team_1/temp_team_1.html', context)
-
                 # if Team.objects.filter(teamID=user.username).exists():
                 #     print('INSIDE LINE 312 IF: ')
                 #     if User.objects.filter(username=user_name).exists():

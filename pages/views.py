@@ -845,38 +845,38 @@ def doc_upload(request):
             doc_storage = DocStorage()
             team = Team.objects.filter(teamID=user.username).get()
             if request.FILES:
-                ppt = request.FILES['ppt']
-                document = request.FILES['document']
-                rs_paper = request.FILES['rs_paper']
-                guide_form = request.FILES['guide_form']
-
-                print('ppt size is: ', ppt.size)
-
-                # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
-
-                if ppt.size > 9437184:
-                    messages.error(request, "PPT size must be less than 9 MB")
-                    return redirect('upload')
-
-                if document.size > 9437184:
-                    messages.error(
-                        request, "Document size must be less than 9 MB")
-                    return redirect('upload')
-
-                # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
-
-                if rs_paper.size > 1048576:
-                    messages.error(
-                        request, "Research Paper size must be less than 500kb")
-                    return redirect('upload')
-
-                if guide_form.size > 1048576:
-                    messages.error(
-                        request, "Guide Form size must be less than 500kb")
-                    return redirect('upload')
-
+                if request.FILES.get('ppt'):
+                    ppt = request.FILES['ppt']
+                    # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
+                    if ppt.size > 9437184:
+                        messages.error(
+                            request, "PPT size must be less than 9 MB")
+                        return redirect('upload')
+                    team.ppt = ppt
+                if request.FILES.get('document'):
+                    document = request.FILES['document']
+                    if document.size > 9437184:
+                        messages.error(
+                            request, "Document size must be less than 9 MB")
+                        return redirect('upload')
+                    team.document = document
+                if request.FILES.get('rs_paper'):
+                    rs_paper = request.FILES['rs_paper']
+                    # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
+                    if rs_paper.size > 1048576:
+                        messages.error(
+                            request, "Research Paper size must be less than 500kb")
+                        return redirect('upload')
+                    team.rs_paper = rs_paper
+                if request.FILES.get('guide_form'):
+                    guide_form = request.FILES['guide_form']
+                    if guide_form.size > 1048576:
+                        messages.error(
+                            request, "Guide Form size must be less than 500kb")
+                        return redirect('upload')
+                    team.guide_form = guide_form
                 # synthesize a full file path; note that we included the filename
-                ppt_path_within_bucket = os.path.join(
+                '''ppt_path_within_bucket = os.path.join(
                     file_directory_within_bucket,
                     ppt.name
                 )
@@ -891,7 +891,7 @@ def doc_upload(request):
                 guide_form_path_within_bucket = os.path.join(
                     file_directory_within_bucket,
                     guide_form.name
-                )
+                )'''
 
                 if doc_storage.exists(file_directory_within_bucket):
                     doc_storage.delete(file_directory_within_bucket)
@@ -915,10 +915,7 @@ def doc_upload(request):
                 #     file_path_within_bucket, rs_paper)
                 # team.guide_form = doc_storage.save(
                 #     file_path_within_bucket, guide_form)
-                team.ppt = ppt
-                team.document = document
-                team.rs_paper = rs_paper
-                team.guide_form = guide_form
+                
 
                 team.save()
             auth.logout(request)

@@ -13,6 +13,11 @@ body{
     background: #f5f6fa;
 }
 
+.titular1{
+    margin-bottom: 40px;
+    margin-top: 10px;
+    font-size: 20px;
+}
 .wrapper .sidebar{
     background: #ffff;
     position: fixed;
@@ -181,11 +186,11 @@ h6{
     
   }
   .sign-in.button {
-    background: #e64c65;
+    background: #11a8ab;
     margin: 10px auto;
 }
     .sign-in.button:hover {
-        background: #cc324b;
+        background: #11a8ab;
     }
     .subscribe.button {
         background: #11a8ab;
@@ -263,6 +268,16 @@ a{
     align-items: center;
     text-align: center;   
 }
+mark-status{
+    font-size: 12px;
+    color: #000000;
+    font-weight: 500;
+    margin-top: 50px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;  
+
+}
 .account.block{
     font-size: 12px;
     color: #000000;
@@ -271,19 +286,13 @@ a{
     align-items: center;
     text-align: center; 
 }
-.profile-picture{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 140px;
-    margin-right: 140px;
+.profile-picture img{
+    margin: 0 auto;
     border-radius: 50%;
+    border:2px solid #484546c7;
     width: 120px;
     height: 120px;
-    border: 2px solid #831238;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
+    display: block;   
 }
 .user-name{
     font-size: 20px;
@@ -301,7 +310,33 @@ a{
     align-items: center;
     text-align: center;
 }
-
+.marks{
+    border: 2px solid rgba(0, 0, 0, 0.123);
+    height: 110px;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+}
+.marks1{
+    border: 1px;
+    height: 60px;
+    width: 100%;
+    border-color: #8312388a;
+    border-radius: 5px;
+}
+.btn{
+    width: 50px;
+    height: auto;
+    background-color: #831238;
+    color: #ffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 5px;
+    margin-right: 15px;
+    margin-top: 5px;
+    cursor: pointer;
+    float: right;
+}
 
 @media(max-width:768px){
     .html{
@@ -324,7 +359,15 @@ a{
         font-size: 12px;
         color: #000000;
         font-weight: 500;
-        margin-bottom: 100px;
+        margin-top: 0px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      mark-status{
+        font-size: 12px;
+        color: #000000;
+        font-weight: 500;
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -337,19 +380,14 @@ a{
         align-items: center;
         text-align: center;
       }
-      .profile-picture{
-        margin-top: 0px;
-        margin-left: 140px;
-        margin-right: 140px;
+      .profile-picture img{
+        margin: 0 auto;
         border-radius: 50%;
+        border:2px solid #484546c7;
         width: 80px;
         height: 80px;
-        border: 2px solid #831238;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        overflow: hidden;
-      }
+        display: block;   
+    }
       .user-name{
         font-size: 15px;
         color: #000000;
@@ -458,7 +496,7 @@ a{
             transform: translateY(2px);
         }
     .sign-in.button{
-        background: #e64c65;
+        background: #11a8ab;
         font-size: 12px;
     }
     .account.block{
@@ -637,7 +675,7 @@ a{
   width: 70px;
   height: 40px;
   cursor: pointer;
-  /* position: relative; */
+  position:relative;
     margin: 10px auto;
 
 }

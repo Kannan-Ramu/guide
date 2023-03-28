@@ -30,7 +30,8 @@
       <div class="section">
         <div class="sidebar">
            <div class="profile">
-              <img src="#" alt="profile_picture">
+            {% load static %}
+            <img src="{% static 'img/profile.png' %}" alt="profile_picture">
               <h3>{{ team.teamID }}</h3>
               <h6>{{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h6>
             </div>
@@ -125,7 +126,8 @@
                     <div class="profile block"> 
                         <a class="add-button" href="#28"><span class="icon entypo-plus scnd-font-color"></span></a>
                         <div class="profile-picture ">
-                            <img width="150px" alt="profile pic" src="" >
+                            {% load static %}
+                            <img alt="profile pic" src="{% static 'img/profile.png' %}" >
                         </div>
                         <h1 class="user-name">{{ team.teamID }}</h1>
                         <h1 class="user-name">{{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
@@ -147,29 +149,33 @@
                 <div class="three">
                     <div class="account block"> 
                         <h2 class="titular">GUIDE & PROJECT STATUS</h2>
+                        <p class="names">GUIDE APPROVAL</p>
                         {% if team.guide_approved %}
                             <a class="sign-in subscribe button">
-                                GUIDE APPROVAL
+                                APPROVED
                             </a>
                         {% else %}
                             <a class="sign-in button bg-red" >
-                                GUIDE APPROVAL
+                                NOT APPROVED
                             </a>
                         {% endif %}
+                        <p class="names">RESEARCH PAPER</p>
                         {% if team.rs_paper_approved %}
-                            <a class="sign-in subscribe button" >RESEARCH PAPER</a>
+                            <a class="sign-in subscribe button" >APPROVED</a>
                         {% else %}
-                            <a class="sign-in button bg-red" >RESEARCH PAPER</a>
+                            <a class="sign-in button bg-red" >NOT APPROVED</a>
                         {% endif %}
+                        <p class="names">DOCUMENTATION</p>
                         {% if team.docs_approved %}
-                            <a class="sign-in subscribe button" >DOCUMENTATION</a>
+                            <a class="sign-in subscribe button" >APPROVED</a>
                         {% else %}
-                            <a class="sign-in button bg-red" >DOCUMENTATION</a>
+                            <a class="sign-in button bg-red" >NOT APPROVED</a>
                         {% endif %}
+                        <p class="names">PPT </p>
                         {% if team.ppt_approved %}
-                            <a class="sign-in subscribe button" >PPT</a>
+                            <a class="sign-in subscribe button" >APPROVED</a>
                         {% else %}
-                            <a class="sign-in button bg-red" >PPT</a>
+                            <a class="sign-in button bg-red" >NOT APPROVED</a>
                         {% endif %}
                     </div>
                 </div>

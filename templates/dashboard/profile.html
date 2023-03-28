@@ -12,15 +12,20 @@
 </head>
 
 <body>
-    {% if user.username == team.teamID %}
+    {% if user.username == team.teamID  or  user.username == team.guide_email %}
         <header>
                 <nav id="menu">
                     <ul class="blackbox">
-                        {% if not is_guide %}
+                        {% if is_guide %}
                             <li>
-                                <a href="{% url 'team-dashboard' %}">Dashboard</a>
+                                <a href="{% url 'guide-dashboard' team.teamID %}">Dashboard</a>
                             </li>
+                        {% else %}
+                        <li>
+                            <a href="{% url 'team-dashboard' %}">Dashboard</a>
+                        </li>
                         {% endif %}
+                        
                         <li><a href="{% url 'logout' %}">Logout</a></li>
                         <li><a href="{% url 'home' %}">Home</a></li>
                     </ul>

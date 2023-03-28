@@ -15,11 +15,6 @@ function getCookie(name) {
   return cookieValue;
 }
 
-var hamburger = document.querySelector(".hamburger");
-    hamburger.addEventListener("click", function(){
-        document.querySelector("body").classList.toggle("active");
-    })
-
 $(document).ready(function () {
   // const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         $('#approved-checkbox').change(function() {

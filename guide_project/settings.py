@@ -44,6 +44,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     'https://www.cse-projectregistration.co.in/',
+    'https://cse-projectregistration.co.in/',
     '63.250.59.207',
     '0.0.0.0:8000',
     '*',
@@ -56,6 +57,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1:8000/pride-cell',
     'https://guideselection.herokuapp.com/',
     'https://guide-backend-production.up.railway.app',
+    'https://cse-projectregistration.co.in',
 ]
 
 # Application definition

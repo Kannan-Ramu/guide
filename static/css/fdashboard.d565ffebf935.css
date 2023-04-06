@@ -13,6 +13,11 @@ body{
     background: #f5f6fa;
 }
 
+.titular1{
+    margin-bottom: 40px;
+    margin-top: 10px;
+    font-size: 20px;
+}
 .wrapper .sidebar{
     background: #ffff;
     position: fixed;
@@ -169,7 +174,7 @@ h6{
   }
   .one,.two,.three,.four,.five,.six{
     height: 280px;
-    /*width: 350px;*/
+   /* width: 350px;*/
     border:2px solid rgba(0, 0, 0, 0.123) ;
     margin-bottom: 15px;
     border-radius: 5px;
@@ -181,11 +186,11 @@ h6{
     
   }
   .sign-in.button {
-    background: #e64c65;
+    background: #11a8ab;
     margin: 10px auto;
 }
     .sign-in.button:hover {
-        background: #cc324b;
+        background: #11a8ab;
     }
     .subscribe.button {
         background: #11a8ab;
@@ -263,6 +268,16 @@ a{
     align-items: center;
     text-align: center;   
 }
+mark-status{
+    font-size: 12px;
+    color: #000000;
+    font-weight: 500;
+    margin-top: 100px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;  
+
+}
 .account.block{
     font-size: 12px;
     color: #000000;
@@ -271,19 +286,13 @@ a{
     align-items: center;
     text-align: center; 
 }
-.profile-picture{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 140px;
-    margin-right: 140px;
+.profile-picture img{
+    margin: 0 auto;
     border-radius: 50%;
+    border:2px solid #484546c7;
     width: 120px;
     height: 120px;
-    border: 2px solid #831238;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
+    display: block;   
 }
 .user-name{
     font-size: 20px;
@@ -301,7 +310,33 @@ a{
     align-items: center;
     text-align: center;
 }
-
+.marks{
+    border: 2px solid rgba(0, 0, 0, 0.123);
+    height: 110px;
+    border-radius: 5px;
+    text-align: center;
+    overflow: hidden;
+}
+.marks1{
+    border: 1px;
+    height: 60px;
+    width: 100%;
+    border-color: #8312388a;
+    border-radius: 5px;
+}
+.btn{
+    width: 50px;
+    height: auto;
+    background-color: #831238;
+    color: #ffff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 5px;
+    margin-right: 15px;
+    margin-top: 5px;
+    cursor: pointer;
+    float: right;
+}
 
 @media(max-width:768px){
     .html{
@@ -324,7 +359,15 @@ a{
         font-size: 12px;
         color: #000000;
         font-weight: 500;
-        margin-bottom: 100px;
+        margin-top: 0px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      mark-status{
+        font-size: 12px;
+        color: #000000;
+        font-weight: 500;
         justify-content: center;
         align-items: center;
         text-align: center;
@@ -337,19 +380,14 @@ a{
         align-items: center;
         text-align: center;
       }
-      .profile-picture{
-        margin-top: 0px;
-        margin-left: 140px;
-        margin-right: 140px;
+      .profile-picture img{
+        margin: 0 auto;
         border-radius: 50%;
+        border:2px solid #484546c7;
         width: 80px;
         height: 80px;
-        border: 2px solid #831238;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        overflow: hidden;
-      }
+        display: block;   
+    }
       .user-name{
         font-size: 15px;
         color: #000000;
@@ -458,7 +496,7 @@ a{
             transform: translateY(2px);
         }
     .sign-in.button{
-        background: #e64c65;
+        background: #11a8ab;
         font-size: 12px;
     }
     .account.block{
@@ -631,9 +669,116 @@ a{
         justify-content: center;
     }
 }
+/*-------------*/
+.toggler-wrapper {
+  display: block;
+  width: 70px;
+  height: 40px;
+  cursor: pointer;
+  position:relative;
+    margin: 10px auto;
+
+}
+
+.toggler-wrapper input[type="checkbox"] {
+  display: none;
+}
+
+.toggler-wrapper input[type="checkbox"]:checked+.toggler-slider {
+  background-color: #44cc66;
+}
+.toggler-wrapper .check:checked+.toggler-slider {
+  background-color: #44cc66;
+}
+
+.toggler-wrapper .toggler-slider {
+  background-color: #ccc;
+  position: absolute;
+  border-radius: 100px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+
+.toggler-wrapper .toggler-knob {
+  position: absolute;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+.toggler-wrapper.style-23 input[type="checkbox"]:checked+.toggler-slider {
+    background-color: transparent;
+    border-color: #44cc66;
+  }
+  
+  .toggler-wrapper.style-23 input[type="checkbox"]:checked+.toggler-slider:before {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  
+  .toggler-wrapper.style-23 input[type="checkbox"]:checked+.toggler-slider:after {
+    opacity: 0;
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
+  }
+  
+  .toggler-wrapper.style-23 input[type="checkbox"]:checked+.toggler-slider .toggler-knob {
+    left: calc(100% - 28px - 3px);
+    background-color: #44cc66;
+  }
+  
+  .toggler-wrapper.style-23 .toggler-slider {
+    background-color: transparent;
+    border: 2px solid #eb4f37;
+  }
+  
+  .toggler-wrapper.style-23 .toggler-slider:before {
+    content: 'Approved';
+    position: absolute;
+    top: 8px;
+    right: -90px;
+    font-size: 75%;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px);
+  }
+  
+  .toggler-wrapper.style-23 .toggler-slider:after {
+    content: 'Not Approved';
+    position: absolute;
+    top: 8px;
+    right: -90px;
+    font-size: 75%;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.7;
+    -webkit-transition: all 300ms ease;
+    transition: all 300ms ease;
+  }
+  
+  .toggler-wrapper.style-23 .toggler-knob {
+    width: calc(35px - 6px);
+    height: calc(35px - 6px);
+    border-radius: 50%;
+    top: 3px;
+    left: 2px;
+    background-color: #eb4f37;
+  }
+  .names{
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
 
 
-h2.titular{
+  }
+ h2.titular{
     margin-bottom: 10px;
  }
 
@@ -686,10 +831,4 @@ h2.titular{
             background: #e64c65;
             border-radius: 100%;
         }
-        .names{
-            font-size: 16px;
-            font-weight: 500;
-            color: #000;
-        
-        
-          }
+  

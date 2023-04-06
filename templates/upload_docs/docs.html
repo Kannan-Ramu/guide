@@ -9,6 +9,7 @@
   <body>
     <div class="container">
       <h1>Document Upload</h1>
+      {% include 'partials/_alerts.html' %}
       <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">

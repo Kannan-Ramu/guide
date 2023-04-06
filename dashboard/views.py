@@ -95,6 +95,7 @@ def team_profile(request, id):
             is_guide = False
 
         context = {
+            'user': user,
             'team': team,
             'is_guide': is_guide
         }

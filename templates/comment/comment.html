@@ -41,12 +41,23 @@
                         <span class="item">Home</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{% url 'guide-profile' %}">
-                        <span class="icon"><i class="fas fa-desktop"></i></span>
-                        <span class="item">Dashboard</span>
-                    </a>
-                </li>
+                {% if is_guide %}
+                    <li>
+                        <a href="{% url 'guide-profile' %}">
+                            <span class="icon"><i class="fas fa-desktop"></i></span>
+                            <span class="item">Dashboard</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'team-dashboard' %}">
+                            <span class="icon"><i class="fas fa-desktop"></i></span>
+                            <span class="item">Dashboard</span>
+                        </a>
+                    </li>
+                    
+                {% endif %}
+                
                 <li>
                     <a href="{% url 'team-profile' team.teamID %}">
                         <span class="icon"><i class="fas fa-user-shield"></i></span>

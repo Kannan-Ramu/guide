@@ -30,7 +30,8 @@
       <div class="section">
         <div class="sidebar">
            <div class="profile">
-              <img src="#" alt="profile_picture">
+            {% load static %}
+            <img src="{% static 'img/profile.png' %}" alt="profile_picture">
               <h3>{{ team.teamID }}</h3>
               <h6>{{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h6>
             </div>
@@ -49,24 +50,24 @@
                         <span class="item">Profile</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{% url 'guide-profile' %}">
+                <!--<li>
+                    <a href="{% url 'guide-profile' %}{% url 'team-dashboard' %}">
                         <span class="icon"><i class="fas fa-user-friends"></i></span>
                         <span class="item">Dashboard</span>
                     </a>
-                </li>
-                <!-- <li>
-                    <a href="#">
+                </li>-->
+                <li>
+                    <a href="{% url 'comments' team.teamID %}">
                         <span class="icon"><i class="fas fa-database"></i></span>
-                        <span class="item">Review</span>
+                        <span class="item">Comments</span>
                     </a>
-                </li> -->
-                <!-- <li>
-                    <a href="#">
-                        <span class="icon"><i class="fas fa-chart-line"></i></span>
-                        <span class="item"> Latest Events</span>
+                </li> 
+                <li>
+                    <a href="{% url 'guide-profile' %}">
+                        <span class="icon"><i class="fas fa-user-friends"></i></span>
+                        <span class="item"> Team List</span>
                     </a>
-                </li> -->
+                </li> 
                 <li>
                     <a href="{% url 'logout' %}">
                         <span id="blue" class="icon"><i class="fas fa-cog"></i></span>
@@ -110,28 +111,37 @@
                     </div> -->
                     <div class="account block"> 
                         <h2 class="titular1 pt-2">VIEW UPLOADED DOCUMENTS</h2>
+                        <p class="names">RESEARCH PAPER</p>
                         {% if team.rs_paper %}
                             <a class="sign-in button" href="{{ team.rs_paper.url }}" download>
-                                RESEARCH PAPER
+                                UPLOADED
                             </a>
                         {% else %}
                             <a class="sign-in button">
-                                RESEARCH PAPER NOT UPLOADED
+                                NOT UPLOADED
                             </a>
                         {% endif %}
+                        <p class="names">DOCUMENTATION</p>
                         {% if team.document %}
                             <a class="sign-in button" href="{{ team.document.url }}"download>
-                                DOCUMENTATION
+                                UPLOADED
                             </a>
                         {% else %}
                             <a class="sign-in button">
-                                DOCUMENT NOT UPLOADED
+                                NOT UPLOADED
                             </a>
                         {% endif %}
+                        <p class="names">PPT </p>
                         {% if team.ppt %}
-                            <a class="sign-in button" href="{{ team.ppt.url }}"download>PPT </a>
+                            <a class="sign-in button" href="{{ team.ppt.url }}"download>UPLOADED </a>
                         {% else %}
-                            <a class="sign-in button" >PPT NOT UPLOADED</a>
+                            <a class="sign-in button" >NOT UPLOADED</a>
+                        {% endif %}
+                        <p class="names">GUIDE FORM</p>
+                        {% if team.guide_form %}
+                            <a class="sign-in button" href="{{ team.guide_form.url }}" download>UPLOADED</a>
+                        {% else %}
+                            <a class="sign-in button" > NOT UPLOADED</a>
                         {% endif %}
                     </div>
                 </div>
@@ -141,8 +151,8 @@
                     <div class="profile block"> 
                         <a class="add-button" href="#28"><span class="icon entypo-plus scnd-font-color"></span></a>
                         <div class="profile-picture ">
-                            <!-- Put default pic -->
-                            <img width="150px" alt="profile pic" src="" >
+                            {% load static %}
+                            <img alt="profile pic" src="{% static 'img/profile.png' %}" >
                         </div>
                         <h1 class="user-name">{{ team.teamID }}</h1>
                         <h1 class="user-name"> {{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
@@ -217,14 +227,16 @@
                     </div>
                 </div>
                 <div class="six">
-                    <!-- <div class="profile-status"> 
+                   <div class="mark-status"> 
                         <h2 class="titular">
-                            UPDATES AND LATEST NEWS
+                            ENTER GUIDE MARKS
                         </h2>
-                        <a class="subscribe button" href="#21">
-                            CHECK FOR UPDATES
+                        <div class="marks">
+                            <textarea name="user_activity" placeholder="Enter the marks" class="marks1"></textarea>
+                            <button type="submit" class="btn">Post</button>
+                        </div>
                         </a>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>      

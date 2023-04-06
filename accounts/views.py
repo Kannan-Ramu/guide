@@ -1,5 +1,5 @@
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import get_user_model
@@ -48,8 +48,8 @@ def guides_register(request):
                 return redirect('login')
         else:
             messages.error(
-                request, "Your details is not registered as guide! Kindly register meet PRIDE CELL incharge!")
-            return redirect('login')
+                request, "Kindly fill the form and inform the coordinators!")
+            return redirect('guides')
         # else:
         #     messages.warning(request, field.errors)
         #     for field in form:
@@ -77,31 +77,34 @@ def register(request):
                 special_characters = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
                 if len(password) < 8:
                     messages.error(
-                        request, 'Password length must be atleast 8 character.')
-                    return redirect('register')
+                        request, 'Password length must be atleast 8 character.please REGISTER AGAIN by toggling the button below')
+                    return redirect('login')
 
                 # Check for digits
                 if not any(char.isdigit() for char in password):
                     messages.error(
-                        request, 'Password must contain at least 1 digit.')
-                    return redirect('register')
+                        request, 'Password must contain at least 1 digit. please REGISTER AGAIN by toggling the button below')
+                    return redirect('login')
 
                 # Check for spl chars
                 if not any(char in special_characters for char in password):
                     messages.error(
-                        request, 'Password must contain at least 1 special character')
-                    return redirect('register')
+                        request, 'Password must contain at least 1 special character please REGISTER AGAIN by toggling the button below')
+                    return redirect('login')
 
                 # Check for user existence
                 if User.objects.filter(email=email).exists():
-                    messages.error(request, 'Email Taken')
-                    return redirect('register')
+                    messages.error(
+                        request, 'Email Taken. please REGISTER AGAIN by toggling the button below')
+                    return redirect('login')
                 elif Team.objects.filter(student_1_email=email).exists():
-                    messages.error(request, 'Email Taken in another team')
-                    return redirect('register')
+                    messages.error(
+                        request, 'Email Taken in another team. please REGISTER AGAIN by toggling the button below')
+                    return redirect('login')
                 elif Team.objects.filter(student_2_email=email).exists():
-                    messages.error(request, 'Email Taken in another team')
-                    return redirect('register')
+                    messages.error(
+                        request, 'Email Taken in another team. please REGISTER AGAIN by toggling the button below')
+                    return redirect('login')
 
                 # All are good!
                 elif form.is_valid():
@@ -126,15 +129,17 @@ def register(request):
                         print('Error is: ', e)
 
             else:
-                messages.error(request, 'Password not matching')
-                return render(request, 'Register/register.html')
+                messages.error(
+                    request, 'Password not matching please REGISTER AGAIN by toggling the button below')
+                # return render(request, 'Register/register.html')
+                return HttpResponseRedirect('login')
         else:
             messages.error(
-                request, 'Enter a valid email with @gmail.com, @yahoo.in, @hotmail.com')
-            return redirect('register')
+                request, 'Enter a valid email with @gmail.com, @yahoo.in, @hotmail.com. Please REGISTER AGAIN by toggling the button below')
+            return redirect('login')
 
     else:
-        return render(request, 'Register/register.html')
+        return redirect('login')
 
 
 def login(request):
@@ -148,6 +153,8 @@ def login(request):
         user = auth.authenticate(username=user_name, password=password)
         if user is not None:
             print('User is: ', user)
+            if user.is_staff == True:
+                return redirect('export')
             if Guide.objects.filter(email=user_name).exists():
                 # guide = Guide.objects.filter(email=user_name).get()
                 auth.login(request, user)
@@ -190,44 +197,6 @@ def login(request):
                     else:
                         team.delete()
                         return render(request, 'no_of_stud/no_of_stud.html')
-
-                    # guide_inst = Guide.objects.filter(
-                    #     serial_no=team.guide.serial_no).get()
-                    context = {
-                        'team': team,
-                        'user': user,
-                        # 'guide': guide_inst,
-                        # 'id': guide_inst.serial_no
-                    }
-
-                    if team.no_of_members == '2':
-                        return render(request, 'temp_team_2/temp_team_2.html', context)
-
-                    g_obj = team.guide
-                    email_2 = Otp_Two.objects.filter(
-                        temp_email=user.email).get()
-                    if g_obj is None:
-                        print('INSIDE NONE IF')
-                        context = {
-                            'email': email_2
-                        }
-
-                        if team.no_of_members == '2':
-                            return render(request, '2_project_form/2_project_form.html', context)
-                        else:
-                            return render(request, '1_project_form`/1_project_form.html')
-                    else:
-                        context = {
-                            'team': team,
-                            'user': user,
-                            # 'guide': guide_inst,
-                            # 'id': guide_inst.serial_no
-                        }
-
-                        if team.no_of_members == '2':
-                            return render(request, 'temp_team_2/temp_team_2.html', context)
-                        else:
-                            return render(request, 'temp_team_1/temp_team_1.html', context)
 
                 # if Team.objects.filter(teamID=user.username).exists():
                 #     print('INSIDE LINE 312 IF: ')

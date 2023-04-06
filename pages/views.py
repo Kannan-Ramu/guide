@@ -1,4 +1,6 @@
 
+from .models import Team
+from openpyxl import Workbook
 from django.template import RequestContext
 import os
 from random import randrange
@@ -58,7 +60,7 @@ def guides(request):
                           domain_3=domain_3, email=email, myImage=myImage, vacancy=vacancy)
 
             guide.save()
-        return render(request, 'adminregister/submitted.html')
+        return redirect('guides-register')
     else:
 
         return render(request, 'adminregister/aform.html')
@@ -814,8 +816,25 @@ def reset_password(request):
                     request, 'Password must contain at least 1 special character')
                 return redirect('reset-password')
 
+            # if Guide.objects.filter(emp_id=teamID).exists():
+            #     if User.objects.filter(username=email).exists():
+            #         pass
+            # else:
+            #     return redirect('login')
+
             # Check for user existence
-            if User.objects.filter(username=teamID).exists():
+            temp, id = teamID.split('-')
+            # temp = int(teamID)
+            print('id is: ', id)
+            if Guide.objects.filter(emp_id=id).exists():
+                if User.objects.filter(username=email).exists():
+                    user = User.objects.filter(username=email).get()
+                    user.email = email
+                    user.set_password(password)
+                    user.save()
+                    messages.success(request, 'Password Changed successfully!')
+                    return redirect('login')
+            elif User.objects.filter(username=teamID).exists():
                 user = User.objects.filter(username=teamID).get()
                 user.email = email
                 user.set_password(password)
@@ -824,7 +843,7 @@ def reset_password(request):
                 return redirect('login')
             else:
                 messages.error(
-                    request, 'Given Email-id/team ID does not exist. Try Again!')
+                    request, 'Given Email-id/team ID/Emp-id does not exist.  Try Again!')
                 return redirect('reset-password')
         else:
             messages.error(request, 'Password not matching!')
@@ -843,27 +862,64 @@ def doc_upload(request):
             doc_storage = DocStorage()
             team = Team.objects.filter(teamID=user.username).get()
             if request.FILES:
-                ppt = request.FILES['ppt']
-                document = request.FILES['document']
-                rs_paper = request.FILES['rs_paper']
-                guide_form = request.FILES['guide_form']
-
+                if request.FILES.get('ppt'):
+                    ppt = request.FILES['ppt']
+                    # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
+                    if ppt.size > 9437184:
+                        messages.error(
+                            request, "PPT size must be less than 9 MB")
+                        return redirect('upload')
+                    team.ppt = ppt
+                if request.FILES.get('document'):
+                    document = request.FILES['document']
+                    if document.size > 9437184:
+                        messages.error(
+                            request, "Document size must be less than 9 MB")
+                        return redirect('upload')
+                    team.document = document
+                if request.FILES.get('rs_paper'):
+                    rs_paper = request.FILES['rs_paper']
+                    # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
+                    if rs_paper.size > 1048576:
+                        messages.error(
+                            request, "Research Paper size must be less than 500kb")
+                        return redirect('upload')
+                    team.rs_paper = rs_paper
+                if request.FILES.get('guide_form'):
+                    guide_form = request.FILES['guide_form']
+                    if guide_form.size > 1048576:
+                        messages.error(
+                            request, "Guide Form size must be less than 500kb")
+                        return redirect('upload')
+                    team.guide_form = guide_form
                 # synthesize a full file path; note that we included the filename
-                file_path_within_bucket = os.path.join(
+                '''ppt_path_within_bucket = os.path.join(
                     file_directory_within_bucket,
                     ppt.name
                 )
+                document_path_within_bucket = os.path.join(
+                    file_directory_within_bucket,
+                    document.name
+                )
+                rs_paper_path_within_bucket = os.path.join(
+                    file_directory_within_bucket,
+                    rs_paper.name
+                )
+                guide_form_path_within_bucket = os.path.join(
+                    file_directory_within_bucket,
+                    guide_form.name
+                )'''
 
-                # if doc_storage.exists(file_directory_within_bucket):
-                #     doc_storage.delete(file_directory_within_bucket)
+                if doc_storage.exists(file_directory_within_bucket):
+                    doc_storage.delete(file_directory_within_bucket)
 
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(ppt_path_within_bucket):
                 #     doc_storage.delete(ppt.name)
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(document_path_within_bucket):
                 #     doc_storage.delete(document.name)
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(rs_paper_path_within_bucket):
                 #     doc_storage.delete(rs_paper.name)
-                # if doc_storage.exists(file_path_within_bucket):
+                # if doc_storage.exists(guide_form_path_within_bucket):
                 #     doc_storage.delete(guide_form.name)
 
                 # doc_storage.save(file_path_within_bucket, ppt)
@@ -876,13 +932,9 @@ def doc_upload(request):
                 #     file_path_within_bucket, rs_paper)
                 # team.guide_form = doc_storage.save(
                 #     file_path_within_bucket, guide_form)
-                team.ppt = ppt
-                team.document = document
-                team.rs_paper = rs_paper
-                team.guide_form = guide_form
 
                 team.save()
-            # auth.logout(request)
+            auth.logout(request)
             return redirect('submitted')
         team = Team.objects.filter(teamID=user.username).get()
         context = {
@@ -947,3 +999,40 @@ def my_custom_permission_denied_view(request, exception):
 
 def my_custom_bad_request_view(request, exception):
     return render(request, 'errors/400.html', context={'exception': exception})
+
+
+# conditional export
+
+
+def export_to_excel(request):
+    # apply filters as necessary
+    queryset = Team.objects.filter(guide_approved=True).order_by('teamID')
+
+    # Create a new workbook and add a worksheet
+    wb = Workbook()
+    ws = wb.active
+
+    # Add column headings to the worksheet
+    fields = Team._meta.get_fields()
+    col = 1
+    for field in fields:
+        ws.cell(row=1, column=col, value=field.name.capitalize())
+        col += 1
+
+    # Add data to the worksheet
+    row = 2
+    for obj in queryset:
+        col = 1
+        for field in fields:
+            value = getattr(obj, field.name)
+            ws.cell(row=row, column=col, value=str(value))
+            col += 1
+        row += 1
+
+    # Create an HTTP response with the Excel file as the content
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=mydata.xlsx'
+    wb.save(response)
+
+    return response

@@ -276,19 +276,13 @@ a{
     align-items: center;
     text-align: center; 
 }
-.profile-picture{
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-left: 140px;
-    margin-right: 140px;
+.profile-picture img{
+    margin: 0 auto;
     border-radius: 50%;
+    border:2px solid #484546c7;
     width: 120px;
     height: 120px;
-    border: 2px solid #831238;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
+    display: block;   
 }
 .user-name{
     font-size: 20px;
@@ -342,19 +336,14 @@ a{
         align-items: center;
         text-align: center;
       }
-      .profile-picture{
-        margin-top: 0px;
-        margin-left: 140px;
-        margin-right: 140px;
+      .profile-picture img{
+        margin: 0 auto;
         border-radius: 50%;
-        width: 80px;
-        height: 80px;
-        border: 2px solid #831238;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        overflow: hidden;
-      }
+        border:2px solid #484546c7;
+        width: 120px;
+        height: 120px;
+        display: block;   
+    }
       .user-name{
         font-size: 15px;
         color: #000000;

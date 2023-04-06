@@ -12,7 +12,7 @@
     <title>HOME</title>
 </head>
 
-<body>
+<body style="background-image: url('https://www.sathyabama.ac.in/sites/default/files/inline-images/DJI_0105-New-Low.jpg');">
 	<header class="container-box">
 		<nav id="menu">
 			<ul class="blackbox">
@@ -21,9 +21,11 @@
 				</a>
 				<li id="red"><a href="{% url 'home' %}">Home</a></li>
 				<li id="red"><a href="{% url 'credits' %}">Credits</a></li>
-				<li id="red"><a href="{% url 'retitle' %}">Change Title</a></li>
+				<!-- <li id="red"><a href="{% url 'retitle' %}">Change Title</a></li> -->
 				{% if user.is_authenticated %}
-				<li id="red"><a href="{% url 'logout' %}">Logout</a></li>
+					<li id="red"><a href="{% url 'logout' %}">Logout</a></li>
+				{% else %}
+					<li id="red"><a href="{% url 'login' %}">Login</a></li>
 				{% endif %}
 			</ul>
 		</nav>
@@ -31,7 +33,7 @@
 			<div class="container">
 				<video class="orange" autoplay muted loop id="myvideo" onclick="play();">
 					<source src="{% static 'img/SIST.mp4' %}" type="video/mp4" />
-				</video>
+				</video> 
 				<div class="overlay">
 					<div class="roller">
 						<div class="heading">ANNOUNCEMENT</div>
@@ -94,7 +96,7 @@
 							<p>Once completed,check your registered  E_mail for the confirmation details. Remember the team id  for further communication.</p>
 						</li>
 					</ol>
-					<form action="{% url 'register' %}" id="black">
+					<form action="{% url 'login' %}" id="black">
 						<!-- {% csrf_token %} -->
 						<div class="check">
 							<input type="checkbox" id="terms_and_conditions" value="1" onclick="terms_changed(this)" required />

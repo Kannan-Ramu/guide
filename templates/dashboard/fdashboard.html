@@ -1,14 +1,11 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% block css %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/fdashboard.css' %}">
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <header>
     <div class="section1">
         <div class="top_navbar">
@@ -379,5 +376,4 @@
 
   </script>
   <script src="{% static 'js/fdashboard.js' %}"></script>
-</body>
-</html>
+{% endblock %}

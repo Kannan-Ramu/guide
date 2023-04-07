@@ -1,14 +1,11 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/sdashboard.css' %}">
-</head>
-<body>
+    {% block css %}
+        <link rel="stylesheet" href="{% static 'css/sdashboard.css' %}">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    {% endblock %}
+    {% block title %} TEAM DASHBOARD {% endblock %}
+{% block content %}
     <header>
     <div class="section1">
         <div class="top_navbar">
@@ -198,5 +195,4 @@
         document.querySelector("body").classList.toggle("active");
     })
   </script>
-</body>
-</html>
+{% endblock %}

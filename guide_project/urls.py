@@ -22,6 +22,7 @@ urlpatterns = [
     path('pride-cell/', admin.site.urls),
     path('', include('pages.urls')),
     path('accounts/', include('accounts.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('comments/', include('comments.urls')),
     path('verification/', include('verify_email.urls')),

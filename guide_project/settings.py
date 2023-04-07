@@ -240,3 +240,7 @@ SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
 # AWS_STORAGE_BUCKET_NAME = 'django-guide-project'
 AWS_STORAGE_BUCKET_NAME = 'django-guide-project-new'
 AWS_S3_REGION_NAME = 'ap-south-1'
+
+# Auto logout
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

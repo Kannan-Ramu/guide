@@ -229,8 +229,12 @@
                             ENTER GUIDE MARKS
                         </h2>
                         <div class="marks">
-                            <textarea name="user_activity" placeholder="Enter the marks" class="marks1"></textarea>
-                            <button type="submit" class="btn">Post</button>
+                            <!-- <form action="{% url 'guide-dashboard' teamID=team.teamID %}" method="POST">
+                                {% csrf_token %}
+                                <textarea name="review_1_marks" placeholder="Enter the marks" class="marks1"></textarea>
+                                <textarea name="review_2_marks" placeholder="Enter the marks" class="marks1"></textarea>
+                                <button type="submit" class="btn">Post</button>
+                            </form> -->
                         </div>
                         </a>
                     </div>

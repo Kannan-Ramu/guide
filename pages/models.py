@@ -83,6 +83,9 @@ class Team(models.Model):
 
     guide_email = models.CharField(max_length=100)
 
+    review_1_marks = models.IntegerField()
+    review_2_marks = models.IntegerField()
+
     def __str__(self):
         return self.teamID
 

@@ -30,9 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-bn!gb+_&96p0e7j+0@in%!o5xxl23m$907%3sgyqlekw&85sgv'
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
-DEBUG = os.environ.get('DEBUG')
-# DEBUG = False
+# DEBUG = os.environ.get('DEBUG')
+DEBUG = True
 
 # DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
 DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-132.railway.app:6989/railway"
@@ -220,7 +219,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
-LOGIN_URL = 'login'
+LOGIN_URL = '/accounts/login/'
 
 # Email Verify Config
 
@@ -241,6 +240,6 @@ SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
 AWS_STORAGE_BUCKET_NAME = 'django-guide-project-new'
 AWS_S3_REGION_NAME = 'ap-south-1'
 
-# Auto logout
+# Logout On Closing
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

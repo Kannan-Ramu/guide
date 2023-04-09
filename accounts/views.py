@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from pages.models import Guide, Team, Otp_Two, Temp_Team
+<<<<<<< HEAD
 from django.template import loader
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
@@ -12,10 +13,24 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.core.mail import EmailMultiAlternatives
 
+=======
+from django.contrib.auth.password_validation import MinimumLengthValidator, NumericPasswordValidator, validate_password
+from django.core.exceptions import ValidationError
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import EmailMultiAlternatives
+from django.template import loader
+>>>>>>> d099eb2662ff60e03bb2a74b7f4892b9c48c621f
 from verify_email.email_handler import send_verification_email
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
 from .forms import GuideSignUpForm, StudentSignUpForm
 from guide_project.settings import EMAIL_HOST_USER
+<<<<<<< HEAD
 
+=======
+>>>>>>> d099eb2662ff60e03bb2a74b7f4892b9c48c621f
 
 UserModel = get_user_model()
 
@@ -149,7 +164,9 @@ def register(request):
 
 
 def login(request):
+    print('INSIDE LOGIN')
     if request.method == 'POST':
+        print('INSIDE POST LOGIN()')
         user_name = request.POST['email']
         password = request.POST['password']
         if not User.objects.filter(username=user_name).exists():
@@ -232,6 +249,7 @@ def logout(request):
     messages.success(request, 'You are successfully logged Out and can login!')
     return redirect('login')
 
+<<<<<<< HEAD
 # For password reset
 
 
@@ -251,6 +269,25 @@ def password_reset(request):
             token_generator = default_token_generator
             if request.is_secure():
                 use_https = True
+=======
+
+def password_reset(request):
+    if request.method == 'POST':
+        email_template_name = "registration/password_reset_email.html"
+        email = request.POST['email']
+        teamID = request.POST['teamID']
+        subject = "RESET PASSWORD EMAIL"
+        current_site = get_current_site(request)
+        domain = current_site.domain
+        site_name = current_site.name
+        token_generator = default_token_generator
+        use_https = False
+        if request.is_secure():
+            use_https = True
+        if User.objects.filter(username=teamID).exists():
+            user = User.objects.filter(username=teamID).get()
+            user.email = email
+>>>>>>> d099eb2662ff60e03bb2a74b7f4892b9c48c621f
             context = {
                 "email": email,
                 "domain": domain,
@@ -265,6 +302,7 @@ def password_reset(request):
                 subject, body, EMAIL_HOST_USER, [email]
             )
             email_message.send()
+<<<<<<< HEAD
             return redirect('password-reset-done')
 
         else:
@@ -273,6 +311,14 @@ def password_reset(request):
             return redirect('password_reset')
     else:
         return render(request, 'registration/password_reset_form.html')
+=======
+
+            return redirect('password-reset-done')
+        else:
+            messages.error(request, "User with that email does not exist!")
+            return redirect('password-reset')
+    return render(request, 'registration/password_reset_form.html')
+>>>>>>> d099eb2662ff60e03bb2a74b7f4892b9c48c621f
 
 
 def password_reset_done(request):
@@ -280,12 +326,27 @@ def password_reset_done(request):
 
 
 def password_reset_confirm(request, uidb64, token):
+<<<<<<< HEAD
     validlink = False
     token_generator = default_token_generator
     uid = urlsafe_base64_decode(uidb64).decode()
     user = UserModel._default_manager.get(pk=uid)
     if token_generator.check_token(user, token):
         validlink = True
+=======
+    try:
+        # urlsafe_base64_decode() decodes to bytestring
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = UserModel._default_manager.get(pk=uid)
+    except (
+        TypeError,
+        ValueError,
+        OverflowError,
+        UserModel.DoesNotExist,
+        ValidationError,
+    ):
+        user = None
+>>>>>>> d099eb2662ff60e03bb2a74b7f4892b9c48c621f
     if request.method == 'POST':
         new_password1 = request.POST['new_password1']
         new_password2 = request.POST['new_password2']
@@ -314,6 +375,7 @@ def password_reset_confirm(request, uidb64, token):
                     request, 'Password must contain at least 1 special character')
                 return redirect('password-reset-confirm', uidb64, token)
 
+<<<<<<< HEAD
             # if Guide.objects.filter(emp_id=teamID).exists():
             #     if User.objects.filter(username=email).exists():
             #         pass
@@ -330,6 +392,15 @@ def password_reset_confirm(request, uidb64, token):
                     user.save()
                     messages.success(request, 'Password Changed successfully!')
                     return redirect('login')
+=======
+            # For Guides
+            if Guide.objects.filter(email=user.email).exists():
+                user.set_password(new_password1)
+                user.save()
+                messages.success(request, 'Password Changed successfully!')
+                return redirect('login')
+            # For Students
+>>>>>>> d099eb2662ff60e03bb2a74b7f4892b9c48c621f
             elif User.objects.filter(email=user.email).exists():
                 user = User.objects.filter(email=user.email).get()
                 user.set_password(new_password1)
@@ -337,6 +408,7 @@ def password_reset_confirm(request, uidb64, token):
                 messages.success(request, 'Password Changed successfully!')
                 return redirect('login')
         else:
+<<<<<<< HEAD
             messages.error(request, 'Password not matching!')
             return redirect('password-reset-confirm', uidb64, token)
     else:
@@ -347,3 +419,31 @@ def password_reset_confirm(request, uidb64, token):
             'validlink': validlink
         }
         return render(request, 'registration/password_reset_confirm.html', context)
+=======
+            messages.error(request, "Password did not match")
+            return redirect()
+    else:
+        validLink = False
+
+        if user is not None:
+            print('INSIDE USER IS NOT NONE')
+            if default_token_generator.check_token(user, token):
+                print('INSIDE TOKEN CHECK IF')
+                validLink = True
+            else:
+                print('INSIDE TOKEN CHECK ELSE')
+        else:
+            messages.error(request, 'User doesnot exist!')
+            return redirect('password-reset')
+        context = {
+            'validLink': validLink,
+            'uidb64': uidb64,
+            'token': token
+        }
+        return render(request, 'registration/password_reset_confirm.html', context)
+
+
+def password_reset_complete(request):
+
+    pass
+>>>>>>> d099eb2662ff60e03bb2a74b7f4892b9c48c621f

@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title></title>
+      <link rel="stylesheet" href="{% static 'css/login.css' %}">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
+   <body>
+      <div class="wrapper">
+         <div class="title-text">
+            <div class="title login">
+               LOGIN
+            </div>
+            <div class="title signup">
+               REGISTER
+            </div>
+         </div>
+         <div class="form-container">
+            {% include 'partials/_alerts.html' %}
+            <div class="slide-controls">
+               <input type="radio" name="slide" id="login" checked>
+               <input type="radio" name="slide" id="signup">
+               <label for="login" class="slide login">Login</label>
+               <label for="signup" class="slide signup">Register</label>
+               <div class="slider-tab"></div>
+            </div>
+            <div class="form-inner">
+               <form action="{% url 'login' %}" method="POST" class="login">
+                  {% csrf_token %}
+                  <div class="field">
+                     <input type="text" name="email" placeholder="Email for staff/Team-id for students" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" name="password" placeholder="Password" required>
+                  </div>
+                  <div class="pass-link">
+                     <a href="{% url 'reset-password' %}">Forgot password?</a>
+                  </div>
+                  <div class="field btn">
+                     <div class="btn-layer"></div>
+                     <input type="submit" value="Login">
+                  </div>
+                  <div class="signup-link" id="register" >
+                     Not a user? <a href="{% url 'register' %}">Signup now</a>
+                  </div>
+                  <div class="pass-link">
+                     <strong> Staff Sign Up here -></strong> <strong> <a href="{% url 'guides-register' %}">Staff Sign UP</a></strong>
+                  </div>
+               </form>
+               <form action="{% url 'register' %}" method="POST" class="signup">
+                  {% csrf_token %}
+                <div class="field">
+                    <input type="text" name="first_name" placeholder="First Name" required>
+                 </div>
+                 <div class="field">
+                    <input type="text" name="last_name" placeholder="Last Name" required>
+                 </div>
+                  <div class="field">
+                     <input type="text" name="email" placeholder="Email Address" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" name="password1" placeholder="Password" required>
+                  </div>
+                  <div class="field">
+                     <input type="password" name="password2" placeholder="Confirm password" required>
+                  </div>
+                  
+                  <div class="field btn">
+                     <div class="btn-layer"></div>
+                     <input type="submit" value="Signup">
+                     <input type="submit" value="Signup">
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+   </body>
+</html>

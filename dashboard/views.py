@@ -16,6 +16,17 @@ def guide_dashboard(request, teamID):
         return redirect('login')
     user = request.user
     team = Team.objects.filter(teamID=teamID).get()
+    if request.method == 'POST':
+        review_1_marks = request.POST['review_1_marks']
+        review_2_marks = request.POST['review_2_marks']
+
+        team.review_1_marks = review_1_marks
+        team.review_2_marks = review_2_marks
+
+        team.save()
+
+        return redirect('guide-dashboard', teamID)
+
     print('Team is: ', team.teamID)
     if Guide.objects.filter(email=user.email).exists():
         guide = Guide.objects.filter(email=user.email).get()

@@ -1,146 +1,141 @@
 {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block script %}
 
 <title>{% block title %} PROFILE {% endblock %}</title>
 
 {% block script %}
     <script src="https://kit.fontawesome.com/bd2255194d.js" crossorigin="anonymous"></script>
 {% endblock %}
+{% block css %}
+{% endblock %}
 
 {% block css %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" text="text/css" href="{% static 'css/profile.css' %}">
 {% endblock %}
+    {% block title %}PROFILE{% endblock %}
+{% endblock %}
 
 {% block content %}
 
-            {% if user.username == team.teamID  or  user.username == team.guide_email %}
-                <header>
-                        <nav id="menu">
-                            <ul class="blackbox">
-                                {% if is_guide %}
-                                    <li>
-                                        <a href="{% url 'guide-dashboard' team.teamID %}">Dashboard</a>
-                                    </li>
-                                {% else %}
-                                <li>
-                                    <a href="{% url 'team-dashboard' %}">Dashboard</a>
-                                </li>
-                                {% endif %}
-                                
-                                <li><a href="{% url 'logout' %}">Logout</a></li>
-                                <li><a href="{% url 'home' %}">Home</a></li>
-                            </ul>
-                        </nav>
-                </header>
-                <br>
-                <header>
-                    <nav id="menu">
-                        <ul class="blackbox">
-                            <h1 class="db">TEAM PROFILE</h1>
-                        </ul>
-                    </nav>
-                </header>
-                <div class="d-flex align-items">
-                    <div class="row">
-                        <div class="col-md-15 m-5">
-                            <div class="card text-center sidebar">
-                                <div class="card-body">
-                                    <img src="{% static 'img/profile.png' %}" alt="Profile img" class="round-circle" width="150">
-                                    <div class="mt-3">
-                                        <h3>{{ team.teamID }}</h3>
-                                        <p>{{ team.guide }}</p>
-                                        <p>{{ team.guide_email }}</p>
-                                    </div>
-                                </div>
+<body>
+    {% if user.username == team.teamID  or  user.username == team.guide_email %}
+        <header>
+                <nav id="menu">
+                    <ul class="blackbox">
+                        {% if is_guide %}
+                            <li>
+                                <a href="{% url 'guide-dashboard' team.teamID %}">Dashboard</a>
+                            </li>
+                        {% else %}
+                        <li>
+                            <a href="{% url 'team-dashboard' %}">Dashboard</a>
+                        </li>
+                        {% endif %}
+                        
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                    </ul>
+                </nav>
+        </header>
+        <br>
+        <header>
+            <nav id="menu">
+                <ul class="blackbox">
+                    <h1 class="db">TEAM PROFILE</h1>
+                </ul>
+            </nav>
+        </header>
+        <div class="d-flex align-items">
+            <div class="row">
+                <div class="col-md-15 m-5">
+                    <div class="card text-center sidebar">
+                        <div class="card-body">
+                            <img src="{% static 'img/profile.png' %}" alt="Profile img" class="round-circle" width="150">
+                            <div class="mt-3">
+                                <h3>{{ team.teamID }}</h3>
+                                <p>{{ team.guide }}</p>
+                                <p>{{ team.guide_email }}</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="col-md-8 mt-5" id="ab">
-                        <div class="card mb-3 content">
-                            <!-- <h1 class="m-3 pt-3">About</h1> -->
-                            <form action="{% url 'update-project' id=team.teamID %}" method="POST">
-                                {% csrf_token %}
-                                <div class="card-body">
-                                    <div class="d-flex align-items">
-                                        <div class="col-md-2">
-                                            <h5>Project Title</h5>
-                                        </div>
-                                        <div class="col-md-10 text-secondary">
-                                            <input type="text" name="project_name" class="form-control editField" value="{{ team.project_name }}" readonly>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="d-flex align-items">
-                                        <div class="col-md-2">
-                                            <h5>Project Domain</h5>
-                                        </div>
-                                        <div class="col-md-10 text-secondary">
-                                            {% if team.project_domain %}
-                                                <input type="text" name="project_domain" class="form-control editField" 
-                                                    value="{{ team.project_domain }}"
-                                                    readonly>
-                                            {% else %}
-                                                <input type="text" name="project_domain" class="form-control editField" 
-                                                    value="PLEASE UPDATE YOUR PROJECT DOMAIN!"
-                                                    readonly>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <!-- <hr>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <h5>Phone</h5>
-                                        </div>
-                                        <div class="col-md-9 text-secondary">
-                                            <input type="text" class="form-control editField" value="Phone" readonly>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <h5>Mobile</h5>
-                                        </div>
-                                        <div class="col-md-9 text-secondary">
-                                            <input type="text" class="form-control editField" value="Mobile" readonly>
-                                        </div>
-                                    </div> -->
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <h5>Project Description</h5>
-                                        </div>
-                                        <div class="col-md-30 text-secondary">
-                                            {% if team.project_description %}
-                                                <textarea 
-                                                    type="text" 
-                                                    class="form-control editField" 
-                                                    name="project_description" 
-                                                    rows="4" cols="1000" id="tx"    readonly> 
-                                                        {{ team.project_description }} 
-                                                </textarea>
-                                            {% else %}
-                                                <textarea 
-                                                    type="text" 
-                                                    class="form-control editField" 
-                                                    name="project_description" 
-                                                    rows="4" cols="1000" id="tx" 
-                                                    readonly>
-                                                        PLEASE UPDATE YOUR PROJECT DESCRIPTION!
-                                                </textarea>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <a class="btn btn-danger editBtn" id="edit" onclick="enable()">Edit Off</a>
-                                    <!-- <a class="btn btn-success submit" id="save" disabled>Submit</a> -->
-                                    <input class="btn btn-success" type="submit" id="save" value="Submit" disabled/>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
+            </div>
+            
+            <div class="col-md-8 mt-5" id="ab">
+                <div class="card mb-3 content">
+                    <!-- <h1 class="m-3 pt-3">About</h1> -->
+                    <form action="{% url 'update-project' id=team.teamID %}" method="POST">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Project Title</h5>
+                                </div>
+                                <div class="col-md-10 text-secondary">
+                                    <input type="text" name="project_name" class="form-control editField" value="{{ team.project_name }}" readonly>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex align-items">
+                                <div class="col-md-2">
+                                    <h5>Project Domain</h5>
+                                </div>
+                                <div class="col-md-10 text-secondary">
+                                    <input type="text" name="project_domain" class="form-control editField" 
+                                        value="{% if team.project_domain %} 
+                                                    {{ team.project_domain }} 
+                                                {% else %}
+                                                    PLEASE UPDATE YOUR PROJECT DOMAIN!
+                                                {% endif %}"
+                                        readonly>
+                                </div>
+                            </div>
+                            <!-- <hr>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h5>Phone</h5>
+                                </div>
+                                <div class="col-md-9 text-secondary">
+                                    <input type="text" class="form-control editField" value="Phone" readonly>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h5>Mobile</h5>
+                                </div>
+                                <div class="col-md-9 text-secondary">
+                                    <input type="text" class="form-control editField" value="Mobile" readonly>
+                                </div>
+                            </div> -->
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Project Description</h5>
+                                </div>
+                                <div class="col-md-30 text-secondary">
+                                    <textarea type="text" class="form-control editField" 
+                                    name="project_description" rows="4" cols="1000" id="tx" readonly>
+                                        {% if team.project_description %} 
+                                            {{ team.project_description }} 
+                                        {% else %}
+                                            PLEASE UPDATE YOUR PROJECT DESCRIPTION!
+                                        {% endif %}
+                                    </textarea>
+                                </div>
+                            </div>
+                            <hr>
+                            <a class="btn btn-danger editBtn" id="edit" onclick="enable()">Edit Off</a>
+                            <!-- <a class="btn btn-success submit" id="save" disabled>Submit</a> -->
+                            <input class="btn btn-success" type="submit" id="save" value="Submit" disabled/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
                 <div class="d-flex align-items">
 

@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block css %}
+{% block css %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/fdashboard.css' %}">
 {% endblock %}
 {% block title %} STAFF DASHBOARD {% endblock %}
@@ -228,10 +233,14 @@
                         <h2 class="titular">
                             ENTER GUIDE MARKS
                         </h2>
-                        <!-- <div class="marks">
-                            <textarea name="user_activity" placeholder="Enter the marks" class="marks1"></textarea>
-                            <button type="submit" class="btn">Post</button>
-                        </div> -->
+                        <div class="marks">
+                            <!-- <form action="{% url 'guide-dashboard' teamID=team.teamID %}" method="POST">
+                                {% csrf_token %}
+                                <textarea name="review_1_marks" placeholder="Enter the marks" class="marks1"></textarea>
+                                <textarea name="review_2_marks" placeholder="Enter the marks" class="marks1"></textarea>
+                                <button type="submit" class="btn">Post</button>
+                            </form> -->
+                        </div>
                         </a>
                     </div>
                 </div>

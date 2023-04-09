@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block script %}
     <script src="https://kit.fontawesome.com/bd2255194d.js" crossorigin="anonymous"></script>
 {% endblock %}
@@ -34,7 +33,7 @@
             <div class="col-md-15 m-5">
                 <div class="card text-center sidebar">
                     <div class="card-body">
-                        <img src="./Image/profile.png" alt="Profile Pic" class="round-circle" width="150">
+                        <img src="{% static 'img/profile.png' %}" alt="Profile Pic" class="round-circle" width="150">
                         <div class="mt-3">
                             <h3>{{ team.teamID }}</h3>
                             <p>{{ team.guide }}</p>

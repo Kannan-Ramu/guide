@@ -1,8 +1,6 @@
 
 from .models import Team
 from openpyxl import Workbook
-from django.template import RequestContext
-import os
 from random import randrange
 from django.core.mail import send_mail
 from django.http import HttpResponse
@@ -13,7 +11,6 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
 from .custom_storage import DocStorage
-# from django.backends.custom_storages import DocStorage
 
 # Create your views here.
 
@@ -67,73 +64,8 @@ def guides(request):
 
 
 def submitted(request):
-    # auth.logout(request)
+    auth.logout(request)
     return render(request, 'submitted.html')
-
-
-def register(request):
-    if request.method == 'POST':
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        email = request.POST['email']
-        password = request.POST['password']
-        ConfirmPassword = request.POST['password1']
-        temp = email.split('@')
-        if temp[1] == 'gmail.com' or temp[1] == 'yahoo.in' or temp[1] == 'hotmail.com':
-
-            if password == ConfirmPassword:
-                special_characters = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
-                if len(password) < 8:
-                    messages.error(
-                        request, 'Password length must be atleast 8 character.')
-                    return redirect('register')
-
-                # Check for digits
-                if not any(char.isdigit() for char in password):
-                    messages.error(
-                        request, 'Password must contain at least 1 digit.')
-                    return redirect('register')
-
-                # Check for alphabets
-                if not any(char.isalpha() for char in password):
-                    messages.error(
-                        request, 'Password must contain at least 1 letter and must be alpha-numeric.')
-                    return redirect('register')
-
-                # Check for spl chars
-                if not any(char in special_characters for char in password):
-                    messages.error(
-                        request, 'Password must contain at least 1 special character')
-                    return redirect('register')
-                # Check for user existence
-                if User.objects.filter(email=email).exists():
-                    messages.error(request, 'Email Taken')
-                    return redirect('register')
-                elif Team.objects.filter(student_1_email=email).exists():
-                    messages.error(request, 'Email Taken in another team')
-                    return redirect('register')
-                elif Team.objects.filter(student_2_email=email).exists():
-                    messages.error(request, 'Email Taken in another team')
-                    return redirect('register')
-                else:
-
-                    user = User.objects.create_user(
-                        first_name=first_name, last_name=last_name, username=email, email=email, password=password
-                    )
-
-                    user.save()
-                    auth.login(request, user)
-
-                    return redirect('verify')
-            messages.error(request, 'Password not matching')
-            return render(request, 'Register/register.html')
-        else:
-            messages.error(
-                request, 'Enter a valid email with @gmail.com, @yahoo.in, @hotmail.com')
-            return redirect('register')
-
-    else:
-        return render(request, 'Register/register.html')
 
 
 def verify(request):
@@ -231,97 +163,6 @@ def verify1(request):
             return redirect('project-details-2')
     else:
         return render(request, 'Register/verify1.html')
-
-
-def login(request):
-    if request.method == 'POST':
-        user_name = request.POST['email']
-        password = request.POST['password']
-        if not User.objects.filter(username=user_name).exists():
-            messages.error(request, "User does not exist!")
-            return redirect('login')
-        user = User.objects.filter(username=user_name).get()
-        if user is not None:
-            user = auth.authenticate(username=user_name, password=password)
-            if Team.objects.filter(teamID=user.username).exists():
-                auth.login(request, user)
-                team = Team.objects.filter(teamID=user.username).get()
-                return redirect('profile')
-            if user is not None:
-
-                auth.login(request, user)
-
-                user = request.user
-
-                if Temp_Team.objects.filter(student_1_email=user.email).exists():
-                    team = Temp_Team.objects.filter(
-                        student_1_email=user.email).get()
-
-                    if Guide.objects.filter(serial_no=team.guide).exists():
-                        guide_inst = Guide.objects.filter(
-                            serial_no=team.guide).get()
-                        context = {
-                            'team': team,
-                            'user': user,
-                            'guide': guide_inst,
-                            'id': guide_inst.serial_no
-                        }
-                    else:
-                        team.delete()
-                        return render(request, 'no_of_stud/no_of_stud.html')
-
-                    # guide_inst = Guide.objects.filter(
-                    #     serial_no=team.guide.serial_no).get()
-                    context = {
-                        'team': team,
-                        'user': user,
-                        # 'guide': guide_inst,
-                        # 'id': guide_inst.serial_no
-                    }
-
-                    if team.no_of_members == '2':
-                        return render(request, 'temp_team_2/temp_team_2.html', context)
-
-                    g_obj = team.guide
-                    email_2 = Otp_Two.objects.filter(
-                        temp_email=user.email).get()
-                    if g_obj is None:
-                        print('INSIDE NONE IF')
-                        context = {
-                            'email': email_2
-                        }
-
-                        if team.no_of_members == '2':
-                            return render(request, '2_project_form/2_project_form.html', context)
-                        else:
-                            return render(request, '1_project_form`/1_project_form.html')
-                    else:
-                        context = {
-                            'team': team,
-                            'user': user,
-                            # 'guide': guide_inst,
-                            # 'id': guide_inst.serial_no
-                        }
-
-                        if team.no_of_members == '2':
-                            return render(request, 'temp_team_2/temp_team_2.html', context)
-                        else:
-                            return render(request, 'temp_team_1/temp_team_1.html', context)
-
-                return render(request, 'no_of_stud/no_of_stud.html')
-            else:
-                print('User is: ', user)
-                print('User is: ', type(user))
-                messages.error(request, 'Invalid Credentials')
-                return redirect('login')
-    else:
-        return render(request, 'Login/login.html')
-
-
-def logout(request):
-    auth.logout(request)
-    messages.success(request, 'You are successfully logged Out and can login!')
-    return redirect('login')
 
 
 def project_details_1(request):

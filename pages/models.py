@@ -83,8 +83,12 @@ class Team(models.Model):
 
     guide_email = models.CharField(max_length=100)
 
-    review_1_marks = models.IntegerField()
     review_2_marks = models.IntegerField()
+    review_3_marks = models.IntegerField()
+
+    communicated = models.BooleanField(default=False)
+    accepted = models.BooleanField(default=False)
+    payment_done = models.BooleanField(default=False)
 
     def __str__(self):
         return self.teamID

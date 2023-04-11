@@ -26,14 +26,12 @@ UserModel = get_user_model()
 
 
 def guides_register(request):
-    # form = GuideSignUpForm()
     if request.method == "POST":
-        # form = GuideSignUpForm(request.POST)
         email = request.POST['email']
-        # email = form.data.get('email')
         password1 = request.POST['password1']
         password2 = request.POST['password2']
-        # if form.is_valid():
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
         if Guide.objects.filter(email=email).exists():
             if password1 == password2:
                 if User.objects.filter(email=email).exists():
@@ -44,7 +42,7 @@ def guides_register(request):
                     return redirect('guides-register')
 
                 user = User.objects.create_user(
-                    username=email, email=email, first_name=request.POST['first_name'], last_name=request.POST['last_name'])
+                    username=email, email=email, first_name=first_name, last_name=last_name)
                 user.set_password(password1)
                 user.save()
                 # user = form.save(commit=False)
@@ -56,6 +54,10 @@ def guides_register(request):
                 messages.success(request, 'Account created! You can login')
                 return redirect('login')
         else:
+            user = User.objects.create_user(
+                username=email, email=email, first_name=first_name, last_name=last_name)
+            user.set_password(password1)
+            user.save()
             messages.error(
                 request, "Kindly fill the form and inform the coordinators!")
             return redirect('guides')

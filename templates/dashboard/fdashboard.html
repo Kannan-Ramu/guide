@@ -5,6 +5,7 @@
 {% block css %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link rel="stylesheet" href="{% static 'css/fdashboard.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 {% endblock %}
 {% block title %} STAFF DASHBOARD {% endblock %}
 {% block content %}
@@ -37,7 +38,7 @@
             <ul>
                 <!-- Side bar link to be changed -->
                 <li>
-                    <a href="{% url 'home' %}" class="active">
+                    <a href="{% url 'home' %}">
                         <span class="icon"><i class="fas fa-home"></i></span>
                         <span class="item">Home</span>
                     </a>
@@ -151,7 +152,7 @@
                         <a class="add-button" href="#28"><span class="icon entypo-plus scnd-font-color"></span></a>
                         <div class="profile-picture ">
                             {% load static %}
-                            <img alt="profile pic" src="{% static 'img/profile.png' %}" >
+                            <img alt="profile pic" src="{% static 'img/profile.png' %}">
                         </div>
                         <h1 class="user-name">{{ team.teamID }}</h1>
                         <h1 class="user-name"> {{ team.student_1_name }} {% if team.no_of_members == '2' %} & {{ team.student_2_name }} {% endif %}</h1>
@@ -166,7 +167,7 @@
                     <div class="profile-status"> 
                         <h2 class="titular">GUIDE SUGGESTIONS</h2>
                         <!-- Redirect to comment page -->
-                        <a class="subscribe button" href="{% url 'comments' team.teamID %}">WRITE COMMENTS</a>
+                        <a class="subscribe button" href="{% url 'comments' team.teamID %}" >WRITE COMMENTS</a>
                     </div>
                 </div>
             </div>
@@ -199,6 +200,30 @@
                               <div class="toggler-knob"></div>
                             </div>
                         </label>
+                        <div class="form-check form-check-inline">
+                            {% if team.communicated %}
+                                <input class="form-check-input" type="checkbox" id="communicated-checkbox" value="option1" checked>
+                            {% else %}
+                                <input class="form-check-input" type="checkbox" id="communicated-checkbox" value="option1">
+                            {% endif %}
+                            <label class="form-check-label" for="inlineCheckbox1"> <strong>Communicated</strong></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            {% if team.accepted %}
+                                <input class="form-check-input" type="checkbox" id="accepted-checkbox" value="option2" checked>
+                            {% else %}
+                                <input class="form-check-input" type="checkbox" id="accepted-checkbox" value="option2">
+                            {% endif %}
+                            <label class="form-check-label" for="inlineCheckbox2"><strong>Accepted</strong></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            {% if team.payment_done %}
+                                <input class="form-check-input" type="checkbox" id="payment-checkbox" value="option3" checked>
+                            {% else %}
+                                <input class="form-check-input" type="checkbox" id="payment-checkbox" value="option3">
+                            {% endif %}
+                            <label class="form-check-label" for="inlineCheckbox3"><strong>Payment Done</strong></label>
+                        </div>
                         <p class="names">DOCUMENTATION</p>
                         <label class="toggler-wrapper style-23">
                             {% if team.docs_approved %}
@@ -227,18 +252,47 @@
                 </div>
                 <div class="six">
                    <div class="mark-status"> 
-                        <!-- <h2 class="titular">
+                        <h2 class="titular">
                             ENTER GUIDE MARKS
-                        </h2> -->
-                        <div class="marks">
-                            <!-- <form action="{% url 'guide-dashboard' teamID=team.teamID %}" method="POST">
+                        </h2>
+                        <!-- <div class="marks">
+                            <form action="{% url 'guide-dashboard' teamID=team.teamID %}" method="POST">
                                 {% csrf_token %}
                                 <textarea name="review_1_marks" placeholder="Enter the marks" class="marks1"></textarea>
                                 <textarea name="review_2_marks" placeholder="Enter the marks" class="marks1"></textarea>
                                 <button type="submit" class="btn">Post</button>
-                            </form> -->
-                        </div>
-                        </a>
+                            </form>
+                        </div> -->
+                        {% include 'partials/_alerts.html' %}
+                        <form action="{% url 'guide-dashboard' teamID=team.teamID %}" method="POST" >
+                            {% csrf_token %}
+                            <div class="txt_field" id="txt_f1">
+                                {% if team.review_2_marks %}
+                                    <input type="number" name="review_2_marks" min="1" max="5" value="{{ team.review_2_marks }}" >
+                                {% else %}
+                                    <input type="number" name="review_2_marks" min="1" max="5">
+                                {% endif %}    
+                                <label>Enter marks(for review II) (Out of 5)</label> 
+                                <br>
+                                <button type="submit" class="btn btn-primary" style="margin-top: 0.2rem;" >Post</button>
+                            </div>
+                            <!-- <br>
+                            <input type="submit" value="Submit">
+                            <div class="signup_link"></div> -->
+                            <div class="txt_field" id="txt_f">
+                                {% if team.review_3_marks %}
+                                    <input type="number" name="review_3_marks" min="1" max="10" value="{{ team.review_3_marks }}" >
+                                {% else %}
+                                    <input type="number" name="review_3_marks" min="1" max="10">
+                                {% endif %}
+                                <label>Enter marks(for review III) (Out of 10)</label>
+                                <br>
+                                <button type="submit" class="btn btn-primary" style="margin-top: 0.2rem;" >Post</button>
+                            </div>
+                            <!-- <br>
+                            <input type="submit" value="Submit">
+                            <div class="signup_link"></div> -->
+                        </form>
                     </div>
                 </div>
             </div>
@@ -373,6 +427,85 @@
                 $.post(guide_url, {
                     // id: '{{team.teamID}}',
                     profile_approved: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    
+    // For check boxes
+    $(document).ready(function() {
+        $('#communicated-checkbox').change(function() {
+            let conf_url = "{% url 'conference-status' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",conf_url)
+                console.log("Inside If")
+                $.post(conf_url, {
+                    // id: '{{team.teamID}}',
+                    communicated: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",conf_url)
+                console.log("Inside else ")
+                $.post(conf_url, {
+                    // id: '{{team.teamID}}',
+                    communicated: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+
+    $(document).ready(function() {
+        $('#accepted-checkbox').change(function() {
+            let accept_url = "{% url 'acceptance-status' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",accept_url)
+                console.log("Inside If")
+                $.post(accept_url, {
+                    // id: '{{team.teamID}}',
+                    accepted: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",accept_url)
+                console.log("Inside else ")
+                $.post(accept_url, {
+                    // id: '{{team.teamID}}',
+                    accepted: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+            }
+        });
+    }); 
+    
+    $(document).ready(function() {
+        $('#payment-checkbox').change(function() {
+            let payment_url = "{% url 'payment-status' id=team.teamID %}"
+            if (this.checked)
+            {
+                console.log("Guide URL: ",payment_url)
+                console.log("Inside If")
+                $.post(payment_url, {
+                    // id: '{{team.teamID}}',
+                    payment_done: this.checked, 
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                });
+
+            }
+            else {
+                console.log("Guide URL: ",payment_url)
+                console.log("Inside else ")
+                $.post(payment_url, {
+                    // id: '{{team.teamID}}',
+                    payment_done: this.checked, 
                     csrfmiddlewaretoken: '{{ csrf_token }}' 
                 });
             }

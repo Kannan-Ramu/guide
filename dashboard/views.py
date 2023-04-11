@@ -17,13 +17,24 @@ def guide_dashboard(request, teamID):
     user = request.user
     team = Team.objects.filter(teamID=teamID).get()
     if request.method == 'POST':
-        review_1_marks = request.POST['review_1_marks']
-        review_2_marks = request.POST['review_2_marks']
+        if request.POST['review_2_marks']:
+            review_2_marks = request.POST['review_2_marks']
+            if int(review_2_marks) > 5:
+                messages.error(
+                    request, "Marks must be less than or equal to 5!")
+                return redirect('guide-dashboard', teamID)
+            team.review_2_marks = review_2_marks
+        if request.POST['review_3_marks']:
+            review_3_marks = request.POST['review_3_marks']
+            if int(review_3_marks) > 10:
+                messages.error(
+                    request, "Marks must be less than or equal to 10!")
+                return redirect('guide-dashboard', teamID)
 
-        team.review_1_marks = review_1_marks
-        team.review_2_marks = review_2_marks
+            team.review_3_marks = review_3_marks
 
         team.save()
+        messages.success(request, "Marks Updated Successfully!")
 
         return redirect('guide-dashboard', teamID)
 
@@ -194,7 +205,6 @@ def profile_approve(request, id):
             team.profile_approved = True
         team.save()
         return HttpResponse('Sucess')
-    pass
 
 
 def guide_approve(request, id):
@@ -218,7 +228,6 @@ def rs_paper_approve(request, id):
             team.rs_paper_approved = True
         team.save()
         return HttpResponse('Sucess')
-    pass
 
 
 def docs_approve(request, id):
@@ -231,7 +240,6 @@ def docs_approve(request, id):
         team.save()
 
         return HttpResponse('Sucess')
-    pass
 
 
 def ppt_approve(request, id):
@@ -243,4 +251,39 @@ def ppt_approve(request, id):
             team.ppt_approved = True
         team.save()
         return HttpResponse('Sucess')
-    pass
+
+
+# For checkbox
+
+
+def conference_status(request, id):
+    team = Team.objects.filter(teamID=id).get()
+    if request.method == 'POST':
+        if request.POST['communicated'] == 'false':
+            team.communicated = False
+        else:
+            team.communicated = True
+    team.save()
+    return HttpResponse('success')
+
+
+def acceptance_status(request, id):
+    team = Team.objects.filter(teamID=id).get()
+    if request.method == 'POST':
+        if request.POST['accepted'] == 'false':
+            team.accepted = False
+        else:
+            team.accepted = True
+    team.save()
+    return HttpResponse('success')
+
+
+def payment_status(request, id):
+    team = Team.objects.filter(teamID=id).get()
+    if request.method == 'POST':
+        if request.POST['payment_done'] == 'false':
+            team.payment_done = False
+        else:
+            team.payment_done = True
+    team.save()
+    return HttpResponse('sucess')

@@ -349,6 +349,10 @@ form .txt_field{
     width: 100%;
 }
 
+.form-check-label {
+    font-size: 12.3px;
+    font-weight: bold;
+}
 
 
 @media(max-width:768px){

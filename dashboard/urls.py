@@ -15,6 +15,8 @@ urlpatterns = [
     path('guide-dashboard/<str:teamID>',
          views.guide_dashboard, name='guide-dashboard'),
     path('guide-profile', views.guide_profile, name='guide-profile'),
+
+    # For toggles
     path('guide-approve/<str:id>/',
          views.guide_approve, name='guide-approve'),
     path('profile-approve/<str:id>/',
@@ -25,4 +27,12 @@ urlpatterns = [
          views.docs_approve, name='docs-approve'),
     path('ppt-approve/<str:id>/',
          views.ppt_approve, name='ppt-approve'),
+
+    # For checkboxes
+    path('conference-status/<str:id>',
+         views.conference_status, name='conference-status'),
+    path('acceptance-status/<str:id>',
+         views.acceptance_status, name='acceptance-status'),
+    path('payment-statuss/<str:id>',
+         views.payment_status, name='payment-status'),
 ]

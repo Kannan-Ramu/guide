@@ -1,5 +1,5 @@
 
-from .models import Team
+from .models import Team, Credit
 from openpyxl import Workbook
 from random import randrange
 from django.core.mail import send_mail
@@ -555,7 +555,11 @@ def guide_selected(request, id):
 
 
 def credits(request):
-    return render(request, 'credits/credit.html')
+    credits = Credit.objects.all()
+    context = {
+        'credits': credits,
+    }
+    return render(request, 'credits/credit.html', context)
 
 
 def search(request):

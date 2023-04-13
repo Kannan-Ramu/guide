@@ -13,6 +13,11 @@ def guide_directory_path(instance, filename):
     return 'guide-images/{0}/{1}'.format(instance, filename)
 
 
+def credit_directory_path(instance, filename):
+    # Will be Uploaded to guide-images/<name>/<filename>
+    return 'credit-images/{0}/{1}'.format(instance, filename)
+
+
 class Guide(models.Model):
     name = models.CharField(max_length=100)
     emp_id = models.IntegerField(default=1)
@@ -141,3 +146,12 @@ class Temp_User(models.Model):
 
     def __str__(self):
         return self.user_email
+
+
+class Credit(models.Model):
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=100)
+    img = CloudinaryField('image')
+
+    def __str__(self):
+        return self.name

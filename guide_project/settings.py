@@ -30,11 +30,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-bn!gb+_&96p0e7j+0@in%!o5xxl23m$907%3sgyqlekw&85sgv'
 SECRET_KEY = os.environ.get('SECRET_KEY')
-# DEBUG = os.environ.get('DEBUG')
-DEBUG = False
+DEBUG = os.environ.get('DEBUG')
+# DEBUG = False
 
 # DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
-DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-132.railway.app:6989/railway"
+
 
 ALLOWED_HOSTS = [
     'https://guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'storages',
     'whitenoise.runserver_nostatic',
     'verify_email',  # sending email verification
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -247,9 +248,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Deployment Configs
 
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 60
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SECURE_HSTS_SECONDS = 60
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True

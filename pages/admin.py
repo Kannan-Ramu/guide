@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from pages.models import Otp, Otp_Two, Team, Guide, Temp_Team, Temp_User
+from pages.models import Otp, Otp_Two, Team, Guide, Temp_Team, Temp_User, Credit
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 from django.contrib.auth.models import User
@@ -85,3 +85,4 @@ admin.site.register(Otp)
 admin.site.register(Otp_Two)
 admin.site.register(Temp_Team, Temp_TeamAdmin)
 admin.site.register(Temp_User)
+admin.site.register(Credit)

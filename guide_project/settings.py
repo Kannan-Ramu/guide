@@ -30,11 +30,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-bn!gb+_&96p0e7j+0@in%!o5xxl23m$907%3sgyqlekw&85sgv'
 SECRET_KEY = os.environ.get('SECRET_KEY')
-# DEBUG = os.environ.get('DEBUG')
-DEBUG = False
+DEBUG = os.environ.get('DEBUG')
+# DEBUG = False
 
 # DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
-DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-132.railway.app:6989/railway"
+
 
 ALLOWED_HOSTS = [
     'https://guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
@@ -46,6 +46,11 @@ ALLOWED_HOSTS = [
     'https://cse-projectregistration.co.in/',
     '63.250.59.207',
     '0.0.0.0:8000',
+    'cse-projectregistration.co.in',
+    'https://guide-backend-production-d238.up.railway.app',
+    'guide-backend-production-d238.up.railway.app',
+    'https://guide-backend-production.up.railway.app',
+    'guide-backend-production.up.railway.app',
     '*',
 ]
 
@@ -57,6 +62,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://guideselection.herokuapp.com/',
     'https://guide-backend-production.up.railway.app',
     'https://cse-projectregistration.co.in',
+    'https://guide-backend-production-d238.up.railway.app'
 ]
 
 # Application definition
@@ -79,6 +85,7 @@ INSTALLED_APPS = [
     'storages',
     'whitenoise.runserver_nostatic',
     'verify_email',  # sending email verification
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -143,7 +150,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # Production DB to be used for railway personal
 
 DATABASES = {
-    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
+    "default": dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=None),
 }
 
 # Password validation

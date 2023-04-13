@@ -47,7 +47,10 @@ ALLOWED_HOSTS = [
     '63.250.59.207',
     '0.0.0.0:8000',
     'cse-projectregistration.co.in',
-    'https://guide-backend-production-d238.up.railway.app'
+    'https://guide-backend-production-d238.up.railway.app',
+    'guide-backend-production-d238.up.railway.app',
+    'https://guide-backend-production.up.railway.app',
+    'guide-backend-production.up.railway.app',
     '*',
 ]
 

@@ -46,6 +46,7 @@ ALLOWED_HOSTS = [
     'https://cse-projectregistration.co.in/',
     '63.250.59.207',
     '0.0.0.0:8000',
+    'cse-projectregistration.co.in',
     '*',
 ]
 
@@ -143,7 +144,7 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # Production DB to be used for railway personal
 
 DATABASES = {
-    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
+    "default": dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=None),
 }
 
 # Password validation

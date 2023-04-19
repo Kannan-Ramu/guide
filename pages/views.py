@@ -10,6 +10,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
+from accounts.models import BestTeam
 from .custom_storage import DocStorage
 
 # Create your views here.
@@ -700,92 +701,99 @@ def reset_password(request):
 def doc_upload(request):
     user = request.user
     if user.is_authenticated:
-        if request.method == 'POST':
-            file_directory_within_bucket = 'documents/{username}'.format(
-                username=request.user)
+        if BestTeam.objects.filter(teamID=user.username).exists():
+            if request.method == 'POST':
+                file_directory_within_bucket = 'documents/{username}'.format(
+                    username=request.user)
 
-            doc_storage = DocStorage()
-            team = Team.objects.filter(teamID=user.username).get()
-            if request.FILES:
-                if request.FILES.get('ppt'):
-                    ppt = request.FILES['ppt']
-                    # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
-                    if ppt.size > 9437184:
-                        messages.error(
-                            request, "PPT size must be less than 9 MB")
-                        return redirect('upload')
-                    team.ppt = ppt
-                if request.FILES.get('document'):
-                    document = request.FILES['document']
-                    if document.size > 9437184:
-                        messages.error(
-                            request, "Document size must be less than 9 MB")
-                        return redirect('upload')
-                    team.document = document
-                if request.FILES.get('rs_paper'):
-                    rs_paper = request.FILES['rs_paper']
-                    # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
-                    if rs_paper.size > 1048576:
-                        messages.error(
-                            request, "Research Paper size must be less than 500kb")
-                        return redirect('upload')
-                    team.rs_paper = rs_paper
-                if request.FILES.get('guide_form'):
-                    guide_form = request.FILES['guide_form']
-                    if guide_form.size > 1048576:
-                        messages.error(
-                            request, "Guide Form size must be less than 500kb")
-                        return redirect('upload')
-                    team.guide_form = guide_form
-                # synthesize a full file path; note that we included the filename
-                '''ppt_path_within_bucket = os.path.join(
-                    file_directory_within_bucket,
-                    ppt.name
-                )
-                document_path_within_bucket = os.path.join(
-                    file_directory_within_bucket,
-                    document.name
-                )
-                rs_paper_path_within_bucket = os.path.join(
-                    file_directory_within_bucket,
-                    rs_paper.name
-                )
-                guide_form_path_within_bucket = os.path.join(
-                    file_directory_within_bucket,
-                    guide_form.name
-                )'''
+                doc_storage = DocStorage()
+                team = Team.objects.filter(teamID=user.username).get()
+                if request.FILES:
+                    if request.FILES.get('ppt'):
+                        ppt = request.FILES['ppt']
+                        # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
+                        if ppt.size > 9437184:
+                            messages.error(
+                                request, "PPT size must be less than 9 MB")
+                            return redirect('upload')
+                        team.ppt = ppt
+                    if request.FILES.get('document'):
+                        document = request.FILES['document']
+                        if document.size > 9437184:
+                            messages.error(
+                                request, "Document size must be less than 9 MB")
+                            return redirect('upload')
+                        team.document = document
+                    if request.FILES.get('rs_paper'):
+                        rs_paper = request.FILES['rs_paper']
+                        # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
+                        if rs_paper.size > 1048576:
+                            messages.error(
+                                request, "Research Paper size must be less than 500kb")
+                            return redirect('upload')
+                        team.rs_paper = rs_paper
+                    if request.FILES.get('guide_form'):
+                        guide_form = request.FILES['guide_form']
+                        if guide_form.size > 1048576:
+                            messages.error(
+                                request, "Guide Form size must be less than 500kb")
+                            return redirect('upload')
+                        team.guide_form = guide_form
+                    # synthesize a full file path; note that we included the filename
+                    '''ppt_path_within_bucket = os.path.join(
+                        file_directory_within_bucket,
+                        ppt.name
+                    )
+                    document_path_within_bucket = os.path.join(
+                        file_directory_within_bucket,
+                        document.name
+                    )
+                    rs_paper_path_within_bucket = os.path.join(
+                        file_directory_within_bucket,
+                        rs_paper.name
+                    )
+                    guide_form_path_within_bucket = os.path.join(
+                        file_directory_within_bucket,
+                        guide_form.name
+                    )'''
 
-                if doc_storage.exists(file_directory_within_bucket):
-                    doc_storage.delete(file_directory_within_bucket)
+                    if doc_storage.exists(file_directory_within_bucket):
+                        doc_storage.delete(file_directory_within_bucket)
 
-                # if doc_storage.exists(ppt_path_within_bucket):
-                #     doc_storage.delete(ppt.name)
-                # if doc_storage.exists(document_path_within_bucket):
-                #     doc_storage.delete(document.name)
-                # if doc_storage.exists(rs_paper_path_within_bucket):
-                #     doc_storage.delete(rs_paper.name)
-                # if doc_storage.exists(guide_form_path_within_bucket):
-                #     doc_storage.delete(guide_form.name)
+                    # if doc_storage.exists(ppt_path_within_bucket):
+                    #     doc_storage.delete(ppt.name)
+                    # if doc_storage.exists(document_path_within_bucket):
+                    #     doc_storage.delete(document.name)
+                    # if doc_storage.exists(rs_paper_path_within_bucket):
+                    #     doc_storage.delete(rs_paper.name)
+                    # if doc_storage.exists(guide_form_path_within_bucket):
+                    #     doc_storage.delete(guide_form.name)
 
-                # doc_storage.save(file_path_within_bucket, ppt)
-                # file_url =
+                    # doc_storage.save(file_path_within_bucket, ppt)
+                    # file_url =
 
-                # team.ppt = doc_storage.save(file_path_within_bucket, ppt)
-                # team.document = doc_storage.save(
-                #     file_path_within_bucket, document)
-                # team.rs_paper = doc_storage.save(
-                #     file_path_within_bucket, rs_paper)
-                # team.guide_form = doc_storage.save(
-                #     file_path_within_bucket, guide_form)
+                    # team.ppt = doc_storage.save(file_path_within_bucket, ppt)
+                    # team.document = doc_storage.save(
+                    #     file_path_within_bucket, document)
+                    # team.rs_paper = doc_storage.save(
+                    #     file_path_within_bucket, rs_paper)
+                    # team.guide_form = doc_storage.save(
+                    #     file_path_within_bucket, guide_form)
 
-                team.save()
-            auth.logout(request)
-            return redirect('submitted')
-        team = Team.objects.filter(teamID=user.username).get()
-        context = {
-            'team': team,
-        }
-        return render(request, 'upload_docs/docs.html', context)
+                    team.save()
+                auth.logout(request)
+                return redirect('submitted')
+            else:
+                # POST else
+                team = Team.objects.filter(teamID=user.username).get()
+                context = {
+                    'team': team,
+                }
+                return render(request, 'upload_docs/docs.html', context)
+        else:
+            messages.error(
+                request, "You're not in the shortlisted team list to upload your documents!")
+            return redirect('team-dashboard')
     else:
         messages.error(request, "You're not logged in!")
         return redirect('login')

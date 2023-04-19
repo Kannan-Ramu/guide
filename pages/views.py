@@ -780,7 +780,12 @@ def doc_upload(request):
                     # team.guide_form = doc_storage.save(
                     #     file_path_within_bucket, guide_form)
 
-                    team.save()
+                # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
+
+                # type = request.POST['type']
+                # team.type = type
+                team.save()
+
                 auth.logout(request)
                 return redirect('submitted')
             else:

@@ -4,6 +4,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 from storages.backends.s3boto3 import S3Boto3Storage
 from .custom_storage import DocStorage
+from .choices import type_choices
 
 # Create your models here.
 
@@ -94,6 +95,9 @@ class Team(models.Model):
     communicated = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)
     payment_done = models.BooleanField(default=False)
+
+    type = models.CharField(
+        max_length=200, choices=type_choices, default=type_choices[0])
 
     def __str__(self):
         return self.teamID

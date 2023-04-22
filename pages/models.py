@@ -3,7 +3,7 @@ from .choices import no_members_choices
 from django.db import models
 from cloudinary.models import CloudinaryField
 from storages.backends.s3boto3 import S3Boto3Storage
-from .custom_storage import DocStorage
+from .custom_storage import DocStorage, MediaStorage
 from .choices import type_choices
 
 # Create your models here.
@@ -46,6 +46,7 @@ def user_directory_path(instance, filename):
     # Will be Uploaded to documents/<teamID>/<filename>
     return 'documents/{0}/{1}'.format(instance, filename)
 
+
 def app_instance_path(instance, filename):
     '''
     Instance is the value returned by __str__(self) which is teamID in this case
@@ -54,7 +55,8 @@ def app_instance_path(instance, filename):
     The instance and filename will be sent by FileField when this function in upload_to parameter!
     '''
     # Will be Uploaded to appvideo/<teamID>/<filename>
-    return 'app video/{0}/{1}'.format(instance, filename)
+    return 'App_Based/{0}/{1}'.format(instance, filename)
+
 
 def product_instance_path(instance, filename):
     '''
@@ -64,7 +66,8 @@ def product_instance_path(instance, filename):
     The instance and filename will be sent by FileField when this function in upload_to parameter!
     '''
     # Will be Uploaded to productvideo/<teamID>/<filename>
-    return 'product video/{0}/{1}'.format(instance, filename)
+    return 'Product_Based/{0}/{1}'.format(instance, filename)
+
 
 class Team(models.Model):
     teamID = models.CharField(max_length=10)
@@ -96,12 +99,12 @@ class Team(models.Model):
 
     guide_form = models.FileField(storage=DocStorage,
                                   upload_to=user_directory_path, null=True, blank=True)
-    
-    app_video = models.FileField(storage=DocStorage,
-                                  upload_to=app_instance_path, null=True, blank=True)
-    
-    product_video = models.FileField(storage=DocStorage,
-                                  upload_to=product_instance_path, null=True, blank=True)
+
+    app_video = models.FileField(storage=MediaStorage,
+                                 upload_to=app_instance_path, null=True, blank=True)
+
+    product_video = models.FileField(storage=MediaStorage,
+                                     upload_to=product_instance_path, null=True, blank=True)
 
     profile_approved = models.BooleanField(default=False)
     guide_approved = models.BooleanField(default=False)

@@ -1,0 +1,7 @@
+Test Cases
+
+1. Duplicate video upload under each category -
+
+2. Video Re-Upload after changing category - 
+
+3. (Re-Upload) New video after correction to old video - 

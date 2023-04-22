@@ -4,6 +4,7 @@ no_members_choices = (
 )
 
 type_choices = (
-    ('App Based', 'App Based'),
+    ('Project Type', 'Project Type'),
+    ('Applicatio Based', 'Application Based'),
     ('Product Based', 'Product Based'),
 )

@@ -11,7 +11,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
 from accounts.models import BestTeam
-from .custom_storage import DocStorage
+from .custom_storage import DocStorage, MediaStorage
 
 # Create your views here.
 
@@ -65,7 +65,7 @@ def guides(request):
 
 
 def submitted(request):
-    auth.logout(request)
+    # auth.logout(request)
     return render(request, 'submitted.html')
 
 
@@ -703,16 +703,24 @@ def doc_upload(request):
     if user.is_authenticated:
         if BestTeam.objects.filter(teamID=user.username).exists():
             if request.method == 'POST':
-                file_directory_within_bucket = 'documents/{username}'.format(
-                    username=request.user)
-                # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
-
-                type = request.POST['type']
-                team.type = type
-
                 doc_storage = DocStorage()
                 team = Team.objects.filter(teamID=user.username).get()
+
+                file_directory_within_bucket = 'documents/{username}'.format(
+                    username=request.user)
+
+                app_video_directory_within_bucket = 'App_Based/{username}'.format(
+                    username=request.user)
+
+                product_video_directory_within_bucket = 'Product_Based/{username}'.format(
+                    username=request.user)
+
+                # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
+                type = request.POST['type']
+                print('FILES value: ', request.FILES)
+
                 if request.FILES:
+                    # ppt
                     if request.FILES.get('ppt'):
                         ppt = request.FILES['ppt']
                         # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
@@ -721,6 +729,8 @@ def doc_upload(request):
                                 request, "PPT size must be less than 9 MB")
                             return redirect('upload')
                         team.ppt = ppt
+
+                    # document
                     if request.FILES.get('document'):
                         document = request.FILES['document']
                         if document.size > 9437184:
@@ -728,6 +738,8 @@ def doc_upload(request):
                                 request, "Document size must be less than 9 MB")
                             return redirect('upload')
                         team.document = document
+
+                    # Research Paper
                     if request.FILES.get('rs_paper'):
                         rs_paper = request.FILES['rs_paper']
                         # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
@@ -736,6 +748,7 @@ def doc_upload(request):
                                 request, "Research Paper size must be less than 500kb")
                             return redirect('upload')
                         team.rs_paper = rs_paper
+                    # Guide Form
                     if request.FILES.get('guide_form'):
                         guide_form = request.FILES['guide_form']
                         if guide_form.size > 1048576:
@@ -745,22 +758,83 @@ def doc_upload(request):
                         team.guide_form = guide_form
 
                     # size is not set correctly pls change later
-                    if type == 'App Video':
-                        if request.FILES.get('app_video'):
-                            app_video = request.FILES['app_video']
-                            if app_video.size > 314572800:
+                    media_storage = MediaStorage()
+
+                    if type == 'App Based':
+                        file_url = media_storage.url(
+                            app_video_directory_within_bucket)
+                        print('Dir of the Prev App:', file_url)
+                        print('Check Dir: ', media_storage.exists(
+                            app_video_directory_within_bucket
+                        ))
+                        if media_storage.exists(app_video_directory_within_bucket):
+                            print('Inside App DIR EXIST if')
+                            media_storage.delete(
+                                app_video_directory_within_bucket)
+                        print('Inside App Based')
+                        # file_directory_within_bucket = 'videos/App_Based/{username}'.format(
+                        #     username=request.user)
+                        # print('DIRS IS: ', file_directory_within_bucket)
+                        # if doc_storage.exists(file_directory_within_bucket):
+                        #     print('INSIDE APP BASED DIRS IF: ')
+                        #     print('PATH OF PRESENT APP VIDEO: ',
+                        #           file_directory_within_bucket)
+                        #     doc_storage.delete(file_directory_within_bucket)
+                        if team.product_video:
+                            if media_storage.exists(
+                                    product_video_directory_within_bucket):
+                                media_storage.delete(
+                                    product_video_directory_within_bucket
+                                )
+                                print('Inside old prod vid delete')
+                                team.product_video.delete()
+                        team.save()
+                        if request.FILES.get('demo_video'):
+                            demo_video = request.FILES['demo_video']
+                            if demo_video.size > 314572800:
                                 messages.error(
                                     request, "Video size must be less than 300mb")
                                 return redirect('upload')
-                            team.app_video = app_video
+                            team.app_video = demo_video
                     else:
-                        if request.FILES.get('product_video'):
-                            product_video = request.FILES['product_video']
-                            if product_video.size > 314572800:
+                        print('Inside Product based')
+                        # file_directory_within_bucket = 'videos/Product_Based/{username}'.format(
+                        #     username=request.user)
+                        # print('DIRS IS: ', file_directory_within_bucket)
+                        # if doc_storage.exists(file_directory_within_bucket):
+                        #     print('INSIDE PRODUCT BASED DIRS IF: ')
+                        #     print('PATH OF PRESENT PRODUCT VIDEO: ',
+                        #           file_directory_within_bucket)
+                        #     doc_storage.delete(file_directory_within_bucket)
+                        print('Check Dir', media_storage.exists(
+                            product_video_directory_within_bucket))
+                        media_storage.delete(
+                            product_video_directory_within_bucket)
+                        if media_storage.exists(
+                            product_video_directory_within_bucket
+                        ):
+                            print('Inside Product DIR EXIST if')
+                            media_storage.delete(
+                                product_video_directory_within_bucket
+                            )
+                        if team.app_video:
+                            if media_storage.exists(
+                                app_video_directory_within_bucket
+                            ):
+                                print('Inside Old App vid delete')
+                                media_storage.delete(
+                                    app_video_directory_within_bucket
+                                )
+                                team.app_video.delete()
+                        # Demo Video
+                        if request.FILES.get('demo_video'):
+                            demo_video = request.FILES['demo_video']
+                            if demo_video.size > 314572800:
                                 messages.error(
                                     request, "video size must be less than 300mb")
                                 return redirect('upload')
-                            team.product_video = product_video
+                            team.product_video = demo_video
+
                     # synthesize a full file path; note that we included the filename
                     '''ppt_path_within_bucket = os.path.join(
                         file_directory_within_bucket,
@@ -782,6 +856,17 @@ def doc_upload(request):
                     if doc_storage.exists(file_directory_within_bucket):
                         doc_storage.delete(file_directory_within_bucket)
 
+                    # if team.type == 'App Based':
+                    #     if media_storage.exists(app_video_directory_within_bucket):
+                    #         media_storage.delete(
+                    #             app_video_directory_within_bucket)
+                    # else:
+                    #     if media_storage.exists(
+                    #         product_video_directory_within_bucket
+                    #     ):
+                    #         media_storage.delete(
+                    #             product_video_directory_within_bucket)
+
                     # if doc_storage.exists(ppt_path_within_bucket):
                     #     doc_storage.delete(ppt.name)
                     # if doc_storage.exists(document_path_within_bucket):
@@ -802,9 +887,11 @@ def doc_upload(request):
                     # team.guide_form = doc_storage.save(
                     #     file_path_within_bucket, guide_form)
 
+                team.type = type
                 team.save()
+                print('Type of project is: ', team.type)
 
-                auth.logout(request)
+                # auth.logout(request)
                 return redirect('submitted')
             else:
                 # POST else

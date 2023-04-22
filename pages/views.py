@@ -705,6 +705,10 @@ def doc_upload(request):
             if request.method == 'POST':
                 file_directory_within_bucket = 'documents/{username}'.format(
                     username=request.user)
+                # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
+
+                type = request.POST['type']
+                team.type = type
 
                 doc_storage = DocStorage()
                 team = Team.objects.filter(teamID=user.username).get()
@@ -739,21 +743,24 @@ def doc_upload(request):
                                 request, "Guide Form size must be less than 500kb")
                             return redirect('upload')
                         team.guide_form = guide_form
+
                     # size is not set correctly pls change later
-                    if request.FILES.get('app_video'):
-                        guide_form = request.FILES['app_video']
-                        if guide_form.size > 314572800:
-                            messages.error(
-                                request, "Video size must be less than 300mb")
-                            return redirect('upload')
-                        team.app_video = app_video
-                    if request.FILES.get('product_video'):
-                        guide_form = request.FILES['product_video']
-                        if guide_form.size > 314572800:
-                            messages.error(
-                                request, "video size must be less than 300mb")
-                            return redirect('upload')
-                        team.product_video = product_video      
+                    if type == 'App Video':
+                        if request.FILES.get('app_video'):
+                            app_video = request.FILES['app_video']
+                            if app_video.size > 314572800:
+                                messages.error(
+                                    request, "Video size must be less than 300mb")
+                                return redirect('upload')
+                            team.app_video = app_video
+                    else:
+                        if request.FILES.get('product_video'):
+                            product_video = request.FILES['product_video']
+                            if product_video.size > 314572800:
+                                messages.error(
+                                    request, "video size must be less than 300mb")
+                                return redirect('upload')
+                            team.product_video = product_video
                     # synthesize a full file path; note that we included the filename
                     '''ppt_path_within_bucket = os.path.join(
                         file_directory_within_bucket,
@@ -795,10 +802,6 @@ def doc_upload(request):
                     # team.guide_form = doc_storage.save(
                     #     file_path_within_bucket, guide_form)
 
-                # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
-
-                type = request.POST['type']
-                team.type = type
                 team.save()
 
                 auth.logout(request)

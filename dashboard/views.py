@@ -250,8 +250,7 @@ def ppt_approve(request, id):
         else:
             team.ppt_approved = True
         team.save()
-        return HttpResponse('Sucess')
-
+        return HttpResponse('Sucess')   
 
 # For checkbox
 

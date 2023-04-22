@@ -4,6 +4,7 @@
   <head>
     <title>Document Upload</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/docs.css' %}" />
   </head>
   <body>
@@ -71,9 +72,50 @@
           <option value="App Based">App Based</option>
           <option value="Product Based">Product Based</option>
         </select> -->
+        <select name="type" id="drop" class="dropStyle"> 
+          <option value="1">Project Type:</option>
+          <option value="2">Application based</option>
+          <option value="3">Product based</option>
+          </select>
+          <br>
+          <div id="Page1" class="page" style="">
+          </div>
+          <br>
+          <div id="Page2" class="page" style="display:none">
+          <label for="document2"> Application based Demo video:</label>
+          <!-- <a style="color:#000; text-decoration: none; " href="">Currently: ""</a> -->
+          <input
+            type="file"
+            name="app_video"
+            id="document2"
+            accept=".mp4"
+            multiple
+          />
+          </div>
+          <br>
+          <div id="Page3" class="page" style="display:none">
+          <label for="document2">Product based demo video:</label>
+          <!-- <a style="color:#000; text-decoration: none; " href="">Currently: ""</a> -->
+          <input
+            type="file"
+            name="Product_video"
+            id="document2"
+            accept=".mp4"
+            multiple
+          />
+          </div>
         <input type="submit" value="Submit" />
       </form>
     </div>
     <script src="./docs.js"></script>
+    <script>
+      $("#drop").on('change', function() {
+      var value = $(this).val();
+      if (value) {
+        $(".page").hide();
+        $("#Page" + value).show();
+      }
+    });
+    </script>
   </body>
 </html>

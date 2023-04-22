@@ -247,7 +247,7 @@ def project_details_2(request):
         is_user = User.objects.filter(username=is_team.teamID)
         is_user.delete()
         messages.info(
-            request, 'Your team is removed please to the process again!!')
+            request, 'Your team is removed please do the process again!!')
         return render(request, 'Login/login.html')
     if request.method == 'POST':
 
@@ -257,11 +257,11 @@ def project_details_2(request):
         reg_no_1 = request.POST['reg_no_1']
         student_1_no = request.POST['student_1_no']
         if len(reg_no_1) > 8:
-            messages.error(request, 'Register Number be 8 digits long.')
+            messages.error(request, 'Register Number must be 8 digits long.')
             return redirect('project-details-1')
         student_1_no = request.POST['student_1_no']
         if len(student_1_no) > 10:
-            messages.error(request, 'Number must of 10 digits.')
+            messages.error(request, 'Number must contain 10 digits.')
             return redirect('project-details-2')
 
         student_1_name = curr_user.first_name + ' ' + curr_user.last_name
@@ -272,11 +272,11 @@ def project_details_2(request):
         reg_no_2 = request.POST['reg_no_2']
         student_2_no = request.POST['student_2_no']
         if len(reg_no_2) > 8:
-            messages.error(request, 'Register Number be 8 digits long.')
+            messages.error(request, 'Register Number must be 8 digits long.')
             return redirect('project-details-2')
         student_2_no = request.POST['student_2_no']
         if len(student_2_no) > 10:
-            messages.error(request, 'Number must of 10 digits.')
+            messages.error(request, 'Number must contain 10 digits.')
             return redirect('project-details-2')
 
         student_2_name = first_name_2 + ' ' + last_name_2
@@ -739,6 +739,21 @@ def doc_upload(request):
                                 request, "Guide Form size must be less than 500kb")
                             return redirect('upload')
                         team.guide_form = guide_form
+                    # size is not set correctly pls change later
+                    if request.FILES.get('app_video'):
+                        guide_form = request.FILES['app_video']
+                        if guide_form.size > 314572800:
+                            messages.error(
+                                request, "Video size must be less than 300mb")
+                            return redirect('upload')
+                        team.app_video = app_video
+                    if request.FILES.get('product_video'):
+                        guide_form = request.FILES['product_video']
+                        if guide_form.size > 314572800:
+                            messages.error(
+                                request, "video size must be less than 300mb")
+                            return redirect('upload')
+                        team.product_video = product_video      
                     # synthesize a full file path; note that we included the filename
                     '''ppt_path_within_bucket = os.path.join(
                         file_directory_within_bucket,
@@ -782,8 +797,8 @@ def doc_upload(request):
 
                 # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
 
-                # type = request.POST['type']
-                # team.type = type
+                type = request.POST['type']
+                team.type = type
                 team.save()
 
                 auth.logout(request)

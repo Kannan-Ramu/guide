@@ -86,7 +86,7 @@ INSTALLED_APPS = [
     'storages',
     'whitenoise.runserver_nostatic',
     'verify_email',  # sending email verification
-    'django_extensions',
+    #'django_extensions',
 ]
 
 MIDDLEWARE = [

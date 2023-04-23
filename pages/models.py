@@ -5,6 +5,7 @@ from cloudinary.models import CloudinaryField
 from storages.backends.s3boto3 import S3Boto3Storage
 from .custom_storage import DocStorage, MediaStorage
 from .choices import type_choices
+import os
 
 # Create your models here.
 
@@ -48,25 +49,13 @@ def user_directory_path(instance, filename):
 
 
 def app_instance_path(instance, filename):
-    '''
-    Instance is the value returned by __str__(self) which is teamID in this case
-    So, instance = teamID
-    As a result we can generate the path for each team using the return statement
-    The instance and filename will be sent by FileField when this function in upload_to parameter!
-    '''
     # Will be Uploaded to appvideo/<teamID>/<filename>
-    return 'App_Based/{0}/{1}'.format(instance, filename)
+    return os.path.join('app_based/{0}/{1}'.format(instance, filename))
 
 
 def product_instance_path(instance, filename):
-    '''
-    Instance is the value returned by __str__(self) which is teamID in this case
-    So, instance = teamID
-    As a result we can generate the path for each team using the return statement
-    The instance and filename will be sent by FileField when this function in upload_to parameter!
-    '''
     # Will be Uploaded to productvideo/<teamID>/<filename>
-    return 'Product_Based/{0}/{1}'.format(instance, filename)
+    return os.path.join('product_based/{0}/{1}'.format(instance, filename))
 
 
 class Team(models.Model):
@@ -90,20 +79,20 @@ class Team(models.Model):
     student_2_email = models.CharField(max_length=100, blank=True, null=True)
     student_2_no = models.BigIntegerField(blank=True, null=True)
 
-    document = models.FileField(storage=DocStorage,
+    document = models.FileField(storage=DocStorage(),
                                 upload_to=user_directory_path, null=True, blank=True)
-    ppt = models.FileField(storage=DocStorage, upload_to=user_directory_path,
+    ppt = models.FileField(storage=DocStorage(), upload_to=user_directory_path,
                            null=True, blank=True)
-    rs_paper = models.FileField(storage=DocStorage,
+    rs_paper = models.FileField(storage=DocStorage(),
                                 upload_to=user_directory_path, null=True, blank=True)
 
-    guide_form = models.FileField(storage=DocStorage,
+    guide_form = models.FileField(storage=DocStorage(),
                                   upload_to=user_directory_path, null=True, blank=True)
 
-    app_video = models.FileField(storage=MediaStorage,
+    app_video = models.FileField(storage=MediaStorage(),
                                  upload_to=app_instance_path, null=True, blank=True)
 
-    product_video = models.FileField(storage=MediaStorage,
+    product_video = models.FileField(storage=MediaStorage(),
                                      upload_to=product_instance_path, null=True, blank=True)
 
     profile_approved = models.BooleanField(default=False)

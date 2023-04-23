@@ -1,4 +1,5 @@
 
+import os
 from .models import Team, Credit
 from openpyxl import Workbook
 from random import randrange
@@ -703,11 +704,16 @@ def doc_upload(request):
     if user.is_authenticated:
         if BestTeam.objects.filter(teamID=user.username).exists():
             if request.method == 'POST':
+                print('INSIDE POST DOC UPLOAD')
                 doc_storage = DocStorage()
                 team = Team.objects.filter(teamID=user.username).get()
 
-                file_directory_within_bucket = 'documents/{username}'.format(
-                    username=request.user)
+                file_directory_within_bucket = os.path.join(
+                    'documents/{username}/'.format(username=request.user))
+
+                print("File dir is: ", file_directory_within_bucket)
+                print('Check for file Dir: ', doc_storage.exists(
+                    file_directory_within_bucket))
 
                 app_video_directory_within_bucket = 'App_Based/{username}'.format(
                     username=request.user)
@@ -718,6 +724,11 @@ def doc_upload(request):
                 # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
                 type = request.POST['type']
                 print('FILES value: ', request.FILES)
+                if not doc_storage.exists(file_directory_within_bucket):
+                    print('Deleted File Path: ',
+                          doc_storage.delete(file_directory_within_bucket)
+                          )
+                    doc_storage.delete(file_directory_within_bucket)
 
                 if request.FILES:
                     # ppt
@@ -748,6 +759,7 @@ def doc_upload(request):
                                 request, "Research Paper size must be less than 500kb")
                             return redirect('upload')
                         team.rs_paper = rs_paper
+
                     # Guide Form
                     if request.FILES.get('guide_form'):
                         guide_form = request.FILES['guide_form']
@@ -759,81 +771,6 @@ def doc_upload(request):
 
                     # size is not set correctly pls change later
                     media_storage = MediaStorage()
-
-                    if type == 'App Based':
-                        file_url = media_storage.url(
-                            app_video_directory_within_bucket)
-                        print('Dir of the Prev App:', file_url)
-                        print('Check Dir: ', media_storage.exists(
-                            app_video_directory_within_bucket
-                        ))
-                        if media_storage.exists(app_video_directory_within_bucket):
-                            print('Inside App DIR EXIST if')
-                            media_storage.delete(
-                                app_video_directory_within_bucket)
-                        print('Inside App Based')
-                        # file_directory_within_bucket = 'videos/App_Based/{username}'.format(
-                        #     username=request.user)
-                        # print('DIRS IS: ', file_directory_within_bucket)
-                        # if doc_storage.exists(file_directory_within_bucket):
-                        #     print('INSIDE APP BASED DIRS IF: ')
-                        #     print('PATH OF PRESENT APP VIDEO: ',
-                        #           file_directory_within_bucket)
-                        #     doc_storage.delete(file_directory_within_bucket)
-                        if team.product_video:
-                            if media_storage.exists(
-                                    product_video_directory_within_bucket):
-                                media_storage.delete(
-                                    product_video_directory_within_bucket
-                                )
-                                print('Inside old prod vid delete')
-                                team.product_video.delete()
-                        team.save()
-                        if request.FILES.get('demo_video'):
-                            demo_video = request.FILES['demo_video']
-                            if demo_video.size > 314572800:
-                                messages.error(
-                                    request, "Video size must be less than 300mb")
-                                return redirect('upload')
-                            team.app_video = demo_video
-                    else:
-                        print('Inside Product based')
-                        # file_directory_within_bucket = 'videos/Product_Based/{username}'.format(
-                        #     username=request.user)
-                        # print('DIRS IS: ', file_directory_within_bucket)
-                        # if doc_storage.exists(file_directory_within_bucket):
-                        #     print('INSIDE PRODUCT BASED DIRS IF: ')
-                        #     print('PATH OF PRESENT PRODUCT VIDEO: ',
-                        #           file_directory_within_bucket)
-                        #     doc_storage.delete(file_directory_within_bucket)
-                        print('Check Dir', media_storage.exists(
-                            product_video_directory_within_bucket))
-                        media_storage.delete(
-                            product_video_directory_within_bucket)
-                        if media_storage.exists(
-                            product_video_directory_within_bucket
-                        ):
-                            print('Inside Product DIR EXIST if')
-                            media_storage.delete(
-                                product_video_directory_within_bucket
-                            )
-                        if team.app_video:
-                            if media_storage.exists(
-                                app_video_directory_within_bucket
-                            ):
-                                print('Inside Old App vid delete')
-                                media_storage.delete(
-                                    app_video_directory_within_bucket
-                                )
-                                team.app_video.delete()
-                        # Demo Video
-                        if request.FILES.get('demo_video'):
-                            demo_video = request.FILES['demo_video']
-                            if demo_video.size > 314572800:
-                                messages.error(
-                                    request, "video size must be less than 300mb")
-                                return redirect('upload')
-                            team.product_video = demo_video
 
                     # synthesize a full file path; note that we included the filename
                     '''ppt_path_within_bucket = os.path.join(
@@ -852,9 +789,6 @@ def doc_upload(request):
                         file_directory_within_bucket,
                         guide_form.name
                     )'''
-
-                    if doc_storage.exists(file_directory_within_bucket):
-                        doc_storage.delete(file_directory_within_bucket)
 
                     # if team.type == 'App Based':
                     #     if media_storage.exists(app_video_directory_within_bucket):

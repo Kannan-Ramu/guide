@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
 from accounts.models import BestTeam
-from .custom_storage import DocStorage, MediaStorage
+from guide_project.storages_backends import MediaStorage
 
 # Create your views here.
 
@@ -705,15 +705,16 @@ def doc_upload(request):
         if BestTeam.objects.filter(teamID=user.username).exists():
             if request.method == 'POST':
                 print('INSIDE POST DOC UPLOAD')
-                doc_storage = DocStorage()
                 team = Team.objects.filter(teamID=user.username).get()
 
-                file_directory_within_bucket = os.path.join(
-                    'documents/{username}/'.format(username=request.user))
-
-                print("File dir is: ", file_directory_within_bucket)
-                print('Check for file Dir: ', doc_storage.exists(
-                    file_directory_within_bucket))
+                media_storage = MediaStorage()
+                file_path_bucket = 'documents/{0}/'.format(
+                    request.user.username)
+                print('Path is: ', file_path_bucket)
+                # Below line always returns False
+                print('Check Dir', media_storage.exists(file_path_bucket))
+                if media_storage.exists(file_path_bucket):
+                    media_storage.delete(file_path_bucket)
 
                 app_video_directory_within_bucket = 'App_Based/{username}'.format(
                     username=request.user)
@@ -724,11 +725,6 @@ def doc_upload(request):
                 # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
                 type = request.POST['type']
                 print('FILES value: ', request.FILES)
-                if not doc_storage.exists(file_directory_within_bucket):
-                    print('Deleted File Path: ',
-                          doc_storage.delete(file_directory_within_bucket)
-                          )
-                    doc_storage.delete(file_directory_within_bucket)
 
                 if request.FILES:
                     # ppt
@@ -770,23 +766,33 @@ def doc_upload(request):
                         team.guide_form = guide_form
 
                     # size is not set correctly pls change later
-                    media_storage = MediaStorage()
+                    if request.POST.get('demo_video'):
+                        if type == 'App Based':
+                            demo_video = request.POST['demo_video']
+                            if team.product_video:
+                                team.product_video.delete()
+                            team.app_video = demo_video
+                        else:
+                            demo_video = request.POST['demo_video']
+                            if team.app_video:
+                                team.app_video.delete()
+                            team.product_video = demo_video
 
                     # synthesize a full file path; note that we included the filename
                     '''ppt_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         ppt.name
                     )
                     document_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         document.name
                     )
                     rs_paper_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         rs_paper.name
                     )
                     guide_form_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         guide_form.name
                     )'''
 

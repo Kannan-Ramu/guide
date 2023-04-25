@@ -30,8 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-bn!gb+_&96p0e7j+0@in%!o5xxl23m$907%3sgyqlekw&85sgv'
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG')
-# DEBUG = False
+# DEBUG = os.environ.get('DEBUG')
+DEBUG = False
 
 # DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
 
@@ -224,7 +224,7 @@ cloudinary.config(
 
 
 # DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Email Configuration
 EMAIL_HOST = 'smtp.gmail.com'
@@ -249,14 +249,17 @@ SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
 
 
 # AWS S3 configs
-AWS_STORAGE_BUCKET_NAME = 'django-guide-project-new'
-AWS_S3_REGION_NAME = 'ap-south-1'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_S3_ACCESS_KEY_ID = os.environ.get('AWS_S3_ACCESS_KEY_ID')
-AWS_S3_SECRET_ACCESS_KEY = os.environ.get('AWS_S3_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'django-guide-project-new'
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_REGION_NAME = 'ap-south-1'
+AWS_S3_FILE_OVERWRITE = True
+AWS_DEFAULT_ACL = None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-
+# AWS_STORAGE_BUCKET_NAME = 's3-django-test-bucket'
 # Logout On Closing
 # SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = False

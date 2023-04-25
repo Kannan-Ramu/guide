@@ -86,7 +86,7 @@ INSTALLED_APPS = [
     'storages',
     'whitenoise.runserver_nostatic',
     'verify_email',  # sending email verification
-    'django_extensions',
+    # 'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -150,8 +150,13 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 
 # Production DB to be used for railway personal
 
-DATABASES = {
+DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-132.railway.app:6989/railway"
+
+'''DATABASES = {
     "default": dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=None),
+}'''
+DATABASES = {
+    "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=None),
 }
 
 # Password validation
@@ -218,7 +223,8 @@ cloudinary.config(
 )
 
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Email Configuration
 EMAIL_HOST = 'smtp.gmail.com'
@@ -243,11 +249,17 @@ SUBJECT = 'ACCOUNT VERIFICATION FOR PROJECT REGISTRATION'
 
 
 # AWS S3 configs
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_STORAGE_BUCKET_NAME = 'django-guide-project'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'django-guide-project-new'
+AWS_S3_SIGNATURE_NAME = 's3v4',
 AWS_S3_REGION_NAME = 'ap-south-1'
+AWS_S3_FILE_OVERWRITE = True
+AWS_DEFAULT_ACL = None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+# AWS_STORAGE_BUCKET_NAME = 's3-django-test-bucket'
 # Logout On Closing
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = False

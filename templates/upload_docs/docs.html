@@ -4,6 +4,7 @@
   <head>
     <title>Document Upload</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'css/docs.css' %}" />
   </head>
   <body>
@@ -66,14 +67,49 @@
           />
         </div>
         <!-- TO WHOMSOEVER GOING TO WORK ON THIS DROPDOWN PLEASE DO NOT REMOVE THE "name" ATTRIBUTE IN "<select>" TAG AS IT'S REQUIRED TO UPDATE IN THE BACKEND. MAKE SURE YOU CREATE THE DROPDOWN IN THE SAME MANNER AS GIVEN BELOW. NO MATTER WHAT DO NOT CHANGE THE STRUCTURE OF DROP DOWN. ONCE FINISHED UN-COMMENT THE LINES IN pages/views.py UNDER doc_upload() -->
-        <!-- <select name="type">
-          <option selected="selected">Project Type:</option>
-          <option value="App Based">App Based</option>
-          <option value="Product Based">Product Based</option>
-        </select> -->
+        <label for="document2">Project Type:</label> <br> <br>
+        <select name="type" id="drop" class="dropStyle" required> 
+          <option value="App Based">Application based</option>
+          <option value="Product Based">Product based</option>
+        </select>
+          <br>
+          <div id="Page1" class="page">
+          </div>
+          <br>
+          <div id="Page2" class="page">
+            <label for="document2">Demo video:</label>
+            <!-- <a style="color:#000; text-decoration: none; " href="">Currently: ""</a> -->
+            <input
+              type="file"
+              name="demo_video"
+              id="document2"
+              accept=".mp4"
+              multiple
+            />
+          </div>
+          <br>
+          <!-- <div id="Page3" class="page" style="display:none">
+          <label for="document2">Product based demo video:</label>
+          <input
+            type="file"
+            name="Product_video"
+            id="document2"
+            accept=".mp4"
+            multiple
+          />
+          </div> -->
         <input type="submit" value="Submit" />
       </form>
     </div>
     <script src="./docs.js"></script>
+    <script>
+      /* $("#drop").on('change', function() {
+      var value = $(this).val();
+      if (value) {
+        $(".page").hide();
+        $("#Page" + value).show();
+      }
+    }); */
+    </script>
   </body>
 </html>

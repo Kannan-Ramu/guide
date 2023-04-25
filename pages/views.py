@@ -1,4 +1,5 @@
 
+import os
 from .models import Team, Credit
 from openpyxl import Workbook
 from random import randrange
@@ -11,7 +12,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from pages.models import Guide, Team, Otp, Otp_Two, Temp_Team
 from accounts.models import BestTeam
-from .custom_storage import DocStorage
+from guide_project.storages_backends import MediaStorage
 
 # Create your views here.
 
@@ -65,7 +66,7 @@ def guides(request):
 
 
 def submitted(request):
-    auth.logout(request)
+    # auth.logout(request)
     return render(request, 'submitted.html')
 
 
@@ -247,7 +248,7 @@ def project_details_2(request):
         is_user = User.objects.filter(username=is_team.teamID)
         is_user.delete()
         messages.info(
-            request, 'Your team is removed please to the process again!!')
+            request, 'Your team is removed please do the process again!!')
         return render(request, 'Login/login.html')
     if request.method == 'POST':
 
@@ -257,11 +258,11 @@ def project_details_2(request):
         reg_no_1 = request.POST['reg_no_1']
         student_1_no = request.POST['student_1_no']
         if len(reg_no_1) > 8:
-            messages.error(request, 'Register Number be 8 digits long.')
+            messages.error(request, 'Register Number must be 8 digits long.')
             return redirect('project-details-1')
         student_1_no = request.POST['student_1_no']
         if len(student_1_no) > 10:
-            messages.error(request, 'Number must of 10 digits.')
+            messages.error(request, 'Number must contain 10 digits.')
             return redirect('project-details-2')
 
         student_1_name = curr_user.first_name + ' ' + curr_user.last_name
@@ -272,11 +273,11 @@ def project_details_2(request):
         reg_no_2 = request.POST['reg_no_2']
         student_2_no = request.POST['student_2_no']
         if len(reg_no_2) > 8:
-            messages.error(request, 'Register Number be 8 digits long.')
+            messages.error(request, 'Register Number must be 8 digits long.')
             return redirect('project-details-2')
         student_2_no = request.POST['student_2_no']
         if len(student_2_no) > 10:
-            messages.error(request, 'Number must of 10 digits.')
+            messages.error(request, 'Number must contain 10 digits.')
             return redirect('project-details-2')
 
         student_2_name = first_name_2 + ' ' + last_name_2
@@ -703,12 +704,30 @@ def doc_upload(request):
     if user.is_authenticated:
         if BestTeam.objects.filter(teamID=user.username).exists():
             if request.method == 'POST':
-                file_directory_within_bucket = 'documents/{username}'.format(
+                print('INSIDE POST DOC UPLOAD')
+                team = Team.objects.filter(teamID=user.username).get()
+
+                media_storage = MediaStorage()
+                file_path_bucket = 'documents/{0}/'.format(
+                    request.user.username)
+                print('Path is: ', file_path_bucket)
+                # Below line always returns False
+                print('Check Dir', media_storage.exists(file_path_bucket))
+                if media_storage.exists(file_path_bucket):
+                    media_storage.delete(file_path_bucket)
+
+                app_video_directory_within_bucket = 'App_Based/{username}'.format(
                     username=request.user)
 
-                doc_storage = DocStorage()
-                team = Team.objects.filter(teamID=user.username).get()
+                product_video_directory_within_bucket = 'Product_Based/{username}'.format(
+                    username=request.user)
+
+                # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
+                type = request.POST['type']
+                print('FILES value: ', request.FILES)
+
                 if request.FILES:
+                    # ppt
                     if request.FILES.get('ppt'):
                         ppt = request.FILES['ppt']
                         # ppt and docs max size 9MB each (9 MB = 94,37,184 B)
@@ -717,6 +736,8 @@ def doc_upload(request):
                                 request, "PPT size must be less than 9 MB")
                             return redirect('upload')
                         team.ppt = ppt
+
+                    # document
                     if request.FILES.get('document'):
                         document = request.FILES['document']
                         if document.size > 9437184:
@@ -724,6 +745,8 @@ def doc_upload(request):
                                 request, "Document size must be less than 9 MB")
                             return redirect('upload')
                         team.document = document
+
+                    # Research Paper
                     if request.FILES.get('rs_paper'):
                         rs_paper = request.FILES['rs_paper']
                         # guide_form and rs_paper 500 kb each (Total 1 MB for pdfs) (1 MB = 10,48,576 B)
@@ -732,6 +755,8 @@ def doc_upload(request):
                                 request, "Research Paper size must be less than 500kb")
                             return redirect('upload')
                         team.rs_paper = rs_paper
+
+                    # Guide Form
                     if request.FILES.get('guide_form'):
                         guide_form = request.FILES['guide_form']
                         if guide_form.size > 1048576:
@@ -739,26 +764,48 @@ def doc_upload(request):
                                 request, "Guide Form size must be less than 500kb")
                             return redirect('upload')
                         team.guide_form = guide_form
+
+                    # size is not set correctly pls change later
+                    if request.POST.get('demo_video'):
+                        if type == 'App Based':
+                            demo_video = request.POST['demo_video']
+                            if team.product_video:
+                                team.product_video.delete()
+                            team.app_video = demo_video
+                        else:
+                            demo_video = request.POST['demo_video']
+                            if team.app_video:
+                                team.app_video.delete()
+                            team.product_video = demo_video
+
                     # synthesize a full file path; note that we included the filename
                     '''ppt_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         ppt.name
                     )
                     document_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         document.name
                     )
                     rs_paper_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         rs_paper.name
                     )
                     guide_form_path_within_bucket = os.path.join(
-                        file_directory_within_bucket,
+                        file_path_bucket,
                         guide_form.name
                     )'''
 
-                    if doc_storage.exists(file_directory_within_bucket):
-                        doc_storage.delete(file_directory_within_bucket)
+                    # if team.type == 'App Based':
+                    #     if media_storage.exists(app_video_directory_within_bucket):
+                    #         media_storage.delete(
+                    #             app_video_directory_within_bucket)
+                    # else:
+                    #     if media_storage.exists(
+                    #         product_video_directory_within_bucket
+                    #     ):
+                    #         media_storage.delete(
+                    #             product_video_directory_within_bucket)
 
                     # if doc_storage.exists(ppt_path_within_bucket):
                     #     doc_storage.delete(ppt.name)
@@ -780,13 +827,11 @@ def doc_upload(request):
                     # team.guide_form = doc_storage.save(
                     #     file_path_within_bucket, guide_form)
 
-                # UN-COMMENT THE BELOW ONCE FINISHED WITH THE DROP DOWN PART IN THE DOC UPLOAD PAGE (upload_docs/docs.html) TO MAKE THE CHANGES AFFECT IN THE BACKEND
-
-                # type = request.POST['type']
-                # team.type = type
+                team.type = type
                 team.save()
+                print('Type of project is: ', team.type)
 
-                auth.logout(request)
+                # auth.logout(request)
                 return redirect('submitted')
             else:
                 # POST else

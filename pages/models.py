@@ -3,8 +3,9 @@ from .choices import no_members_choices
 from django.db import models
 from cloudinary.models import CloudinaryField
 from storages.backends.s3boto3 import S3Boto3Storage
-from .custom_storage import DocStorage
+from guide_project.storages_backends import MediaStorage
 from .choices import type_choices
+import os
 
 # Create your models here.
 
@@ -47,6 +48,16 @@ def user_directory_path(instance, filename):
     return 'documents/{0}/{1}'.format(instance, filename)
 
 
+def app_instance_path(instance, filename):
+    # Will be Uploaded to appvideo/<teamID>/<filename>
+    return os.path.join('app_based/{0}/{1}'.format(instance, filename))
+
+
+def product_instance_path(instance, filename):
+    # Will be Uploaded to productvideo/<teamID>/<filename>
+    return os.path.join('product_based/{0}/{1}'.format(instance, filename))
+
+
 class Team(models.Model):
     teamID = models.CharField(max_length=10)
     project_name = models.CharField(max_length=500)
@@ -68,29 +79,34 @@ class Team(models.Model):
     student_2_email = models.CharField(max_length=100, blank=True, null=True)
     student_2_no = models.BigIntegerField(blank=True, null=True)
 
-    document = models.FileField(storage=DocStorage,
-                                upload_to=user_directory_path, null=True, blank=True)
-    ppt = models.FileField(storage=DocStorage, upload_to=user_directory_path,
+    document = models.FileField(
+        upload_to=user_directory_path, null=True, blank=True)
+    ppt = models.FileField(upload_to=user_directory_path,
                            null=True, blank=True)
-    rs_paper = models.FileField(storage=DocStorage,
-                                upload_to=user_directory_path, null=True, blank=True)
+    rs_paper = models.FileField(
+        upload_to=user_directory_path, null=True, blank=True)
 
-    guide_form = models.FileField(storage=DocStorage,
-                                  upload_to=user_directory_path, null=True, blank=True)
+    guide_form = models.FileField(
+        upload_to=user_directory_path, null=True, blank=True)
+
+    app_video = models.FileField(
+        upload_to=app_instance_path, null=True, blank=True)
+
+    product_video = models.FileField(
+        upload_to=product_instance_path, null=True, blank=True)
 
     profile_approved = models.BooleanField(default=False)
     guide_approved = models.BooleanField(default=False)
     rs_paper_approved = models.BooleanField(default=False)
     docs_approved = models.BooleanField(default=False)
     ppt_approved = models.BooleanField(default=False)
-
     guide = models.CharField(
         max_length=100)
 
     guide_email = models.CharField(max_length=100)
 
-    review_2_marks = models.IntegerField()
-    review_3_marks = models.IntegerField()
+    review_2_marks = models.IntegerField(default=0)
+    review_3_marks = models.IntegerField(default=0)
 
     communicated = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)

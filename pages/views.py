@@ -539,7 +539,7 @@ def guide_selected(request, id):
             guide_inst.save()
             temp_team.delete()
         # auth.logout(request)
-        return redirect('upload')
+        return redirect('team-dashboard')
         # return render(request, 'submitted.html')
     context = {
         'guide': guide_inst,

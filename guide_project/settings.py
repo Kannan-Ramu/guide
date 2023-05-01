@@ -233,7 +233,7 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = 'login'
 
 # Email Verify Config
 

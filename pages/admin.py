@@ -32,12 +32,12 @@ class TeamResource(resources.ModelResource):
         model = Team
 
         fields = ('id', 'teamID', 'project_name', 'project_domain', 'project_description', 'no_of_members', 'reg_no_1',
-                  'student_1_name', 'student_1_email', 'student_1_no', 'reg_no_2', 'student_2_name', 'student_2_email', 'student_2_no', 'guide', 'guide_email', 'profile_approved', 'guide_approved', 'rs_paper_approved', 'docs_approved', 'ppt_approved')
+                  'student_1_name', 'student_1_email', 'student_1_no', 'reg_no_2', 'student_2_name', 'student_2_email', 'student_2_no', 'guide', 'guide_email', 'profile_approved', 'guide_approved', 'rs_paper_approved', 'docs_approved', 'ppt_approved', 'review_2_marks', 'review_3_marks')
 
 
 class TeamAdmin(ImportExportModelAdmin):
-    list_display = ('id', 'teamID', 'project_name', 'no_of_members', 'reg_no_1',
-                    'student_1_name', 'student_1_no', 'reg_no_2', 'student_2_name', 'student_2_no', 'guide', 'guide_email', 'profile_approved', 'guide_approved', 'rs_paper_approved', 'docs_approved', 'ppt_approved')
+    list_display = ('id', 'project_name', 'no_of_members', 'reg_no_1',
+                    'student_1_name', 'student_1_no', 'reg_no_2', 'student_2_name', 'student_2_no', 'guide', 'guide_email', 'profile_approved', 'guide_approved', 'rs_paper_approved', 'docs_approved', 'ppt_approved', 'review_2_marks', 'review_3_marks', 'teamID')
     ordering = ('teamID',)
     search_fields = ('teamID', 'reg_no_1', 'reg_no_2',
                      'project_name', 'project_domain', 'student_1_name', 'student_2_name', 'guide', 'guide_email')

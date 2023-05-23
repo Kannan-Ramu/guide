@@ -105,8 +105,8 @@ class Team(models.Model):
 
     guide_email = models.CharField(max_length=100)
 
-    review_2_marks = models.IntegerField(default=0)
-    review_3_marks = models.IntegerField(default=0)
+    review_2_marks = models.IntegerField(default=10)
+    review_3_marks = models.IntegerField(default=10)
 
     communicated = models.BooleanField(default=False)
     accepted = models.BooleanField(default=False)

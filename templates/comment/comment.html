@@ -95,12 +95,11 @@
                     {% csrf_token %}
                     {% if is_guide %}
                         <textarea 
-                        name="body" placeholder=" Enter your comments" class="comment1" ></textarea>
+                        name="body" placeholder=" Enter your comments" class="comment1" required></textarea>
                         <button type="submit" class="btn">Post</button>
                     {% else %}
                         <textarea 
                         name="body" placeholder="Enter your comments" class="comment1" disabled></textarea>
-                        <button type="submit" class="btn" disabled>Post</button>
                     {% endif %}
                 
                 </form>

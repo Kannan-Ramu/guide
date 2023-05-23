@@ -19,3 +19,5 @@ class BestTeamAdmin(ImportExportModelAdmin):
 
 
 admin.site.register(BestTeam, BestTeamAdmin)
+
+

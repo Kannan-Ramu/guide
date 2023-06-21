@@ -1,5 +1,5 @@
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import get_user_model
@@ -135,9 +135,7 @@ def register(request):
                     return render(request, 'verify/acc_act_email_sent.html')
 
                     # return redirect('verify')
-                else:
-                    for e in form.errors:
-                        print('Error is: ', e)
+                
 
             else:
                 messages.error(

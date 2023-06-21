@@ -69,48 +69,6 @@ def submitted(request):
     # auth.logout(request)
     return render(request, 'submitted.html')
 
-
-def verify(request):
-    user = request.user
-    t = Otp.objects.filter(user_email=user.email)
-
-    if request.method == 'POST':
-        otp = request.POST['otp']
-        g_otp = Otp.objects.filter(user_email=user.email).get()
-
-        if otp == g_otp.otp:
-            auth.logout(request)
-            t.delete()
-            messages.success(request, 'Account Verified! You can login.')
-
-            return render(request, 'Login/login.html')
-        else:
-            auth.logout(request)
-            user.delete()
-            t.delete()
-            messages.error(request, 'Invalid OTP. Please try again.')
-            return render(request, 'Register/register.html')
-    else:
-
-        no = randrange(1000, 9999)
-        print("OTP IS: ", no)
-        if Otp.objects.filter(user_email=user.email).exists():
-            t = Otp.objects.filter(user_email=user.email)
-            t.delete()
-            print("OTP DELETED AND SENT AGAIN")
-        email = Otp.objects.create(user_email=user.email, otp=no)
-        email.save()
-        send_mail(
-            'YOUR OTP for verification',
-            'Your OTP is: {}'.format(no),
-            EMAIL_HOST_USER,
-            [user.email, ],
-            fail_silently=False,
-        )
-
-        return render(request, 'Register/verify.html')
-
-
 def mail1(request):
     user = request.user
     if request.method == 'POST':
@@ -334,7 +292,7 @@ def select_guide(request):
 
         return HttpResponse('YOU ARE NOT ALLOWED HERE!')
 
-    guides = Guide.objects.order_by('serial_no')
+    guides = Guide.objects.order_by('serial_no') # object
     if request.method == 'POST':
 
         return redirect('guide-selected')
@@ -505,7 +463,7 @@ def guide_selected(request, id):
 
         team.guide = guide_inst.name
         team.guide_email = guide_inst.email
-        new_username = "CSE-%03d" % (team.id)
+        new_username = "CSE-%03d" % (team.id) # CSE-001, CSE-002, ....
         team.teamID = new_username
         user.username = new_username
 
@@ -580,55 +538,6 @@ def search(request):
     }
 
     return render(request, 'search.html', context)
-
-# Re-title
-
-
-def retitle(request):
-    user = request.user
-
-    if request.method == 'POST':
-        teamID = request.POST['teamID']
-        project_name = request.POST['project_name']
-        reg_no_1 = request.POST['reg_no_1']
-        print(user.username)
-
-        if Team.objects.filter(teamID=user.username).exists():
-
-            team = Team.objects.filter(teamID=user.username).get()
-            if team.no_of_members == '2':
-                reg_no_2 = request.POST['reg_no_2']
-                student_2_email = request.POST['student_2_email']
-                team.reg_no_2 = reg_no_2
-                team.student_2_email = student_2_email
-
-            team.teamID = teamID
-            user.username = teamID
-            team.reg_no_1 = reg_no_1
-
-            team.project_name = project_name
-
-            team.save()
-            user.is_active = False
-            user.save()
-            auth.logout(request)
-
-            return render(request, 'submitted.html')
-        else:
-            messages.error(
-                request, "The entered email/teamID is wrong! Please enter the correct details!")
-            return redirect('retitle')
-
-    if not user.is_authenticated:
-        # Redirect to login with message
-        messages.info(request, "You're not logged in!")
-        return redirect('login')
-    team = Team.objects.filter(teamID=user.username)
-    print(team)
-    context = {
-        'teams': team,
-    }
-    return render(request, 'Retitle_page/retitle.html', context)
 
 
 def reset_password(request):
@@ -708,6 +617,7 @@ def doc_upload(request):
                 team = Team.objects.filter(teamID=user.username).get()
 
                 media_storage = MediaStorage()
+                # documents/CSE-001/filename.ppt
                 file_path_bucket = 'documents/{0}/'.format(
                     request.user.username)
                 print('Path is: ', file_path_bucket)

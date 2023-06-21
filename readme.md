@@ -1,8 +1,8 @@
-### PROJECT REGISTRATION AND MAINTENANCE
+# PROJECT REGISTRATION AND MAINTENANCE
 
 This file and contents in this will enlighten the points mentioned in the meeting conducted earlier.
 
-# Steps to execute this code
+## Steps to execute this code
 
 Step 1: Create a virtualenv for installing dependencies
 
@@ -61,4 +61,4 @@ python manage.py startapp <name_of_the_app>
 django-admin startproject <name_of_the_project> .
 ```
 
-# Hope this helps you well in your work and All the best!
+### Hope this helps you well in your work and All the best!

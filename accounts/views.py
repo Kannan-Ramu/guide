@@ -135,6 +135,9 @@ def register(request):
                     return render(request, 'verify/acc_act_email_sent.html')
 
                     # return redirect('verify')
+                else:
+                    messages.error(request, 'Password must not be similar to email!')
+                    return HttpResponseRedirect('login')
                 
 
             else:

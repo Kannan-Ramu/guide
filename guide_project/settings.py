@@ -34,7 +34,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 
 # DATABASE_URL = "postgresql://postgres:4M84u0U9dcm9LmdaH2Ar@containers-us-west-105.railway.app:5862/railway"
-
+DATABASE_URL="postgres://try1user:srfHoxqPy5v9cBdSItSZM17l4TFpUWog@dpg-cij79ut9aq01qqgk0jjg-a.singapore-postgres.render.com/try1dbname"
 
 ALLOWED_HOSTS = [
     'https://guide-env.eba-uic37c6i.ap-south-1.elasticbeanstalk.com',
@@ -126,16 +126,16 @@ WSGI_APPLICATION = 'guide_project.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 # Development
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'GUIDE-SELECTION',
-        'USER': 'techboizs',
-        'PASSWORD': 'AAd!tyAA$ravi',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'GUIDE-SELECTION',
+#         'USER': 'techboizs',
+#         'PASSWORD': 'AAd!tyAA$ravi',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 '''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -150,7 +150,7 @@ DATABASES = {
 
 # Production DB to be used for railway personal
 
-DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-132.railway.app:6989/railway"
+# DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-132.railway.app:6989/railway"
 
 '''DATABASES = {
     "default": dj_database_url.config(default=os.environ.get('DATABASE_URL'), conn_max_age=None),
@@ -161,7 +161,9 @@ DATABASE_URL = "postgresql://postgres:M5IdDWcXIAhyt06Sh0w0@containers-us-west-13
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
+DATABASES = {
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

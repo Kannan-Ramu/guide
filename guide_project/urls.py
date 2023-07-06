@@ -17,6 +17,8 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 urlpatterns = [
     path('pride-cell/', admin.site.urls),
@@ -27,7 +29,7 @@ urlpatterns = [
     path('comments/', include('comments.urls')),
     path('verification/', include('verify_email.urls')),
 ]
-
+urlpatterns += staticfiles_urlpatterns()
 handler404 = 'pages.views.custom_page_not_found_view'
 handler403 = 'pages.views.my_custom_permission_denied_view'
 handler400 = 'pages.views.my_custom_bad_request_view'
